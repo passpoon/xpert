@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+    <persistence-unit name="com.crossent.monitoring.portal.jpa" transaction-field="RESOURCE_LOCAL">
+        <description>
+            Persistence unit for the JPA of Monitoring System
+        </description>
+        <class>com.crossent.monitoring.portal.jpa.domain.AlarmAction</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.AlarmProcess</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.AppInfo</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.AppInfoCriticalValue</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.AppInfoMeasurementMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.AppResource</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.EventHistory</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.Manual</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.Measurement</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.Meta</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.Metric</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAlarm</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAlarmAppGroupMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAlarmAppMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAlarmLogEventMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAlarmServerMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAlarmServerGroupMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAlarmUser</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgApp</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAppCriticalValue</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAppGroup</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAppGroupApp</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgAppGroupCriticalValue</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgLogEvent</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgLogEventSererMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgServer</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgServerCriticalValue</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgServerGroup</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgServerGroupCriticalValue</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgServerGroupServer</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MgUser</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.MonGroup</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.ServerResource</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.ServerType</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.ServerTypeCriticalValue</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.ServerTypeMeasurementMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.StateCode</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.Test</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.TypeCode</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.User</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.UserGroup</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.UserGroupMap</class>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mondb" />
+            <property name="javax.persistence.jdbc.user" value="monitor" />
+            <property name="javax.persistence.jdbc.password" value="crossent123!" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.hbm2ddl.auto" value="create" />
+            <property name="hibernate.connection.url"
+                      value="jdbc:mysql://127.0.0.1:3306/mondb?useUnicode=true&amp;characterEncoding=utf8"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+        </properties>
+    </persistence-unit>
+
+</persistence>
