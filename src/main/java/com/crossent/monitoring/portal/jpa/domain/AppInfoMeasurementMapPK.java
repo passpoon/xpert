@@ -36,4 +36,22 @@ public class AppInfoMeasurementMapPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppInfoMeasurementMapPK that = (AppInfoMeasurementMapPK) o;
+
+        if (appInfoId != null ? !appInfoId.equals(that.appInfoId) : that.appInfoId != null) return false;
+        return measurementId != null ? measurementId.equals(that.measurementId) : that.measurementId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = appInfoId != null ? appInfoId.hashCode() : 0;
+        result = 31 * result + (measurementId != null ? measurementId.hashCode() : 0);
+        return result;
+    }
 }

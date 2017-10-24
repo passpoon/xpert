@@ -48,4 +48,26 @@ public class MgServerCriticalValuePK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgServerCriticalValuePK that = (MgServerCriticalValuePK) o;
+
+        if (monGroupId != null ? !monGroupId.equals(that.monGroupId) : that.monGroupId != null) return false;
+        if (serverResourceId != null ? !serverResourceId.equals(that.serverResourceId) : that.serverResourceId != null)
+            return false;
+        return metricId != null ? metricId.equals(that.metricId) : that.metricId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = monGroupId != null ? monGroupId.hashCode() : 0;
+        result = 31 * result + (serverResourceId != null ? serverResourceId.hashCode() : 0);
+        result = 31 * result + (metricId != null ? metricId.hashCode() : 0);
+        return result;
+    }
 }

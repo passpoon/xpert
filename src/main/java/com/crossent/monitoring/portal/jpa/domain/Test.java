@@ -1,12 +1,10 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "test", schema = "mondb")
 public class Test implements Serializable {
     private Integer id;
     private String col1;

@@ -48,4 +48,25 @@ public class MgLogEventSererMapPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgLogEventSererMapPK that = (MgLogEventSererMapPK) o;
+
+        if (mgLogEventId != null ? !mgLogEventId.equals(that.mgLogEventId) : that.mgLogEventId != null) return false;
+        if (serverResourceId != null ? !serverResourceId.equals(that.serverResourceId) : that.serverResourceId != null)
+            return false;
+        return monGroupId != null ? monGroupId.equals(that.monGroupId) : that.monGroupId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mgLogEventId != null ? mgLogEventId.hashCode() : 0;
+        result = 31 * result + (serverResourceId != null ? serverResourceId.hashCode() : 0);
+        result = 31 * result + (monGroupId != null ? monGroupId.hashCode() : 0);
+        return result;
+    }
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.Collection;
 
 @Entity
+@Table(name = "measurement", schema = "mondb")
 public class Measurement implements Serializable {
     private Integer id;
     private String name;

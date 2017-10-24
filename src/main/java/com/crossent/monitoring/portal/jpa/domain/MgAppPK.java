@@ -36,4 +36,22 @@ public class MgAppPK implements Serializable{
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgAppPK mgAppPK = (MgAppPK) o;
+
+        if (monGroupId != null ? !monGroupId.equals(mgAppPK.monGroupId) : mgAppPK.monGroupId != null) return false;
+        return appResourceId != null ? appResourceId.equals(mgAppPK.appResourceId) : mgAppPK.appResourceId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = monGroupId != null ? monGroupId.hashCode() : 0;
+        result = 31 * result + (appResourceId != null ? appResourceId.hashCode() : 0);
+        return result;
+    }
 }

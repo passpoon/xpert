@@ -48,4 +48,25 @@ public class ServerTypeCriticalValuePK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ServerTypeCriticalValuePK that = (ServerTypeCriticalValuePK) o;
+
+        if (serverTypeId != null ? !serverTypeId.equals(that.serverTypeId) : that.serverTypeId != null) return false;
+        if (measurementId != null ? !measurementId.equals(that.measurementId) : that.measurementId != null)
+            return false;
+        return metricId != null ? metricId.equals(that.metricId) : that.metricId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = serverTypeId != null ? serverTypeId.hashCode() : 0;
+        result = 31 * result + (measurementId != null ? measurementId.hashCode() : 0);
+        result = 31 * result + (metricId != null ? metricId.hashCode() : 0);
+        return result;
+    }
 }

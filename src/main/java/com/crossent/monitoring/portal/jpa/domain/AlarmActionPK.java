@@ -36,4 +36,23 @@ public class AlarmActionPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AlarmActionPK that = (AlarmActionPK) o;
+
+        if (alarmProcessId != null ? !alarmProcessId.equals(that.alarmProcessId) : that.alarmProcessId != null)
+            return false;
+        return actionSeq != null ? actionSeq.equals(that.actionSeq) : that.actionSeq == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = alarmProcessId != null ? alarmProcessId.hashCode() : 0;
+        result = 31 * result + (actionSeq != null ? actionSeq.hashCode() : 0);
+        return result;
+    }
 }

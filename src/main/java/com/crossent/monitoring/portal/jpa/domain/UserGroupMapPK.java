@@ -36,4 +36,22 @@ public class UserGroupMapPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        UserGroupMapPK that = (UserGroupMapPK) o;
+
+        if (userGroupId != null ? !userGroupId.equals(that.userGroupId) : that.userGroupId != null) return false;
+        return userId != null ? userId.equals(that.userId) : that.userId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userGroupId != null ? userGroupId.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        return result;
+    }
 }

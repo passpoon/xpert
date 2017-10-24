@@ -36,4 +36,22 @@ public class MgAppGroupCriticalValuePK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgAppGroupCriticalValuePK that = (MgAppGroupCriticalValuePK) o;
+
+        if (mgAppGroupId != null ? !mgAppGroupId.equals(that.mgAppGroupId) : that.mgAppGroupId != null) return false;
+        return metricId != null ? metricId.equals(that.metricId) : that.metricId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mgAppGroupId != null ? mgAppGroupId.hashCode() : 0;
+        result = 31 * result + (metricId != null ? metricId.hashCode() : 0);
+        return result;
+    }
 }

@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "metric", schema = "mondb")
 public class Metric implements Serializable {
     private Integer id;
 //    private Integer measurementId;

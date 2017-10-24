@@ -36,4 +36,22 @@ public class MgAlarmAppGroupMapPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgAlarmAppGroupMapPK that = (MgAlarmAppGroupMapPK) o;
+
+        if (mgAlarmId != null ? !mgAlarmId.equals(that.mgAlarmId) : that.mgAlarmId != null) return false;
+        return mgAppGroupId != null ? mgAppGroupId.equals(that.mgAppGroupId) : that.mgAppGroupId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mgAlarmId != null ? mgAlarmId.hashCode() : 0;
+        result = 31 * result + (mgAppGroupId != null ? mgAppGroupId.hashCode() : 0);
+        return result;
+    }
 }

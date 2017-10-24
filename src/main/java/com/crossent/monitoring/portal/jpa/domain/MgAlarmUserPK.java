@@ -36,4 +36,22 @@ public class MgAlarmUserPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgAlarmUserPK that = (MgAlarmUserPK) o;
+
+        if (mgAlarmId != null ? !mgAlarmId.equals(that.mgAlarmId) : that.mgAlarmId != null) return false;
+        return mgUserId != null ? mgUserId.equals(that.mgUserId) : that.mgUserId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mgAlarmId != null ? mgAlarmId.hashCode() : 0;
+        result = 31 * result + (mgUserId != null ? mgUserId.hashCode() : 0);
+        return result;
+    }
 }

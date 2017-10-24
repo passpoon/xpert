@@ -48,4 +48,26 @@ public class AppInfoCriticalValuePK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AppInfoCriticalValuePK that = (AppInfoCriticalValuePK) o;
+
+        if (appInfoId != null ? !appInfoId.equals(that.appInfoId) : that.appInfoId != null) return false;
+        if (measurementId != null ? !measurementId.equals(that.measurementId) : that.measurementId != null)
+            return false;
+        return metricId != null ? metricId.equals(that.metricId) : that.metricId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = appInfoId != null ? appInfoId.hashCode() : 0;
+        result = 31 * result + (measurementId != null ? measurementId.hashCode() : 0);
+        result = 31 * result + (metricId != null ? metricId.hashCode() : 0);
+        return result;
+    }
 }

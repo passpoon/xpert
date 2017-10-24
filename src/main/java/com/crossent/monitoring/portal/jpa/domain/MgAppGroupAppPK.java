@@ -48,4 +48,24 @@ public class MgAppGroupAppPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgAppGroupAppPK that = (MgAppGroupAppPK) o;
+
+        if (appGroupId != null ? !appGroupId.equals(that.appGroupId) : that.appGroupId != null) return false;
+        if (monGroupId != null ? !monGroupId.equals(that.monGroupId) : that.monGroupId != null) return false;
+        return appResourceId != null ? appResourceId.equals(that.appResourceId) : that.appResourceId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = appGroupId != null ? appGroupId.hashCode() : 0;
+        result = 31 * result + (monGroupId != null ? monGroupId.hashCode() : 0);
+        result = 31 * result + (appResourceId != null ? appResourceId.hashCode() : 0);
+        return result;
+    }
 }

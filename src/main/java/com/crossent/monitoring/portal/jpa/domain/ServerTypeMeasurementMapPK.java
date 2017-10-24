@@ -36,4 +36,22 @@ public class ServerTypeMeasurementMapPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ServerTypeMeasurementMapPK that = (ServerTypeMeasurementMapPK) o;
+
+        if (serverTypeId != null ? !serverTypeId.equals(that.serverTypeId) : that.serverTypeId != null) return false;
+        return measurementId != null ? measurementId.equals(that.measurementId) : that.measurementId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = serverTypeId != null ? serverTypeId.hashCode() : 0;
+        result = 31 * result + (measurementId != null ? measurementId.hashCode() : 0);
+        return result;
+    }
 }

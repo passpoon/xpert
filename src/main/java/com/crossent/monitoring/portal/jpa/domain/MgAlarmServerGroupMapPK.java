@@ -36,4 +36,23 @@ public class MgAlarmServerGroupMapPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgAlarmServerGroupMapPK that = (MgAlarmServerGroupMapPK) o;
+
+        if (mgAlarmId != null ? !mgAlarmId.equals(that.mgAlarmId) : that.mgAlarmId != null) return false;
+        return mgServerGroupId != null ? mgServerGroupId.equals(that.mgServerGroupId) : that.mgServerGroupId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mgAlarmId != null ? mgAlarmId.hashCode() : 0;
+        result = 31 * result + (mgServerGroupId != null ? mgServerGroupId.hashCode() : 0);
+        return result;
+    }
 }

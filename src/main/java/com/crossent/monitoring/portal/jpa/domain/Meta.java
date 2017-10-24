@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "meta", schema = "mondb")
 public class Meta implements Serializable {
     private Integer id;
     private String prog;

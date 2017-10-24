@@ -36,4 +36,23 @@ public class AlarmProcessPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        AlarmProcessPK that = (AlarmProcessPK) o;
+
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        return currentStateCode != null ? currentStateCode.equals(that.currentStateCode) : that.currentStateCode == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (currentStateCode != null ? currentStateCode.hashCode() : 0);
+        return result;
+    }
 }

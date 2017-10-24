@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "event_history", schema = "mondb", catalog = "")
+@Table(name = "event_history", schema = "mondb")
 public class EventHistory implements Serializable {
     private Long id;
     private String resourceType;

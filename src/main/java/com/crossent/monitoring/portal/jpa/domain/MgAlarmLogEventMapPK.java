@@ -36,4 +36,22 @@ public class MgAlarmLogEventMapPK implements Serializable {
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgAlarmLogEventMapPK that = (MgAlarmLogEventMapPK) o;
+
+        if (mgLogEventId != null ? !mgLogEventId.equals(that.mgLogEventId) : that.mgLogEventId != null) return false;
+        return mgAlarmId != null ? mgAlarmId.equals(that.mgAlarmId) : that.mgAlarmId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mgLogEventId != null ? mgLogEventId.hashCode() : 0;
+        result = 31 * result + (mgAlarmId != null ? mgAlarmId.hashCode() : 0);
+        return result;
+    }
 }

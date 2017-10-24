@@ -37,4 +37,22 @@ public class MgUserPK implements Serializable{
         sb.append('}');
         return sb.toString();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MgUserPK mgUserPK = (MgUserPK) o;
+
+        if (monGroupId != null ? !monGroupId.equals(mgUserPK.monGroupId) : mgUserPK.monGroupId != null) return false;
+        return userId != null ? userId.equals(mgUserPK.userId) : mgUserPK.userId == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = monGroupId != null ? monGroupId.hashCode() : 0;
+        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        return result;
+    }
 }
