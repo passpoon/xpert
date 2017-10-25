@@ -4,7 +4,6 @@
     <contextName>anyframe-online-sample-app</contextName>
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>DEBUG</level>
         </filter>
 
         <encoder>
@@ -23,8 +22,10 @@
 
 
     <logger name="com.crossent.monitoring" level="DEBUG"/>
+    <logger name="org.hibernate.SQL" level="TRACE"/>
+    <logger name="org.hibernate.type" level="TRACE"/>
 
-    <root level="INFO">
+    <root level="WARN">
         <appender-ref ref="console" />
         <appender-ref ref="file" />
     </root>
