@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: com.github.miwurster:spring-data-influxdb:1.6">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/miwurster/spring-data-influxdb/1.6/spring-data-influxdb-1.6.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/miwurster/spring-data-influxdb/1.6/spring-data-influxdb-1.6-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/com/github/miwurster/spring-data-influxdb/1.6/spring-data-influxdb-1.6-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

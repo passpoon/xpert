@@ -2,6 +2,7 @@ package com.crossent.monitoring.portal.jpa.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "user", schema = "mondb")
@@ -12,6 +13,7 @@ public class User implements Serializable {
     private String phone;
     private String chatId;
     private String description;
+    private Collection<MonGroup> monGroups;
 
     @Id
     @Column(name = "id", nullable = false, length = 20)
@@ -71,6 +73,18 @@ public class User implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "mg_user",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))
+    public Collection<MonGroup> getMonGroups() {
+        return monGroups;
+    }
+
+    public void setMonGroups(Collection<MonGroup> monGroups) {
+        this.monGroups = monGroups;
     }
 
     @Override
