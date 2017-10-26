@@ -1,35 +1,43 @@
-package com.crossent.monitoring.portal.group.mon.service;
+package com.crossent.monitoring.portal.system.common.service;
 
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
 import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.repository.MonGroupRepository;
-import com.crossent.monitoring.portal.jpa.repository.UserGroupRepository;
 import com.crossent.monitoring.portal.jpa.repository.UserRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+
 import org.slf4j.Logger;
+import org.springframework.stereotype.Service;
 
 @Service
 public class MonGroupService {
     Logger logger = LoggerFactory.getLogger(MonGroupService.class);
 
     @Autowired
-    UserGroupRepository userGroupRepository;
+    UserRepository userRepository;
 
     @Autowired
     MonGroupRepository monGroupRepository;
 
-    @Autowired
-    UserRepository userRepository;
-
-    public Collection<MonGroup> listMonGroup(String userId){
+    public Collection<MonGroup> listMonGroup(String userId) {
 
         User user = userRepository.findOne(userId);
+
         Collection<MonGroup> monGroups = user.getMonGroups();
         logger.debug("monGroups : {}", monGroups);
         return monGroups;
+    }
+
+    public User listUsers(String uuid) {
+
+        User user = userRepository.findByUuid(uuid);
+
+        return user;
     }
 }

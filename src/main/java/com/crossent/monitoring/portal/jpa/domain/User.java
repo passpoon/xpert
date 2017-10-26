@@ -13,6 +13,7 @@ public class User implements Serializable {
     private String phone;
     private String chatId;
     private String description;
+    private String uuid;
     private Collection<MonGroup> monGroups;
 
     @Id
@@ -73,6 +74,16 @@ public class User implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Basic
+    @Column(name = "uuid", nullable = true, length = 45)
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
