@@ -107,19 +107,24 @@ public class UserService {
         return out;
     }
 
-/*    public void updateUser(String userId, User user){
+    public User updateUser(String userId, User user){
 
-        User bb = new User();
-        bb.setId(user.getId());
-        bb.setName(user.getName());
-        bb.setEmail(user.getEmail());
-        bb.setPhone(user.getPhone());
-        bb.setChatId(user.getChatId());
-        bb.setDescription(user.getDescription());
-        bb.setUuid(user.getUuid());
+        User getData = userRepository.findOne(userId);
 
-        User aa = userRepository.save(bb);
-    }*/
+        if(getData == null) {
+            return null;
+        }
+        getData.setName(user.getName());
+        getData.setEmail(user.getEmail());
+        getData.setPhone(user.getPhone());
+        getData.setChatId(user.getChatId());
+        getData.setDescription(user.getDescription());
+        getData.setUuid(user.getUuid());
+
+        User updateData = userRepository.save(getData);
+
+        return updateData;
+    }
 
     public void deleteUser(String userId) {
 

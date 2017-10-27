@@ -57,12 +57,12 @@ public class UserTest extends AbstractMockTest {
         super.get("/system/management/users/" + userId);
     }
 
-/*    @Test
+    @Test
     public void updateUser() throws Exception {
         String userId = "monuser111";
 
         User dto = new User();
-        dto.setId("monuser111");
+        dto.setId(userId);
         dto.setName("빼빼로");
         dto.setEmail("crossent@crossent.com");
         dto.setPhone("010-2222-3454");
@@ -70,9 +70,8 @@ public class UserTest extends AbstractMockTest {
         dto.setDescription("test inset user");
         dto.setUuid("dddddddd");
 
-
         put("/system/management/user/"+ userId, dto);
-    }*/
+    }
 
     @Test
     public void deleteUser() throws Exception {

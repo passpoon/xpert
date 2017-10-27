@@ -6,7 +6,10 @@ import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.User;
+import com.crossent.monitoring.portal.sample.web.MeasurementController;
 import com.crossent.monitoring.portal.system.mng.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +19,8 @@ import java.util.List;
 
 @RestController
 public class UserController extends BaseController {
+
+    Logger logger = LoggerFactory.getLogger(MeasurementController.class);
 
     @Autowired
     UserService userService;
@@ -52,13 +57,21 @@ public class UserController extends BaseController {
         return outUser;
     }
 
-/*    @Transactional
+    @Transactional
     @RequestMapping(value="/system/management/users/{userId}", method = RequestMethod.PUT)
-    public void updateUser(@PathVariable String userId,
-                             @RequestBody User user) {
+    @ResponseBody
+    public void updateUser(@PathVariable String userId, @RequestBody User user) {
+
+        User aaaa = userService.getUser(userId);
+        if (aaaa == null ){
+            logger.error("Unable to update. User with id {} not found.", userId);
+        }
+
+        aaaa.setName(user.getName());
+        aaaa.setDescription(user.getDescription());
 
         userService.updateUser(userId, user);
-    }*/
+    }
 
     @Transactional
     @RequestMapping(value="/system/management/users/{userId}", method = RequestMethod.DELETE)
