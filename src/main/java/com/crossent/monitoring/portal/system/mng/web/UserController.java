@@ -62,14 +62,6 @@ public class UserController extends BaseController {
     @ResponseBody
     public void updateUser(@PathVariable String userId, @RequestBody User user) {
 
-        User aaaa = userService.getUser(userId);
-        if (aaaa == null ){
-            logger.error("Unable to update. User with id {} not found.", userId);
-        }
-
-        aaaa.setName(user.getName());
-        aaaa.setDescription(user.getDescription());
-
         userService.updateUser(userId, user);
     }
 

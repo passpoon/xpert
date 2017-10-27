@@ -59,18 +59,18 @@ public class UserTest extends AbstractMockTest {
 
     @Test
     public void updateUser() throws Exception {
-        String userId = "monuser111";
+        String userId = "monuser4";
 
         User dto = new User();
         dto.setId(userId);
-        dto.setName("빼빼로");
+        dto.setName("감사합니다");
         dto.setEmail("crossent@crossent.com");
         dto.setPhone("010-2222-3454");
         dto.setChatId("chat");
         dto.setDescription("test inset user");
         dto.setUuid("dddddddd");
 
-        put("/system/management/user/"+ userId, dto);
+        super.put("/system/management/users/"+ userId, dto);
     }
 
     @Test
