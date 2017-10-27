@@ -17,6 +17,5 @@ public interface UserRepository extends JpaRepository<User, String> {
     public Page<User> findByIdLike(Pageable pageable, String id);
     public Page<User> findByEmailLike(Pageable pageable, String email);
 
-
     public void deleteByIdIn(String[] ids);
 }

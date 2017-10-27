@@ -26,7 +26,7 @@ public class UserController extends BaseController {
     UserService userService;
 
     @RequestMapping(value="/system/management/users", method = RequestMethod.GET)
-    public PagingResVo pagingUser(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search")SearchReqVo search){
+    public PagingResVo pagingUser(PagingReqVo paging, SearchReqVo search){
 
         /*String m1 = MessageUtil.getMessage("monitoring.portal.common.error.test", "하하", "호호");
         String m2 =MessageUtil.getMessage("monitoring.portal.common.error.pagingParameterError");*/

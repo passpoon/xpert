@@ -59,7 +59,6 @@ public class UserService {
                 }
                 break;
             }
-
         }
 
         //Sort.Order order = new Sort.Order(Sort.Direction.ASC, "name");
