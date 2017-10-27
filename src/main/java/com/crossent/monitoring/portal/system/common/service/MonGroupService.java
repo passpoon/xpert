@@ -4,6 +4,8 @@ import com.crossent.monitoring.portal.jpa.domain.MonGroup;
 import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.repository.MonGroupRepository;
 import com.crossent.monitoring.portal.jpa.repository.UserRepository;
+import com.crossent.monitoring.portal.system.common.dto.MonGroupDto;
+import com.crossent.monitoring.portal.system.common.dto.UserDto;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -34,10 +36,38 @@ public class MonGroupService {
         return monGroups;
     }
 
-    public User listUsers(String uuid) {
+    public UserDto listUsers(String uuid) {
 
         User user = userRepository.findByUuid(uuid);
+        UserDto userDto = new UserDto();
 
-        return user;
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
+        userDto.setEmail(user.getEmail());
+        userDto.setPhone(user.getPhone());
+        userDto.setChatId(user.getChatId());
+        userDto.setDescription(user.getDescription());
+        userDto.setUuid(user.getUuid());
+
+
+        /*List<MetricDto> metricList = new ArrayList<MetricDto>();
+        Collection<MonGroupDto> monGroupList = user.getMonGroups();*/
+        List<MonGroupDto> monGroups = new ArrayList<>();
+
+
+        Collection<MonGroup> groups = user.getMonGroups();
+
+        for(MonGroup group : groups){
+            MonGroupDto monGroupDto = new MonGroupDto();
+            monGroupDto.setId(group.getId());
+            monGroupDto.setName(group.getName());
+            monGroupDto.setDescription(group.getDescription());
+
+            monGroups.add(monGroupDto);
+
+        }
+        userDto.setMonGroups(monGroups);
+
+        return userDto;
     }
 }

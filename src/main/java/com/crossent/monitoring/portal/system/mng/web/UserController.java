@@ -21,18 +21,10 @@ public class UserController extends BaseController {
     UserService userService;
 
     @RequestMapping(value="/system/management/users", method = RequestMethod.GET)
-    public List<User> listUser() {
-
-        List<User> userList = userService.listUsers();
-
-        return userList;
-    }
-
-    @RequestMapping(value="/system/management/users/paging", method = RequestMethod.GET)
     public PagingResVo pagingUser(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search")SearchReqVo search){
 
-        String m1 = MessageUtil.getMessage("monitoring.portal.common.error.test", "하하", "호호");
-        String m2 =MessageUtil.getMessage("monitoring.portal.common.error.pagingParameterError");
+        /*String m1 = MessageUtil.getMessage("monitoring.portal.common.error.test", "하하", "호호");
+        String m2 =MessageUtil.getMessage("monitoring.portal.common.error.pagingParameterError");*/
 
         PagingResVo<User> resPage = userService.pagingUser(paging, search);
 
@@ -45,6 +37,39 @@ public class UserController extends BaseController {
 
         userService.insertUser(user);
     }
+
+    @Transactional
+    @RequestMapping(value="/system/management/users", method = RequestMethod.DELETE)
+    public void deleteUsers(@RequestParam String[] userIds){
+
+        userService.deleteUsers(userIds);
+    }
+
+    @RequestMapping(value="/system/management/users/{userId}", method = RequestMethod.GET)
+    public User getUser(@PathVariable String userId) {
+
+        User outUser =  userService.getUser(userId);
+        return outUser;
+    }
+
+/*    @Transactional
+    @RequestMapping(value="/system/management/users/{userId}", method = RequestMethod.PUT)
+    public void updateUser(@PathVariable String userId,
+                             @RequestBody User user) {
+
+        userService.updateUser(userId, user);
+    }*/
+
+    @Transactional
+    @RequestMapping(value="/system/management/users/{userId}", method = RequestMethod.DELETE)
+    public void deleteUser(@PathVariable String userId){
+
+        userService.deleteUser(userId);
+
+    }
+
+
+
 
 
 }

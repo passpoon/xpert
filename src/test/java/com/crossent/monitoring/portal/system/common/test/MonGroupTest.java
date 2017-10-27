@@ -10,7 +10,7 @@ public class MonGroupTest extends AbstractMockTest {
     @Test
     public void listMonGroup() throws Exception {
 
-        String userId = "monuser1";
+        String userId = "monuser5";
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("userId", userId);
         super.get("/system/common/monitoring-groups", params);

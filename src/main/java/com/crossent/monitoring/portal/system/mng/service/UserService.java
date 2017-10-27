@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -23,41 +24,54 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    public List<User> listUsers() {
-
-        Iterable<User> users = userRepository.findAll();
-        List<User> userList = new ArrayList<User>();
-        Iterator<User> iterator = users.iterator();
-
-        while (iterator.hasNext()) {
-            User u = iterator.next();
-
-            User user = new User();
-
-            user.setId(u.getId());
-            user.setName(u.getName());
-            user.setEmail(u.getEmail());
-            user.setPhone(u.getPhone());
-            user.setChatId(u.getChatId());
-            user.setDescription(u.getDescription());
-
-            userList.add(user);
-        }
-        return userList;
-    }
-
     public PagingResVo<User> pagingUser(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
-        Sort.Order order = new Sort.Order(Sort.Direction.ASC, "name");
+        Map<String, String> keywords = searchReqVo.getKeywords();
+        String key = null;
+        String keyword = null;
+        if(keywords != null) {
+            Iterator<String> keys = keywords.keySet().iterator();
+            while (keys.hasNext()) {
+                key = keys.next();
+                keyword = keywords.get(key);
+                keyword = "%" + keyword + "%";
+            }
+        }
+        Page<User> users = null;
+        if(key == null){
+            //TODO 전체조회
+            users = userRepository.findAll(pagingReqVo.toPagingRequest());
+        }else{
+            switch (key){
+                case "id":
+                {
+                    users = userRepository.findByIdLike(pagingReqVo.toPagingRequest(), keyword);
+                }
+                break;
+                case "name":
+                {
+                    users = userRepository.findByNameLike(pagingReqVo.toPagingRequest(), keyword);
+                }
+                break;
+                case "email":
+                {
+                    users = userRepository.findByEmailLike(pagingReqVo.toPagingRequest(), keyword);
+                }
+                break;
+            }
 
-        Page<User> outPage = userRepository.findAll(pagingReqVo.toPagingRequest());
+        }
 
-        PagingResVo<User> resPage = new PagingResVo<User>(outPage, true);
+        //Sort.Order order = new Sort.Order(Sort.Direction.ASC, "name");
+        //Page<User> outPage = userRepository.findAll(pagingReqVo.toPagingRequest());
+
+        PagingResVo<User> resPage = new PagingResVo<User>(users, true);
 
         return resPage;
     }
 
-    public void insertUser(User inUser){
+    public void insertUser(User inUser) {
+
         User user = new User();
         user.setId(inUser.getId());
         user.setName(inUser.getName());
@@ -65,9 +79,53 @@ public class UserService {
         user.setPhone(inUser.getPhone());
         user.setChatId(inUser.getDescription());
         user.setDescription(inUser.getDescription());
+        user.setUuid(inUser.getUuid());
 
         User resUser = userRepository.save(user);
 
         logger.debug("resUser : {}", resUser);
     }
+
+    public void deleteUsers(String[] delUsers) {
+
+        userRepository.deleteByIdIn(delUsers);
+    }
+
+    public User getUser(String userId) {
+
+        User user = userRepository.findOne(userId);
+
+        User out = new User();
+        out.setId(user.getId());
+        out.setName(user.getName());
+        out.setEmail(user.getEmail());
+        out.setPhone(user.getPhone());
+        out.setChatId(user.getChatId());
+        out.setDescription(user.getDescription());
+        out.setUuid(user.getUuid());
+
+        return out;
+    }
+
+/*    public void updateUser(String userId, User user){
+
+        User bb = new User();
+        bb.setId(user.getId());
+        bb.setName(user.getName());
+        bb.setEmail(user.getEmail());
+        bb.setPhone(user.getPhone());
+        bb.setChatId(user.getChatId());
+        bb.setDescription(user.getDescription());
+        bb.setUuid(user.getUuid());
+
+        User aa = userRepository.save(bb);
+    }*/
+
+    public void deleteUser(String userId) {
+
+        userRepository.delete(userId);
+    }
+
+
+
 }

@@ -42,7 +42,7 @@ public class MonGroup  implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("MonGroup{");
+        final StringBuilder sb = new StringBuilder("MonGroupDto{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');

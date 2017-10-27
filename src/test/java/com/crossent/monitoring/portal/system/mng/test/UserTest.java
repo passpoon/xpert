@@ -12,39 +12,73 @@ import org.springframework.util.LinkedMultiValueMap;
 public class UserTest extends AbstractMockTest {
 
     @Test
-    public void listUser() throws Exception {
-        get("/system/management/users");
-    }
-
-    @Test
     public void pageMeasurement() throws Exception {
         PagingReqVo pagingReqVo = new PagingReqVo();
-        pagingReqVo.setPage(1);
-        pagingReqVo.setPageSize(2);
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("field1", "monuser1");
-        searchReqVo.addKeyword("field2", "keyword2");
-        searchReqVo.addKeyword("field3", "keyword3");
+        searchReqVo.addKeyword("name", "정한");
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
         params.add("search", JsonUtil.ObjectToJson(searchReqVo));
-        get("/system/management/users/paging", params);
+        get("/system/management/users", params);
+
     }
 
     @Test
     public void insertUser() throws Exception {
         User dto = new User();
 
-        dto.setId("monuser4");
+        dto.setId("monuser111");
         dto.setName("빼박");
         dto.setEmail("crossent@crossent.com");
         dto.setPhone("010-2222-3454");
         dto.setChatId("chat");
         dto.setDescription("test inset user");
+        dto.setUuid("dddddddd");
 
         post("/system/management/users", dto);
+    }
+
+    @Test
+    public void deleteUsers() throws Exception {
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("userIds", "test3,test4");
+
+        super.delete("/system/management/users", params);
+    }
+
+    @Test
+    public void getUser() throws Exception {
+        String userId = "monuser1";
+        super.get("/system/management/users/" + userId);
+    }
+
+/*    @Test
+    public void updateUser() throws Exception {
+        String userId = "monuser111";
+
+        User dto = new User();
+        dto.setId("monuser111");
+        dto.setName("빼빼로");
+        dto.setEmail("crossent@crossent.com");
+        dto.setPhone("010-2222-3454");
+        dto.setChatId("chat");
+        dto.setDescription("test inset user");
+        dto.setUuid("dddddddd");
+
+
+        put("/system/management/user/"+ userId, dto);
+    }*/
+
+    @Test
+    public void deleteUser() throws Exception {
+
+        String userId = "test2";
+        super.delete("/system/management/users/" +userId);
     }
 
 
