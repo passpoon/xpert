@@ -48,13 +48,13 @@ public class UserTest extends AbstractMockTest {
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("userIds", "test3,test4");
 
-        super.delete("/system/management/users", params);
+        delete("/system/management/users", params);
     }
 
     @Test
     public void getUser() throws Exception {
         String userId = "monuser1";
-        super.get("/system/management/users/" + userId);
+        get("/system/management/users/" + userId);
     }
 
     @Test
@@ -70,14 +70,14 @@ public class UserTest extends AbstractMockTest {
         dto.setDescription("test inset user");
         dto.setUuid("dddddddd");
 
-        super.put("/system/management/users/"+ userId, dto);
+        put("/system/management/users/"+ userId, dto);
     }
 
     @Test
     public void deleteUser() throws Exception {
 
         String userId = "test2";
-        super.delete("/system/management/users/" +userId);
+        delete("/system/management/users/" +userId);
     }
 
 
