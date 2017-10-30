@@ -3,22 +3,26 @@ package com.crossent.monitoring.portal.system.mng.service;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
+import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.domain.UserGroup;
 import com.crossent.monitoring.portal.jpa.repository.UserGroupRepository;
+import com.crossent.monitoring.portal.system.mng.dto.UserGroupDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class UserGroupService {
+    private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
     UserGroupRepository userGroupRepository;
 
-    public PagingResVo<UserGroup> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    public PagingResVo<UserGroupDto> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
@@ -31,7 +35,7 @@ public class UserGroupService {
                 keyword = "%" + keyword + "%";
             }
         }
-        Page<UserGroup> userGroups = null;
+        Page<UserGroupDto> userGroups = null;
         if(key == null){
             //TODO 전체조회
             userGroups = userGroupRepository.findAll(pagingReqVo.toPagingRequest());
@@ -55,20 +59,20 @@ public class UserGroupService {
             }
         }
 
-        PagingResVo<UserGroup> resPage = new PagingResVo<UserGroup>(userGroups, true);
+        PagingResVo<UserGroupDto> resPage = new PagingResVo<UserGroupDto>(userGroups, true);
 
         return resPage;
     }
 
 
-    public void insertUserGroup(UserGroup userGroup) {
+    public void insertUserGroup(UserGroupDto userGroup) {
 
-        UserGroup inUserGroup = new UserGroup();
+        UserGroupDto inUserGroup = new UserGroupDto();
         inUserGroup.setId(userGroup.getId());
         inUserGroup.setName(userGroup.getName());
         inUserGroup.setDescription(userGroup.getDescription());
 
-        UserGroup resUser = userGroupRepository.save(inUserGroup);
+        UserGroupDto resUser = userGroupRepository.save(inUserGroup);
 
     }
 
@@ -77,11 +81,11 @@ public class UserGroupService {
         userGroupRepository.deleteByIdIn(delUserGroups);
     }
 
-    public UserGroup getUserGroup(String userGroupId) {
+    public UserGroupDto getUserGroup(String userGroupId) {
 
-        UserGroup user = userGroupRepository.findOne(userGroupId);
+        UserGroupDto user = userGroupRepository.findOne(userGroupId);
 
-        UserGroup out = new UserGroup();
+        UserGroupDto out = new UserGroupDto();
         out.setId(user.getId());
         out.setName(user.getName());
         out.setDescription(user.getDescription());
@@ -89,9 +93,9 @@ public class UserGroupService {
         return out;
     }
 
-    public UserGroup updateUserGroup(String userGroupId, UserGroup userGroup){
+    public UserGroupDto updateUserGroup(String userGroupId, UserGroupDto userGroup){
 
-        UserGroup getData = userGroupRepository.findOne(userGroupId);
+        UserGroupDto getData = userGroupRepository.findOne(userGroupId);
 
         if(getData == null) {
             return null;
@@ -99,7 +103,7 @@ public class UserGroupService {
         getData.setName(userGroup.getName());
         getData.setDescription(userGroup.getDescription());
 
-        UserGroup updateData = userGroupRepository.save(getData);
+        UserGroupDto updateData = userGroupRepository.save(getData);
 
         return updateData;
     }
@@ -108,5 +112,17 @@ public class UserGroupService {
 
         userGroupRepository.delete(userGroupId);
     }
+
+    /*public Collection<User> getUserGroupUsers(String userGroupId){
+
+        UserGroupDto one = userGroupRepository.findOne(userGroupId);
+        logger.debug("one ::::", one);
+        Collection<User> collection = one.getUsers();
+        return collection;
+    }*/
+
+
+
+
 
 }

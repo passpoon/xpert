@@ -4,12 +4,16 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
+import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.domain.UserGroup;
+import com.crossent.monitoring.portal.system.mng.dto.UserGroupDto;
 import com.crossent.monitoring.portal.system.mng.service.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
+import java.util.List;
 
 @RestController
 public class UserGroupController extends BaseController {
@@ -20,14 +24,14 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value="/system/management/user-groups", method = RequestMethod.GET)
     public PagingResVo pagingUserGroup(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
-        PagingResVo<UserGroup> resPage = userGroupService.pagingUserGroup(paging, search);
+        PagingResVo<UserGroupDto> resPage = userGroupService.pagingUserGroup(paging, search);
 
         return resPage;
     }
 
     @Transactional
     @RequestMapping(value = "/system/management/user-groups", method = RequestMethod.POST)
-    public void insertUserGroup(@RequestBody UserGroup userGroup){
+    public void insertUserGroup(@RequestBody UserGroupDto userGroup){
 
         userGroupService.insertUserGroup(userGroup);
     }
@@ -40,16 +44,16 @@ public class UserGroupController extends BaseController {
     }
 
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}", method = RequestMethod.GET)
-    public UserGroup getUserGroup(@PathVariable String userGroupId) {
+    public UserGroupDto getUserGroup(@PathVariable String userGroupId){
 
-        UserGroup getUser =  userGroupService.getUserGroup(userGroupId);
+        UserGroupDto getUser =  userGroupService.getUserGroup(userGroupId);
 
         return getUser;
     }
 
     @Transactional
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}", method = RequestMethod.PUT)
-    public void updateUserGroup(@PathVariable String userGroupId, @RequestBody UserGroup userGroup){
+    public void updateUserGroup(@PathVariable String userGroupId, @RequestBody UserGroupDto userGroup){
 
         userGroupService.updateUserGroup(userGroupId, userGroup);
     }
@@ -61,5 +65,11 @@ public class UserGroupController extends BaseController {
         userGroupService.deleteUserGroup(userGroupId);
     }
 
+/*    @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.GET)
+    public Collection<User> getUserGroupUsers(@PathVariable String userGroupId){
+
+        Collection<User> userGroupUsers = userGroupService.getUserGroupUsers(userGroupId);
+        return userGroupUsers;
+    }*/
 
 }

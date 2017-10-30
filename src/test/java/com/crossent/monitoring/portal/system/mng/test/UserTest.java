@@ -18,7 +18,7 @@ public class UserTest extends AbstractMockTest {
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("name", "정한");
+        searchReqVo.addKeyword("null", "null");
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
@@ -31,7 +31,7 @@ public class UserTest extends AbstractMockTest {
     public void insertUser() throws Exception {
         User dto = new User();
 
-        dto.setId("monuser111");
+        dto.setId("monuser11");
         dto.setName("빼박");
         dto.setEmail("crossent@crossent.com");
         dto.setPhone("010-2222-3454");

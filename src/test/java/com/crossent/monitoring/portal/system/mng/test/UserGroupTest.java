@@ -11,7 +11,7 @@ import org.springframework.util.LinkedMultiValueMap;
 public class UserGroupTest extends AbstractMockTest {
 
     @Test
-    public void pageMeasurement() throws Exception {
+    public void pageUserGroup() throws Exception {
         PagingReqVo pagingReqVo = new PagingReqVo();
         pagingReqVo.setPage(0);
         pagingReqVo.setPageSize(10);
@@ -67,10 +67,15 @@ public class UserGroupTest extends AbstractMockTest {
 
     @Test
     public void deleteUserGroup() throws Exception {
-
         String userGroupId = "bbb";
         delete("/system/management/user-groups/" + userGroupId);
     }
+
+/*    @Test
+    public void getUserGroupUsers() throws Exception {
+        String userGroupId = "admin";
+        get("/system/management/user-groups/{userGroupId}/users" + userGroupId);
+    }*/
 
 
 }

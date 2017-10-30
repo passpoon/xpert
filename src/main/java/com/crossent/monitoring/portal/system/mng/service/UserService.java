@@ -9,12 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
 @Service
@@ -34,13 +31,17 @@ public class UserService {
             while (keys.hasNext()) {
                 key = keys.next();
                 keyword = keywords.get(key);
+                logger.debug("keyword ::::: "+keyword);
                 keyword = "%" + keyword + "%";
             }
         }
         Page<User> users = null;
-        if(key == null){
+        logger.debug("userF :::: "+ users);
+        if(
+                key == null){
             //TODO 전체조회
             users = userRepository.findAll(pagingReqVo.toPagingRequest());
+            logger.debug("userAll :::: "+ users);
         }else{
             switch (key){
                 case "id":
@@ -76,7 +77,7 @@ public class UserService {
         user.setName(inUser.getName());
         user.setEmail(inUser.getEmail());
         user.setPhone(inUser.getPhone());
-        user.setChatId(inUser.getDescription());
+        user.setChatId(inUser.getChatId());
         user.setDescription(inUser.getDescription());
         user.setUuid(inUser.getUuid());
 
