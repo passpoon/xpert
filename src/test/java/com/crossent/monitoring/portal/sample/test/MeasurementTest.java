@@ -73,7 +73,7 @@ public class MeasurementTest extends AbstractMockTest{
     @Test
     public void pageMeasurement() throws Exception {
         PagingReqVo pagingReqVo = new PagingReqVo();
-        pagingReqVo.setPage(2);
+        pagingReqVo.setPage(0);
         pagingReqVo.setPageSize(3);
 
         SearchReqVo searchReqVo = new SearchReqVo();

@@ -114,6 +114,9 @@ public class MeasurementService {
         Page<Measurement> outPage = measurementJpaRepository.findAll(pagingReqVo.toPagingRequest());
 
         PagingResVo<Measurement> resPage = new PagingResVo<Measurement>(outPage, true);
+        String name = "cp";
+        Page<Measurement> page = measurementJpaRepository.findByNameLike(pagingReqVo.toPagingRequest(),"%"+name+"%");
+        logger.debug("page ::: {}", page.getContent());
 
         return resPage;
     }
