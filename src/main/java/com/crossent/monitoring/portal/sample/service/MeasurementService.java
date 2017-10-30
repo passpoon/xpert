@@ -19,10 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 
 @Service
@@ -87,9 +84,11 @@ public class MeasurementService {
     }
 
     public MeasurementDto selectMeasurement(int measurementId){
+
         Measurement measurement = measurmentRepository.findOne(measurementId);
 
         MeasurementDto outDto = new MeasurementDto();
+
         outDto.setId(measurement.getId());
         outDto.setName(measurement.getName());
         outDto.setDescription(measurement.getDescription());

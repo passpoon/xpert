@@ -1,4 +1,4 @@
-package com.crossent.monitoring.portal.interceptor;
+package com.crossent.monitoring.portal.common.interceptor;
 
 import com.crossent.monitoring.portal.common.context.ServiceContextHolder;
 import org.slf4j.Logger;

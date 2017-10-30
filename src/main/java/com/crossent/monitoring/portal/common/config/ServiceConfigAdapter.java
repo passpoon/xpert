@@ -1,12 +1,11 @@
-package com.crossent.monitoring.portal.common.cofnig;
+package com.crossent.monitoring.portal.common.config;
 
-import com.crossent.monitoring.portal.interceptor.ServiceInterceptor;
+import com.crossent.monitoring.portal.common.interceptor.ServiceInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;

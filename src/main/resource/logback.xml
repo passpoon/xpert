@@ -22,6 +22,7 @@
 
 
     <logger name="com.crossent.monitoring" level="DEBUG"/>
+    <logger name="org.springframework.web.servlet" level="DEBUG"/>
     <logger name="org.hibernate.SQL" level="TRACE"/>
     <logger name="org.hibernate.type" level="TRACE"/>
 
