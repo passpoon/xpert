@@ -24,14 +24,14 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value="/system/management/user-groups", method = RequestMethod.GET)
     public PagingResVo pagingUserGroup(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
-        PagingResVo<UserGroupDto> resPage = userGroupService.pagingUserGroup(paging, search);
+        PagingResVo<UserGroup> resPage = userGroupService.pagingUserGroup(paging, search);
 
         return resPage;
     }
 
     @Transactional
     @RequestMapping(value = "/system/management/user-groups", method = RequestMethod.POST)
-    public void insertUserGroup(@RequestBody UserGroupDto userGroup){
+    public void insertUserGroup(@RequestBody UserGroup userGroup){
 
         userGroupService.insertUserGroup(userGroup);
     }
@@ -44,16 +44,16 @@ public class UserGroupController extends BaseController {
     }
 
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}", method = RequestMethod.GET)
-    public UserGroupDto getUserGroup(@PathVariable String userGroupId){
+    public UserGroup getUserGroup(@PathVariable String userGroupId){
 
-        UserGroupDto getUser =  userGroupService.getUserGroup(userGroupId);
+        UserGroup getUser =  userGroupService.getUserGroup(userGroupId);
 
         return getUser;
     }
 
     @Transactional
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}", method = RequestMethod.PUT)
-    public void updateUserGroup(@PathVariable String userGroupId, @RequestBody UserGroupDto userGroup){
+    public void updateUserGroup(@PathVariable String userGroupId, @RequestBody UserGroup userGroup){
 
         userGroupService.updateUserGroup(userGroupId, userGroup);
     }

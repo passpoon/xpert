@@ -22,7 +22,7 @@ public class UserGroupService {
     @Autowired
     UserGroupRepository userGroupRepository;
 
-    public PagingResVo<UserGroupDto> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    public PagingResVo<UserGroup> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
@@ -35,7 +35,7 @@ public class UserGroupService {
                 keyword = "%" + keyword + "%";
             }
         }
-        Page<UserGroupDto> userGroups = null;
+        Page<UserGroup> userGroups = null;
         if(key == null){
             //TODO 전체조회
             userGroups = userGroupRepository.findAll(pagingReqVo.toPagingRequest());
@@ -59,20 +59,20 @@ public class UserGroupService {
             }
         }
 
-        PagingResVo<UserGroupDto> resPage = new PagingResVo<UserGroupDto>(userGroups, true);
+        PagingResVo<UserGroup> resPage = new PagingResVo<UserGroup>(userGroups, true);
 
         return resPage;
     }
 
 
-    public void insertUserGroup(UserGroupDto userGroup) {
+    public void insertUserGroup(UserGroup userGroup) {
 
-        UserGroupDto inUserGroup = new UserGroupDto();
+        UserGroup inUserGroup = new UserGroup();
         inUserGroup.setId(userGroup.getId());
         inUserGroup.setName(userGroup.getName());
         inUserGroup.setDescription(userGroup.getDescription());
 
-        UserGroupDto resUser = userGroupRepository.save(inUserGroup);
+        UserGroup resUser = userGroupRepository.save(inUserGroup);
 
     }
 
@@ -81,11 +81,11 @@ public class UserGroupService {
         userGroupRepository.deleteByIdIn(delUserGroups);
     }
 
-    public UserGroupDto getUserGroup(String userGroupId) {
+    public UserGroup getUserGroup(String userGroupId) {
 
-        UserGroupDto user = userGroupRepository.findOne(userGroupId);
+        UserGroup user = userGroupRepository.findOne(userGroupId);
 
-        UserGroupDto out = new UserGroupDto();
+        UserGroup out = new UserGroup();
         out.setId(user.getId());
         out.setName(user.getName());
         out.setDescription(user.getDescription());
@@ -93,9 +93,9 @@ public class UserGroupService {
         return out;
     }
 
-    public UserGroupDto updateUserGroup(String userGroupId, UserGroupDto userGroup){
+    public UserGroup updateUserGroup(String userGroupId, UserGroup userGroup){
 
-        UserGroupDto getData = userGroupRepository.findOne(userGroupId);
+        UserGroup getData = userGroupRepository.findOne(userGroupId);
 
         if(getData == null) {
             return null;
@@ -103,7 +103,7 @@ public class UserGroupService {
         getData.setName(userGroup.getName());
         getData.setDescription(userGroup.getDescription());
 
-        UserGroupDto updateData = userGroupRepository.save(getData);
+        UserGroup updateData = userGroupRepository.save(getData);
 
         return updateData;
     }
