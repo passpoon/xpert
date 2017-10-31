@@ -84,7 +84,6 @@ public class UserGroupService {
         inUserGroup.setDescription(userGroup.getDescription());
 
         UserGroup resUser = userGroupRepository.save(inUserGroup);
-
     }
 
     public void deleteUserGroups(String[] delUserGroups) {
