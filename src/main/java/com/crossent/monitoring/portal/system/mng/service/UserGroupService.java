@@ -5,8 +5,10 @@ import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.domain.UserGroup;
+import com.crossent.monitoring.portal.jpa.domain.UserGroupMap;
+import com.crossent.monitoring.portal.jpa.repository.UserGroupMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.UserGroupRepository;
-import com.crossent.monitoring.portal.system.mng.dto.UserGroupDto;
+import com.crossent.monitoring.portal.jpa.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,15 @@ public class UserGroupService {
 
     @Autowired
     UserGroupRepository userGroupRepository;
+
+    @Autowired
+    UserRepository userRepository;
+
+    @Autowired
+    UserGroupMapRepository userGroupMapRepository;
+
+//    @Autowired
+//    UserGroupDtoRepository userGroupDtoRepository;
 
     public PagingResVo<UserGroup> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -113,15 +124,40 @@ public class UserGroupService {
         userGroupRepository.delete(userGroupId);
     }
 
-    /*public Collection<User> getUserGroupUsers(String userGroupId){
+    public Collection<User> getUserGroupUsers(String userGroupId){
 
-        UserGroupDto one = userGroupRepository.findOne(userGroupId);
-        logger.debug("one ::::", one);
-        Collection<User> collection = one.getUsers();
-        return collection;
-    }*/
+        UserGroup userGroup = userGroupRepository.findById(userGroupId);
+        Collection<User> users = userGroup.getUsers();
 
+        return users;
+    }
 
+    public void insertUserGroupUser(String userGroupId, User reqUser){
+
+//        UserGroup userGroup = userGroupRepository.findById(userGroupId);
+//
+//        User user = userRepository.findOne(reqUser.getId());
+
+//        UserGroupMap userGroupMap = new UserGroupMap();
+//        userGroupMap.setUser(user);
+//        userGroupMap.setUserGroup(userGroup);
+        //(두 관계 매핑할 때) map의 경우 PK만 불러와서 mapping
+        UserGroupMap userGroupMap = new UserGroupMap();
+        userGroupMap.setUserGroupId(userGroupId);  // userGroupId
+        userGroupMap.setUserId(reqUser.getId());  // User userId
+
+        UserGroupMap groupMap = userGroupMapRepository.save(userGroupMap);
+    }
+
+    public void deleteUserGroupUsers(String userGroupId, String[] delUsers) {
+
+        userGroupMapRepository.deleteByUserGroupIdAndUserIdIn(userGroupId, delUsers);
+    }
+
+    public void deleteUserGroupUser(String userGroupId, String userId) {
+
+        userGroupMapRepository.deleteByUserGroupIdAndUserId(userGroupId, userId);
+    }
 
 
 

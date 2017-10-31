@@ -4,6 +4,7 @@ import com.crossent.monitoring.portal.common.lib.util.JsonUtil;
 import com.crossent.monitoring.portal.common.test.AbstractMockTest;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
+import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.domain.UserGroup;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
@@ -50,6 +51,7 @@ public class UserGroupTest extends AbstractMockTest {
     @Test
     public void getUserGroup() throws Exception {
         String userId = "admin";
+
         get("/system/management/user-groups/" + userId);
     }
 
@@ -68,14 +70,42 @@ public class UserGroupTest extends AbstractMockTest {
     @Test
     public void deleteUserGroup() throws Exception {
         String userGroupId = "bbb";
+
         delete("/system/management/user-groups/" + userGroupId);
     }
 
-/*    @Test
+    @Test
     public void getUserGroupUsers() throws Exception {
         String userGroupId = "admin";
-        get("/system/management/user-groups/{userGroupId}/users" + userGroupId);
-    }*/
 
+        get("/system/management/user-groups/"+userGroupId+"/users");
+    }
+
+    @Test
+    public void insertUserGroupUser() throws Exception {
+        String userGroupId = "admin";
+        User user = new User();
+        user.setId("monuser11");
+
+        post("/system/management/user-groups/"+userGroupId+"/users", user);
+    }
+
+    @Test
+    public void deleteUserGroupUsers() throws Exception {
+        String userGroupId = "admin";
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("userIds", "monuser1,monuser11");
+
+        delete("/system/management/user-groups/"+userGroupId+"/users", params);
+    }
+
+    @Test
+    public void deleteUserGroupUser() throws Exception {
+        String userGroupId = "admin";
+        String userId = "monuser11";
+
+        delete("/system/management/user-groups/"+userGroupId+"/users/"+userId+"");
+    }
 
 }

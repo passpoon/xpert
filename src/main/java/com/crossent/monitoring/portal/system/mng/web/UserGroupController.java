@@ -6,14 +6,12 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.domain.UserGroup;
-import com.crossent.monitoring.portal.system.mng.dto.UserGroupDto;
 import com.crossent.monitoring.portal.system.mng.service.UserGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 public class UserGroupController extends BaseController {
@@ -65,11 +63,32 @@ public class UserGroupController extends BaseController {
         userGroupService.deleteUserGroup(userGroupId);
     }
 
-/*    @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.GET)
+    @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.GET)
     public Collection<User> getUserGroupUsers(@PathVariable String userGroupId){
 
-        Collection<User> userGroupUsers = userGroupService.getUserGroupUsers(userGroupId);
-        return userGroupUsers;
-    }*/
+        Collection<User> users = userGroupService.getUserGroupUsers(userGroupId);
+        return users;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.POST)
+    public void insertUserGroupUser(@PathVariable String userGroupId, @RequestBody User user){
+
+        userGroupService.insertUserGroupUser(userGroupId, user);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.DELETE)
+    public void deleteUserGroupUsers(@PathVariable String userGroupId, @RequestParam String[] userIds) {
+
+        userGroupService.deleteUserGroupUsers(userGroupId, userIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users/{userId}" , method = RequestMethod.DELETE)
+    public void deleteUserGroupUsers(@PathVariable String userGroupId, @PathVariable String userId) {
+
+        userGroupService.deleteUserGroupUser(userGroupId, userId);
+    }
 
 }
