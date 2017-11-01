@@ -31,20 +31,20 @@ public class ServerTypeTest extends AbstractMockTest{
     public void insertServerType() throws  Exception {
 
         ServerType serverType = new ServerType();
-        serverType.setName("aaa");
-        serverType.setDescription("bbbb");
+        serverType.setName("bbb");
+        serverType.setDescription("cc");
 
         post("/system/management/server-types", serverType);
     }
 
-/*    @Test   // LinkedMultiValueMap String, Integer 추가
+    @Test   // LinkedMultiValueMap String, Integer 추가
     public void deleteServerTypes() throws  Exception {
 
-        LinkedMultiValueMap<String, Integer> params = new LinkedMultiValueMap<String, Integer>();
-        params.add("serverTypeIds", "3,4");
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("serverTypeIds", "5,7");
 
         delete("/system/management/server-types", params);
-    }*/
+    }
 
     @Test
     public void getServerType() throws Exception {

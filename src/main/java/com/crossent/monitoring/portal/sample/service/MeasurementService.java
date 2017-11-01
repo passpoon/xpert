@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 
-@Service
+//@Service
 public class MeasurementService {
     private static Logger logger = LoggerFactory.getLogger(MeasurementService.class);
 

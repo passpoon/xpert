@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 
-@RestController
+//@RestController
 public class MeasurementController extends BaseController {
 
     Logger logger = LoggerFactory.getLogger(MeasurementController.class);
