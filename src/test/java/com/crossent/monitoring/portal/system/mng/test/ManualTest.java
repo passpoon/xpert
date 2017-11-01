@@ -39,7 +39,7 @@ public class ManualTest extends AbstractMockTest {
     }
 
     @Test
-    public void deleteServerResources() throws Exception {
+    public void deleteManuals() throws Exception {
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("manualIds", "4,5");
@@ -48,7 +48,7 @@ public class ManualTest extends AbstractMockTest {
     }
 
     @Test
-    public void getServerResource() throws Exception {
+    public void getManual() throws Exception {
         Integer manualIds = 1;
 
         get("/system/management/manuals/" + manualIds);
