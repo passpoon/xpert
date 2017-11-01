@@ -30,9 +30,6 @@ public class UserGroupService {
     @Autowired
     UserGroupMapRepository userGroupMapRepository;
 
-//    @Autowired
-//    UserGroupDtoRepository userGroupDtoRepository;
-
     public PagingResVo<UserGroup> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Map<String, String> keywords = searchReqVo.getKeywords();

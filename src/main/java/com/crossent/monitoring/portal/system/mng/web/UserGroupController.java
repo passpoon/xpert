@@ -19,7 +19,7 @@ public class UserGroupController extends BaseController {
     @Autowired
     UserGroupService userGroupService;
 
-    @RequestMapping(value="/system/management/user-groups", method = RequestMethod.GET)
+    @RequestMapping(value = "/system/management/user-groups", method = RequestMethod.GET)
     public PagingResVo pagingUserGroup(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
         PagingResVo<UserGroup> resPage = userGroupService.pagingUserGroup(paging, search);
@@ -86,7 +86,7 @@ public class UserGroupController extends BaseController {
 
     @Transactional
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users/{userId}" , method = RequestMethod.DELETE)
-    public void deleteUserGroupUsers(@PathVariable String userGroupId, @PathVariable String userId) {
+    public void deleteUserGroupUser(@PathVariable String userGroupId, @PathVariable String userId) {
 
         userGroupService.deleteUserGroupUser(userGroupId, userId);
     }

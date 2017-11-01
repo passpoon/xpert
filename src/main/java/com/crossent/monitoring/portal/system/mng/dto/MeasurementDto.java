@@ -1,4 +1,4 @@
-package com.crossent.monitoring.portal.dto;
+package com.crossent.monitoring.portal.system.mng.dto;
 
 import java.io.Serializable;
 import java.util.List;

@@ -10,9 +10,9 @@ import java.io.Serializable;
 @Table(name = "metric", schema = "mondb")
 public class Metric implements Serializable {
     private Integer id;
-//    private Integer measurementId;
+    private Integer measurementId;
     private String name;
-//    private String metricTypeCode;
+    private String metricTypeCode;
     private String description;
 
 
@@ -30,15 +30,15 @@ public class Metric implements Serializable {
         this.id = id;
     }
 
-//    @Basic
-//    @Column(name = "measurement_id", nullable = false, insertable = false, updatable = false)
-//    public Integer getMeasurementId() {
-//        return measurementId;
-//    }
-//
-//    public void setMeasurementId(Integer measurementId) {
-//        this.measurementId = measurementId;
-//    }
+    @Basic
+    @Column(name = "measurement_id", nullable = false)
+    public Integer getMeasurementId() {
+        return measurementId;
+    }
+
+    public void setMeasurementId(Integer measurementId) {
+        this.measurementId = measurementId;
+    }
 
     @Basic
     @Column(name = "name", nullable = false, length = 100)
@@ -50,15 +50,15 @@ public class Metric implements Serializable {
         this.name = name;
     }
 
-//    @Basic
-//    @Column(name = "metric_type_code", nullable = false, length = 10, insertable = false, updatable = false)
-//    public String getMetricTypeCode() {
-//        return metricTypeCode;
-//    }
-//
-//    public void setMetricTypeCode(String metricTypeCode) {
-//        this.metricTypeCode = metricTypeCode;
-//    }
+    @Basic
+    @Column(name = "metric_type_code", nullable = false, length = 10)
+    public String getMetricTypeCode() {
+        return metricTypeCode;
+    }
+
+    public void setMetricTypeCode(String metricTypeCode) {
+        this.metricTypeCode = metricTypeCode;
+    }
 
     @Basic
     @Column(name = "description", nullable = true, length = 200)
@@ -73,7 +73,7 @@ public class Metric implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "measurement_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "measurement_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public Measurement getMeasurement() {
         return measurement;
     }
@@ -83,7 +83,7 @@ public class Metric implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "metric_type_code", referencedColumnName = "code", nullable = false)
+    @JoinColumn(name = "metric_type_code", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
     public TypeCode getTypeCode() {
         return typeCode;
     }
