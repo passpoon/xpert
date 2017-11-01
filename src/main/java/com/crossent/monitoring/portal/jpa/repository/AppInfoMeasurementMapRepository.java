@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface AppInfoMeasurementMapRepository extends CrudRepository<AppInfoMeasurementMap, AppInfoMeasurementMapPK> {
 
-
+    public void deleteByAppInfoIdAndMeasurementIdIn(Integer id, Integer[] ids);
+    public void deleteByAppInfoIdAndMeasurementId(Integer appInfoId, Integer measurementId);
 }

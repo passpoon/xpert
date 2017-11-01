@@ -25,7 +25,6 @@ public class UserGroupTest extends AbstractMockTest {
         params.add("search", JsonUtil.ObjectToJson(searchReqVo));
 
         get("/system/management/user-groups", params);
-
     }
 
     @Test

@@ -18,8 +18,8 @@ public class ServerType implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY) // Id가 autoIncrement 일 때 추가
     public Integer getId() {
         return id;
     }
