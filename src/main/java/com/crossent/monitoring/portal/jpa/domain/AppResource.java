@@ -13,12 +13,15 @@ public class AppResource implements Serializable {
     private String name;
     private String description;
     private AppInfo appInfo;
+//    private Integer appInfoId;
+//    private Integer serverResourceId;
     private ServerResource serverResource;
     @JsonIgnore
     private Collection<MgApp> mgApps;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -75,9 +78,7 @@ public class AppResource implements Serializable {
         return appInfo;
     }
 
-    public void setAppInfo(AppInfo appInfo) {
-        this.appInfo = appInfo;
-    }
+    public void setAppInfo(AppInfo appInfo) { this.appInfo = appInfo; }
 
     @ManyToOne
     @JoinColumn(name = "server_resource_id", referencedColumnName = "id")
@@ -97,6 +98,15 @@ public class AppResource implements Serializable {
     public void setMgApps(Collection<MgApp> mgApps) {
         this.mgApps = mgApps;
     }
+
+    /*//추가
+    public Integer getAppInfoId() { return appInfoId; }
+
+    public void setAppInfoId(Integer appInfoId) { this.appInfoId = appInfoId; }
+
+    public Integer getServerResourceId() { return serverResourceId; }
+
+    public void setServerResourceId(Integer serverResourceId) { this.serverResourceId = serverResourceId; }*/
 
     @Override
     public String toString() {
