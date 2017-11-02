@@ -56,16 +56,16 @@ public class AppResourceService {
         return resPage;
     }
 
-    /*public void insertAppResource(AppResource appResource) {
+    public void insertAppResource(AppResource appResource) {
 
         AppResource in = new AppResource();
         in.setName(appResource.getName());
-        in.setAppInfo(appResource.getAppInfo());
-        in.setServerResource(appResource.getServerResource());
+        in.setAppInfoId(appResource.getAppInfoId());
+        in.setServerResourceId(appResource.getServerResourceId());
         in.setDescription(appResource.getDescription());
 
         AppResource resUser = appResourceRepository.save(in);
-    }*/
+    }
 
     public void deleteAppResources(Integer[] appResourceIds) {
 
@@ -86,7 +86,7 @@ public class AppResourceService {
         return out;
     }
 
-    /*public AppResource updateAppResource(Integer appResourceId, AppResource serverResource) {
+    public AppResource updateAppResource(Integer appResourceId, AppResource appResource) {
 
         AppResource getData = appResourceRepository.findOne(appResourceId);
 
@@ -95,14 +95,15 @@ public class AppResourceService {
         if (getData == null) {
             return null;
         }
-        getData.setName(serverResource.getName());
-//        getData.setAppInfo(appInfo.getId());
-        getData.setDescription(serverResource.getDescription());
+        getData.setName(appResource.getName());
+        getData.setAppInfoId(appResource.getAppInfoId());
+        getData.setServerResourceId(appResource.getServerResourceId());
+        getData.setDescription(appResource.getDescription());
 
         AppResource updateData = appResourceRepository.save(getData);
 
         return updateData;
-    }*/
+    }
 
     public void deleteAppResourceResource(Integer appResourceId) {
 

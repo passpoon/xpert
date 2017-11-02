@@ -27,20 +27,20 @@ public class MetaTest extends AbstractMockTest {
         get("/system/management/meta", params);
     }
 
-/*    @Test
+    @Test
     public void insertMeta() throws  Exception {
 
         Meta meta = new Meta();
         meta.setProg("zzz");
-//        meta.setManual(2);
+        meta.setManualId(2);
         meta.setStartPoint(11);
         meta.setEndPoint(22);
         meta.setLogSource("ddbbbb");
         meta.setPattern("ddd");
-//        meta.setStateCode(ddd);
+        meta.setStateCodeId("400");
 
         post("/system/management/meta", meta);
-    }*/
+    }
 
     @Test
     public void deleteMetas() throws Exception {
@@ -57,18 +57,23 @@ public class MetaTest extends AbstractMockTest {
 
         get("/system/management/meta/" + metaId);
     }
-/*
+
     @Test
     public void updateMeta() throws Exception {
-        Integer metaId = 3;
+        Integer metaId = 17;
 
         Meta dto = new Meta();
-        dto.setProg("test1");
-
+        dto.setProg("bbb");
+        dto.setPattern("aaa");
+        dto.setLogSource("yyy");
+        dto.setStartPoint(456);
+        dto.setEndPoint(457);
+        dto.setManualId(2);
+        dto.setStateCodeId("200");
 
         put("/system/management/meta/" + metaId, dto);
     }
-*/
+
     @Test
     public void deleteManual() throws Exception {
         Integer metaId = 11;

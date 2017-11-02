@@ -61,7 +61,7 @@ public class MetaService {
         return resPage;
     }
 
-/*    public void insertMeta(Meta meta) {
+    public void insertMeta(Meta meta) {
 
         Meta in = new Meta();
         in.setProg(meta.getProg());
@@ -69,11 +69,11 @@ public class MetaService {
         in.setStartPoint(meta.getStartPoint());
         in.setEndPoint(meta.getEndPoint());
         in.setPattern(meta.getPattern());
-        in.setManual(meta.getManual());
-        in.setStateCode(meta.getStateCode());
+        in.setManualId(meta.getManualId());
+        in.setStateCodeId(meta.getStateCodeId());
 
         Meta resUser = metaRepository.save(in);
-    }*/
+    }
 
     public void deleteMetas(Integer[] metaIds) {
 
@@ -97,7 +97,7 @@ public class MetaService {
         return out;
     }
 
-    /*public Meta updateMeta(Integer manualId, Meta meta) {
+    public Meta updateMeta(Integer manualId, Meta meta) {
 
         Meta getData = metaRepository.findOne(manualId);
 
@@ -105,11 +105,17 @@ public class MetaService {
             return null;
         }
         getData.setProg(meta.getProg());
+        getData.setStateCodeId(meta.getStateCodeId());
+        getData.setManualId(meta.getManualId());
+        getData.setStartPoint(meta.getStartPoint());
+        getData.setEndPoint(meta.getEndPoint());
+        getData.setLogSource(meta.getLogSource());
+        getData.setPattern(meta.getPattern());
 
         Meta updateData = metaRepository.save(getData);
 
         return updateData;
-    }*/
+    }
 
     public void deleteMeta(Integer metaId) {
 

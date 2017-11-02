@@ -27,14 +27,13 @@ public class AppResourceController extends BaseController{
         return resPage;
     }
 
-    /*@Transactional
+    @Transactional
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.POST)
     public void insertAppResource(@RequestBody AppResource appResource){
 
         appResourceService.insertAppResource(appResource);
     }
 
-    // dto에 추가된 사항 에러?*/
 
     @Transactional
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.DELETE)
@@ -51,12 +50,12 @@ public class AppResourceController extends BaseController{
         return getResource;
     }
 
-    /*@Transactional
+    @Transactional
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.PUT)
     public void updateAppResource(@PathVariable Integer appResourceId, @RequestBody AppResource appResource){
 
         appResourceService.updateAppResource(appResourceId, appResource);
-    }*/
+    }
 
     @Transactional
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.DELETE)

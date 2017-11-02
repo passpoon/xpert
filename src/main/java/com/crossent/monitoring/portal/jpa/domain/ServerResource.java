@@ -65,7 +65,7 @@ public class ServerResource  implements Serializable {
     }
 
     @Basic
-    @Column(name = "server_type_id", nullable = true, length = 11)
+    @Column(name = "server_type_id", nullable = false)
     public Integer getServerTypeId() { return serverTypeId; }
 
     public void setServerTypeId(Integer serverTypeId) { this.serverTypeId = serverTypeId; }

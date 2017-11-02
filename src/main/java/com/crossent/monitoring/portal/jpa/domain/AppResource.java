@@ -13,8 +13,8 @@ public class AppResource implements Serializable {
     private String name;
     private String description;
     private AppInfo appInfo;
-//    private Integer appInfoId;
-//    private Integer serverResourceId;
+    private Integer appInfoId;
+    private Integer serverResourceId;
     private ServerResource serverResource;
     @JsonIgnore
     private Collection<MgApp> mgApps;
@@ -73,7 +73,7 @@ public class AppResource implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "app_info_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "app_info_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public AppInfo getAppInfo() {
         return appInfo;
     }
@@ -81,7 +81,7 @@ public class AppResource implements Serializable {
     public void setAppInfo(AppInfo appInfo) { this.appInfo = appInfo; }
 
     @ManyToOne
-    @JoinColumn(name = "server_resource_id", referencedColumnName = "id")
+    @JoinColumn(name = "server_resource_id", referencedColumnName = "id", insertable = false, updatable = false)
     public ServerResource getServerResource() {
         return serverResource;
     }
@@ -107,6 +107,24 @@ public class AppResource implements Serializable {
     public Integer getServerResourceId() { return serverResourceId; }
 
     public void setServerResourceId(Integer serverResourceId) { this.serverResourceId = serverResourceId; }*/
+
+    @Column(name = "app_info_id", nullable = false)
+    public Integer getAppInfoId() {
+        return appInfoId;
+    }
+
+    public void setAppInfoId(Integer appInfoId) {
+        this.appInfoId = appInfoId;
+    }
+
+    @Column(name = "server_resource_id", nullable = true)
+    public Integer getServerResourceId() {
+        return serverResourceId;
+    }
+
+    public void setServerResourceId(Integer serverResourceId) {
+        this.serverResourceId = serverResourceId;
+    }
 
     @Override
     public String toString() {

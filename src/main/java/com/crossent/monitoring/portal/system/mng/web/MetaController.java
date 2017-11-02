@@ -27,12 +27,12 @@ public class MetaController extends BaseController{
         return resPage;
     }
 
-/*    @Transactional
+    @Transactional
     @RequestMapping(value = "/system/management/meta", method = RequestMethod.POST)
     public void insertMeta(@RequestBody Meta meta){
 
         metaService.insertMeta(meta);
-    }*/
+    }
 
     @Transactional
     @RequestMapping(value = "/system/management/meta", method = RequestMethod.DELETE)
@@ -49,12 +49,12 @@ public class MetaController extends BaseController{
         return getResource;
     }
 
-    /*@Transactional
+    @Transactional
     @RequestMapping(value = "/system/management/meta/{metaId}", method = RequestMethod.PUT)
     public void updateMeta(@PathVariable Integer metaId, @RequestBody Meta meta){
 
         metaService.updateMeta(metaId, meta);
-    }*/
+    }
 
     @Transactional
     @RequestMapping(value = "/system/management/meta/{metaId}", method = RequestMethod.DELETE)

@@ -26,7 +26,7 @@ public class AppResourceTest extends AbstractMockTest {
         get("/system/management/apps", params);
     }
 
-    /*@Test
+    @Test
     public void insertAppResource() throws  Exception {
 
         AppResource appResource = new AppResource();
@@ -36,7 +36,7 @@ public class AppResourceTest extends AbstractMockTest {
         appResource.setDescription("ccc");
 
         post("/system/management/apps", appResource);
-    }*/
+    }
 
     @Test
     public void deleteAppResources() throws Exception {
@@ -54,16 +54,18 @@ public class AppResourceTest extends AbstractMockTest {
         get("/system/management/apps/" + appResourceId);
     }
 
-    /*@Test
+    @Test
     public void updateAppResource() throws Exception {
-        Integer appResourceId = 3;
+        Integer appResourceId = 7;
 
         AppResource dto = new AppResource();
         dto.setName("test1");
+        dto.setAppInfoId(1);
+        dto.setServerResourceId(3);
         dto.setDescription("test Des");
 
         put("/system/management/apps/" + appResourceId, dto);
-    }*/
+    }
 
     @Test
     public void deleteServerResource() throws Exception {
