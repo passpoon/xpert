@@ -83,10 +83,13 @@ public class UserGroupTest extends AbstractMockTest {
     @Test
     public void insertUserGroupUser() throws Exception {
         String userGroupId = "admin";
-        User user = new User();
-        user.setId("monuser11");
+        String[] userIds = {"monuser11", "monuser5"};
 
-        post("/system/management/user-groups/"+userGroupId+"/users", user);
+        post("/system/management/user-groups/"+userGroupId+"/users", userIds);
+
+        /*User user = new User();
+        user.setId("monuser11");
+        user.setId("monuser5");*/
     }
 
     @Test

@@ -7,15 +7,18 @@ import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.domain.UserGroup;
 import com.crossent.monitoring.portal.system.mng.service.UserGroupService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collection;
 
 @RestController
 public class UserGroupController extends BaseController {
-
+    private static Logger logger = LoggerFactory.getLogger(UserGroupController.class);
     @Autowired
     UserGroupService userGroupService;
 
@@ -72,9 +75,14 @@ public class UserGroupController extends BaseController {
 
     @Transactional
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.POST)
-    public void insertUserGroupUser(@PathVariable String userGroupId, @RequestBody User user){
-
-        userGroupService.insertUserGroupUser(userGroupId, user);
+    public void insertUserGroupUsers(@PathVariable String userGroupId, @RequestBody String[] userIds){
+        /*logger.debug("userGroupId : {}", userGroupId);
+        if(userIds == null){
+            logger.debug("userIds is null");
+        }else {
+            logger.debug("userIds : {}", Arrays.toString(userIds));
+        }*/
+        userGroupService.insertUserGroupUsers(userGroupId, userIds);
     }
 
     @Transactional

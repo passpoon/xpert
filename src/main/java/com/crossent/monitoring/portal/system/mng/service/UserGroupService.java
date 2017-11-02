@@ -128,7 +128,7 @@ public class UserGroupService {
         return users;
     }
 
-    public void insertUserGroupUser(String userGroupId, User reqUser){
+    public void insertUserGroupUsers(String userGroupId, String[] userIds){
 
 //        UserGroup userGroup = userGroupRepository.findById(userGroupId);
 //
@@ -138,11 +138,13 @@ public class UserGroupService {
 //        userGroupMap.setUser(user);
 //        userGroupMap.setUserGroup(userGroup);
         //(두 관계 매핑할 때) map의 경우 PK만 불러와서 mapping
-        UserGroupMap userGroupMap = new UserGroupMap();
-        userGroupMap.setUserGroupId(userGroupId);  // userGroupId
-        userGroupMap.setUserId(reqUser.getId());  // User userId
+        for(String userId : userIds) {
+            UserGroupMap userGroupMap = new UserGroupMap();
+            userGroupMap.setUserGroupId(userGroupId);  // userGroupId
+            userGroupMap.setUserId(userId);  // User userId
 
-        UserGroupMap groupMap = userGroupMapRepository.save(userGroupMap);
+            UserGroupMap groupMap = userGroupMapRepository.save(userGroupMap);
+        }
     }
 
     public void deleteUserGroupUsers(String userGroupId, String[] delUsers) {
