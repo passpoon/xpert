@@ -8,13 +8,13 @@ import com.crossent.monitoring.portal.jpa.domain.AppInfoMeasurementMap;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.repository.AppInfoMeasurementMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.AppInfoRepository;
+import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
+import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AppInfoService {
@@ -25,8 +25,9 @@ public class AppInfoService {
     @Autowired
     AppInfoMeasurementMapRepository appInfoMeasurementMapRepository;
 
-    public PagingResVo<AppInfo> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    public PagingResVo<AppInfoDto> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
+        PagingResVo<AppInfoDto> resPage = null;
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
         String keyword = null;
@@ -57,7 +58,33 @@ public class AppInfoService {
             }
         }
 
-        PagingResVo<AppInfo> resPage = new PagingResVo<AppInfo>(appInfos, true);
+        if(appInfos != null) {
+            resPage = new PagingResVo<AppInfoDto>(appInfos, false);
+            List<AppInfo> content = appInfos.getContent();
+
+            List<AppInfoDto> appInfoDtos = new ArrayList<AppInfoDto>();
+            for(AppInfo appInfo : content){
+                AppInfoDto appInfoDto = new AppInfoDto();
+                appInfoDto.setId(appInfo.getId());
+                appInfoDto.setName(appInfo.getName());
+                appInfoDto.setDescription(appInfo.getDescription());
+
+                List<MeasurementDto> measurementDtos = new ArrayList<MeasurementDto>();
+                Collection<Measurement> measurements = appInfo.getMeasurements();
+                for(Measurement measurement : measurements){
+                    MeasurementDto measurementDto = new MeasurementDto();
+                    measurementDto.setId(measurement.getId());
+                    measurementDto.setName(measurement.getName());
+                    measurementDto.setDescription(measurement.getDescription());
+
+                    measurementDtos.add(measurementDto);
+                }
+
+                appInfoDto.setMeasurements(measurementDtos);
+                appInfoDtos.add(appInfoDto);
+            }
+            resPage.setList(appInfoDtos);
+        }
 
         return resPage;
     }

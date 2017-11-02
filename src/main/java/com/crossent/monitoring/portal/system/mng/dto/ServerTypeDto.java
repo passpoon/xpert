@@ -1,13 +1,20 @@
 package com.crossent.monitoring.portal.system.mng.dto;
 
+import com.crossent.monitoring.portal.jpa.domain.Measurement;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
-
-public class MeasurementDto implements Serializable {
+public class ServerTypeDto implements Serializable {
     private Integer id;
     private String name;
     private String description;
+    private List<MeasurementDto> measurements;
+
+
 
     public Integer getId() {
         return id;
@@ -32,5 +39,9 @@ public class MeasurementDto implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List<MeasurementDto> getMeasurements() { return measurements; }
+
+    public void setMeasurements(List<MeasurementDto> measurements) { this.measurements = measurements; }
 
 }

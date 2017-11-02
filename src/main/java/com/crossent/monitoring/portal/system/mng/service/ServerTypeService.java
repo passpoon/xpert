@@ -8,13 +8,13 @@ import com.crossent.monitoring.portal.jpa.domain.ServerType;
 import com.crossent.monitoring.portal.jpa.domain.ServerTypeMeasurementMap;
 import com.crossent.monitoring.portal.jpa.repository.ServerTypeMeasurementMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.ServerTypeRepository;
+import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
+import com.crossent.monitoring.portal.system.mng.dto.ServerTypeDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ServerTypeService  {
@@ -25,9 +25,11 @@ public class ServerTypeService  {
     @Autowired
     ServerTypeMeasurementMapRepository serverTypeMeasurementMapRepository;
 
-    public PagingResVo<ServerType> pagingServerType(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    public PagingResVo<ServerTypeDto> pagingServerType(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
+        PagingResVo<ServerTypeDto> resPage = null;
         Map<String, String> keywords = searchReqVo.getKeywords();
+
         String key = null;
         String keyword = null;
         if(keywords != null) {
@@ -57,8 +59,34 @@ public class ServerTypeService  {
             }
         }
 
-        PagingResVo<ServerType> resPage = new PagingResVo<ServerType>(serverTypes, true);
+        if(serverTypes != null){
+            resPage = new PagingResVo<ServerTypeDto>(serverTypes, false);
+            List<ServerType> content = serverTypes.getContent();
 
+            List<ServerTypeDto> serverTypeDtos = new ArrayList<ServerTypeDto>();
+            for(ServerType serverType : content){
+                ServerTypeDto serverTypeDto = new ServerTypeDto();
+                serverTypeDto.setId(serverType.getId());
+                serverTypeDto.setName(serverType.getName());
+                serverTypeDto.setDescription(serverType.getDescription());
+
+                List<MeasurementDto> measurementDtos = new ArrayList<MeasurementDto>();
+                Collection<Measurement> measurements = serverType.getMeasurements();
+                for(Measurement measurement : measurements){
+                    MeasurementDto measurementDto = new MeasurementDto();
+                    measurementDto.setId(measurement.getId());
+                    measurementDto.setName(measurement.getName());
+                    measurementDto.setDescription(measurement.getDescription());
+
+                    measurementDtos.add(measurementDto);
+                }
+
+                serverTypeDto.setMeasurements(measurementDtos);
+                serverTypeDtos.add(serverTypeDto);
+            }
+            resPage.setList(serverTypeDtos);
+        }
+        //PagingResVo<ServerTypeDto> resPage = new PagingResVo<ServerTypeDto>(serverTypes, true);
         return resPage;
     }
 

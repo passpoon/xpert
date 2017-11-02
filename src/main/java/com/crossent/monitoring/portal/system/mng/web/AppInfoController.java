@@ -6,6 +6,7 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.AppInfo;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
+import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
 import com.crossent.monitoring.portal.system.mng.service.AppInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos", method = RequestMethod.GET)
     public PagingResVo pagingAppInfo(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
-        PagingResVo<AppInfo> resPage = appInfoService.pagingUserGroup(paging, search);
+        PagingResVo<AppInfoDto> resPage = appInfoService.pagingUserGroup(paging, search);
 
         return resPage;
     }

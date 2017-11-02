@@ -6,9 +6,6 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
-import com.crossent.monitoring.portal.jpa.domain.ServerType;
-import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
-import com.crossent.monitoring.portal.system.mng.dto.MetricDto;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 

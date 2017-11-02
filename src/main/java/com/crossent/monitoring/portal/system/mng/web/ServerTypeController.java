@@ -6,6 +6,7 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
+import com.crossent.monitoring.portal.system.mng.dto.ServerTypeDto;
 import com.crossent.monitoring.portal.system.mng.service.ServerTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +23,7 @@ public class ServerTypeController extends BaseController{
     @RequestMapping(value = "/system/management/server-types", method = RequestMethod.GET)
     public PagingResVo pagingServerType(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
-        PagingResVo<ServerType> resPage = serverTypeService.pagingServerType(paging, search);
+        PagingResVo<ServerTypeDto> resPage = serverTypeService.pagingServerType(paging, search);
 
         return resPage;
     }

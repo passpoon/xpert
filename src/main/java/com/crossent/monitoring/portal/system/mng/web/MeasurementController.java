@@ -6,8 +6,6 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
-import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
-import com.crossent.monitoring.portal.system.mng.dto.MetricDto;
 import com.crossent.monitoring.portal.system.mng.service.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
