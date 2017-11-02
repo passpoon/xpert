@@ -1,7 +1,10 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import org.apache.catalina.Server;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "mon_group", schema = "mondb")
@@ -9,9 +12,11 @@ public class MonGroup  implements Serializable {
     private Integer id;
     private String name;
     private String description;
+    private Collection<ServerResource> serverResource;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -39,6 +44,14 @@ public class MonGroup  implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "mg_server",
+            joinColumns = @JoinColumn(name = "server_resource_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))
+    public Collection<ServerResource> getServerResource() { return serverResource; }
+
+    public void setServerResource(Collection<ServerResource> serverResource) { this.serverResource = serverResource; }
 
     @Override
     public String toString() {

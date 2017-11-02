@@ -24,9 +24,6 @@ public class MonGroupService {
     @Autowired
     UserRepository userRepository;
 
-    @Autowired
-    MonGroupRepository monGroupRepository;
-
     public Collection<MonGroup> listMonGroup(String userId) {
 
         User user = userRepository.findOne(userId);

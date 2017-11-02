@@ -12,7 +12,7 @@ import org.springframework.util.LinkedMultiValueMap;
 public class UserTest extends AbstractMockTest {
 
     @Test
-    public void pageMeasurement() throws Exception {
+    public void pageUser() throws Exception {
         PagingReqVo pagingReqVo = new PagingReqVo();
         pagingReqVo.setPage(0);
         pagingReqVo.setPageSize(10);
@@ -24,7 +24,6 @@ public class UserTest extends AbstractMockTest {
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
         params.add("search", JsonUtil.ObjectToJson(searchReqVo));
         get("/system/management/users", params);
-
     }
 
     @Test
