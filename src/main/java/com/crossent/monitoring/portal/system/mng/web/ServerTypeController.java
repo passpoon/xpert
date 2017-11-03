@@ -30,7 +30,7 @@ public class ServerTypeController extends BaseController{
 
     @Transactional
     @RequestMapping(value = "/system/management/server-types", method = RequestMethod.POST)
-    public void insertServerType(@RequestBody ServerType serverType) {
+    public void insertServerType(@RequestBody ServerTypeDto serverType) {
 
         serverTypeService.insertServerType(serverType);
     }

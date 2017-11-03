@@ -1,5 +1,40 @@
 {
-  "id": 1,
-  "name": "mysql",
-  "description": "test mysql"
+  "number": 0,
+  "size": 10,
+  "totalPages": 1,
+  "numberOfElements": 2,
+  "totalElements": 2,
+  "hasNextPage": false,
+  "list": [
+    {
+      "id": 2,
+      "name": "small",
+      "description": "서버타입 수정",
+      "measurements": [
+        {
+          "id": 1,
+          "name": "core",
+          "description": "CPU 코어관련 메트릭"
+        },
+        {
+          "id": 2,
+          "name": "cpu",
+          "description": "CPU에 대한 메트릭"
+        },
+        {
+          "id": 3,
+          "name": "memory",
+          "description": "memory 메트릭"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "name": "test1",
+      "description": null,
+      "measurements": []
+    }
+  ],
+  "firstPage": true,
+  "lastPage": true
 }

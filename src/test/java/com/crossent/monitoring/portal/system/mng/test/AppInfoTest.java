@@ -6,8 +6,13 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.AppInfo;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
+import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
+import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class AppInfoTest extends AbstractMockTest {
 
@@ -30,13 +35,23 @@ public class AppInfoTest extends AbstractMockTest {
     @Test
     public void insertAppInfo() throws  Exception {
 
-        AppInfo appInfo = new AppInfo();
+        AppInfoDto appInfo = new AppInfoDto();
         appInfo.setName("test3");
         appInfo.setDescription("test Description3");
 
+        List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
+
+        MeasurementDto measurementDto = new MeasurementDto();
+        measurementDto.setId(1);
+        measurementDtoList.add(measurementDto);
+
+        measurementDto = new MeasurementDto();
+        measurementDto.setId(2);
+        measurementDtoList.add(measurementDto);
+
+        appInfo.setMeasurements(measurementDtoList);
         post("/system/management/app-infos", appInfo);
     }
-
 
     @Test
     public void deleteAppInfos() throws Exception {

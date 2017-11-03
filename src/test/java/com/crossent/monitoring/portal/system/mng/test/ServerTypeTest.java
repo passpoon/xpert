@@ -6,8 +6,13 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
+import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
+import com.crossent.monitoring.portal.system.mng.dto.ServerTypeDto;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ServerTypeTest extends AbstractMockTest{
 
@@ -20,7 +25,7 @@ public class ServerTypeTest extends AbstractMockTest{
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("name", "sm");
+        /*searchReqVo.addKeyword("name", "sm");*/
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
@@ -32,9 +37,21 @@ public class ServerTypeTest extends AbstractMockTest{
     @Test
     public void insertServerType() throws  Exception {
 
-        ServerType serverType = new ServerType();
+        ServerTypeDto serverType = new ServerTypeDto();
         serverType.setName("bbb");
         serverType.setDescription("cc");
+
+        List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
+
+        MeasurementDto measurementDto = new MeasurementDto();
+        measurementDto.setId(1);
+        measurementDtoList.add(measurementDto);
+
+        measurementDto = new MeasurementDto();
+        measurementDto.setId(2);
+        measurementDtoList.add(measurementDto);
+
+        serverType.setMeasurements(measurementDtoList);
 
         post("/system/management/server-types", serverType);
     }

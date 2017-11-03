@@ -90,13 +90,24 @@ public class AppInfoService {
     }
 
 
-    public void insertAppInfo(AppInfo appInfo) {
+    public void insertAppInfo(AppInfoDto appInfo) {
 
         AppInfo inAppInfo = new AppInfo();
         inAppInfo.setName(appInfo.getName());
         inAppInfo.setDescription(appInfo.getDescription());
 
         AppInfo result = appInfoRepository.save(inAppInfo);
+
+        List<MeasurementDto> measurements = appInfo.getMeasurements();
+        for(MeasurementDto measurementDto : measurements){
+
+            AppInfoMeasurementMap appInfoMeasurementMap = new AppInfoMeasurementMap();
+            appInfoMeasurementMap.setAppInfoId(result.getId());
+            appInfoMeasurementMap.setMeasurementId(measurementDto.getId());
+
+            appInfoMeasurementMapRepository.save(appInfoMeasurementMap);
+        }
+
     }
 
 

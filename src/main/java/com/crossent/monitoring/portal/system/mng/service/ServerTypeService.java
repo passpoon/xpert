@@ -90,13 +90,24 @@ public class ServerTypeService  {
         return resPage;
     }
 
-    public void insertServerType(ServerType serverType) {
+    public void insertServerType(ServerTypeDto serverType) {
 
         ServerType inServerType = new ServerType();
         inServerType.setName(serverType.getName());
         inServerType.setDescription(serverType.getDescription());
+        //inServerType.setMeasurements(serverType.getMeasurements());
 
-        ServerType resUser = serverTypeRepository.save(inServerType);
+        ServerType result = serverTypeRepository.save(inServerType);
+
+        List<MeasurementDto> measurements = serverType.getMeasurements();
+        for(MeasurementDto measurementDto : measurements){
+
+            ServerTypeMeasurementMap serverTypeMeasurementMap = new ServerTypeMeasurementMap();
+            serverTypeMeasurementMap.setServerTypeId(result.getId());
+            serverTypeMeasurementMap.setMeasurementId(measurementDto.getId());
+            serverTypeMeasurementMapRepository.save(serverTypeMeasurementMap);
+        }
+
     }
 
     public void deleteServerTypes(Integer[] serverTypeIds) {
