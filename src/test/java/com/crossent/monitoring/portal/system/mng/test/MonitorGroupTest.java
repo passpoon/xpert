@@ -74,6 +74,7 @@ public class MonitorGroupTest extends AbstractMockTest {
         delete("/system/management/monitoring-groups/" +monitoringGroupId);
     }
 
+    // 서버
     @Test
     public void getMonGroupServers() throws Exception {
 
@@ -106,5 +107,40 @@ public class MonitorGroupTest extends AbstractMockTest {
         Integer serverResourceIds = 2;
 
         delete("/system/management/monitoring-groups/"+monitoringGroupId+"/servers/"+serverResourceIds+"");
+    }
+
+    // 어플리케이션
+    @Test
+    public void getMonGroupApps() throws Exception {
+
+        Integer monitoringGroupId =  2;
+
+        get("/system/management/monitoring-groups/"+monitoringGroupId+"/apps");
+    }
+
+    @Test
+    public void insertMonGroupApps() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer[] appResourceIds = {1, 7};
+
+        post("/system/management/monitoring-groups/"+monitoringGroupId+"/apps", appResourceIds);
+    }
+
+    @Test
+    public void deleteMonGroupApps() throws Exception {
+        Integer monitoringGroupId = 1;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("appResourceIds", "1,7");
+
+        delete("/system/management/monitoring-groups/"+monitoringGroupId+"/apps", params);
+    }
+
+    @Test
+    public void deleteMonGroupApp() throws Exception {
+        Integer monitoringGroupId = 2;
+        Integer appResourceId = 1;
+
+        delete("/system/management/monitoring-groups/"+monitoringGroupId+"/apps/"+appResourceId+"");
     }
 }

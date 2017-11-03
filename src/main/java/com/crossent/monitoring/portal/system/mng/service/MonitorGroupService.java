@@ -3,10 +3,8 @@ package com.crossent.monitoring.portal.system.mng.service;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
-import com.crossent.monitoring.portal.jpa.domain.MgServer;
-import com.crossent.monitoring.portal.jpa.domain.MgServerPK;
-import com.crossent.monitoring.portal.jpa.domain.MonGroup;
-import com.crossent.monitoring.portal.jpa.domain.ServerResource;
+import com.crossent.monitoring.portal.jpa.domain.*;
+import com.crossent.monitoring.portal.jpa.repository.MgAppRepository;
 import com.crossent.monitoring.portal.jpa.repository.MgServerRepository;
 import com.crossent.monitoring.portal.jpa.repository.MonGroupRepository;
 import org.slf4j.Logger;
@@ -28,6 +26,9 @@ public class MonitorGroupService {
 
     @Autowired
     MgServerRepository mgServerRepository;
+
+    @Autowired
+    MgAppRepository mgAppRepository;
 
 
     public PagingResVo<MonGroup> pagingMonGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
@@ -113,11 +114,13 @@ public class MonitorGroupService {
         monGroupRepository.delete(monitoringGroupId);
     }
 
+    // 서버
     public Collection<ServerResource> getMonGroupServers(Integer monitoringGroupId) {
 
         MonGroup monGroup = monGroupRepository.findOne(monitoringGroupId);
+        logger.debug("monGroup ID get :: {}", monGroup);
         Collection<ServerResource> serverResources = monGroup.getServerResource();
-        logger.debug("serverResources ::: ", serverResources);
+        logger.debug("serverResources ::: {}", serverResources);
 
         return serverResources;
     }
@@ -144,5 +147,36 @@ public class MonitorGroupService {
 
         mgServerRepository.deleteByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
     }
+
+    // 어플리케이션
+    public Collection<AppResource> getMonGroupApps(Integer monitoringGroupId) {
+
+        MonGroup monGroup = monGroupRepository.findOne(monitoringGroupId);
+        Collection<AppResource> appResources = monGroup.getAppResource();
+
+        return appResources;
+    }
+
+    public void insertMonGroupApps(Integer monitoringGroupId, Integer[] appResourceIds){
+
+        for(Integer appId : appResourceIds) {
+            MgApp mgApp = new MgApp();
+            mgApp.setMonGroupId(monitoringGroupId);
+            mgApp.setAppResourceId(appId);
+
+            MgApp groupMap = mgAppRepository.save(mgApp);
+        }
+    }
+
+    public void deleteMonGroupApps(Integer monitoringGroupId, Integer[] appResourceIds) {
+
+        mgAppRepository.deleteByMonGroupIdAndAppResourceIdIn(monitoringGroupId, appResourceIds);
+    }
+
+    public void deleteMonGroupApp(Integer monitoringGroupId, Integer appResourceIds) {
+
+        mgAppRepository.deleteByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceIds);
+    }
+
 
 }

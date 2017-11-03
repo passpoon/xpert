@@ -13,6 +13,7 @@ public class MonGroup  implements Serializable {
     private String name;
     private String description;
     private Collection<ServerResource> serverResource;
+    private Collection<AppResource> appResource;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -47,11 +48,20 @@ public class MonGroup  implements Serializable {
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "mg_server",
-            joinColumns = @JoinColumn(name = "server_resource_id", referencedColumnName="id"),
-            inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))
+            joinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "server_resource_id", referencedColumnName="id"))
     public Collection<ServerResource> getServerResource() { return serverResource; }
 
     public void setServerResource(Collection<ServerResource> serverResource) { this.serverResource = serverResource; }
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "mg_app",
+            joinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "app_resource_id", referencedColumnName="id"))
+    public Collection<AppResource> getAppResource() { return appResource; }
+
+    public void setAppResource(Collection<AppResource> appResource) { this.appResource = appResource; }
 
     @Override
     public String toString() {

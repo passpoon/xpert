@@ -4,6 +4,7 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
+import com.crossent.monitoring.portal.jpa.domain.AppResource;
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
 import com.crossent.monitoring.portal.jpa.domain.ServerResource;
 import com.crossent.monitoring.portal.system.mng.service.MonitorGroupService;
@@ -63,6 +64,7 @@ public class MonitorGroupController extends BaseController {
         monitorGroupService.deleteMonGroup(monitoringGroupId);
     }
 
+    // 서버
     @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/servers", method = RequestMethod.GET)
     public Collection<ServerResource> getMonGroupServers(@PathVariable Integer monitoringGroupId) {
 
@@ -92,5 +94,34 @@ public class MonitorGroupController extends BaseController {
         monitorGroupService.deleteMonGroupServer(monitoringGroupId, serverResourceId);
     }
 
+    // 어플리케이션
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/apps", method = RequestMethod.GET)
+    public Collection<AppResource> getMonGroupApps(@PathVariable Integer monitoringGroupId) {
+
+        Collection<AppResource> appResources = monitorGroupService.getMonGroupApps(monitoringGroupId);
+
+        return appResources;
+    }
+
+    @Transactional // 다중 어플리케이션 추가
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/apps", method = RequestMethod.POST)
+    public void insertMonGroupApps(@PathVariable Integer monitoringGroupId, @RequestBody Integer[] appResourceIds) {
+
+        monitorGroupService.insertMonGroupApps(monitoringGroupId, appResourceIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/apps" , method = RequestMethod.DELETE)
+    public void deleteMonGroupApps(@PathVariable Integer monitoringGroupId, @RequestParam Integer[] appResourceIds) {
+
+        monitorGroupService.deleteMonGroupApps(monitoringGroupId, appResourceIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/apps/{appResourceId}" , method = RequestMethod.DELETE)
+    public void deleteMonGroupApp(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
+
+        monitorGroupService.deleteMonGroupApp(monitoringGroupId, appResourceId);
+    }
 
 }

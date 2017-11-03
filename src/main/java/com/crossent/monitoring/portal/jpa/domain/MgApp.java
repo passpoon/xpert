@@ -17,7 +17,7 @@ public class MgApp implements Serializable{
     private MonGroup monGroup;
 
     @Id
-    @Column(name = "mon_group_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "mon_group_id", nullable = false)
     public Integer getMonGroupId() {
         return monGroupId;
     }
@@ -27,17 +27,15 @@ public class MgApp implements Serializable{
     }
 
     @Id
-    @Column(name = "app_resource_id", nullable = false, insertable = false, updatable = false)
-    public Integer getAppResourceId() {
-        return appResourceId;
-    }
+    @Column(name = "app_resource_id", nullable = false)
+    public Integer getAppResourceId() { return appResourceId; }
 
     public void setAppResourceId(Integer appResourceId) {
         this.appResourceId = appResourceId;
     }
 
     @ManyToOne
-    @JoinColumn(name = "app_resource_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "app_resource_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public AppResource getAppResource() {
         return appResource;
     }
@@ -70,7 +68,7 @@ public class MgApp implements Serializable{
 
 
     @ManyToOne
-    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public MonGroup getMonGroup() {
         return monGroup;
     }
