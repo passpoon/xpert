@@ -14,9 +14,12 @@ public class Meta implements Serializable {
     private String pattern;
     private Manual manual;
     private StateCode stateCode;
+    private Integer manualId;
+    private String stateCodeId;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -77,7 +80,7 @@ public class Meta implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "manual_id", referencedColumnName = "id")
+    @JoinColumn(name = "manual_id", referencedColumnName = "id", insertable = false, updatable = false)
     public Manual getManual() {
         return manual;
     }
@@ -87,7 +90,7 @@ public class Meta implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "state_code", referencedColumnName = "code", nullable = false)
+    @JoinColumn(name = "state_code", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
     public StateCode getStateCode() {
         return stateCode;
     }
@@ -95,6 +98,16 @@ public class Meta implements Serializable {
     public void setStateCode(StateCode stateCode) {
         this.stateCode = stateCode;
     }
+
+    @Column(name = "manual_id", nullable = true)
+    public Integer getManualId() { return manualId; }
+
+    public void setManualId(Integer manualId) { this.manualId = manualId; }
+
+    @Column(name = "state_code", nullable = false, length = 10)
+    public String getStateCodeId() { return stateCodeId; }
+
+    public void setStateCodeId(String stateCodeId) { this.stateCodeId = stateCodeId; }
 
     @Override
     public String toString() {

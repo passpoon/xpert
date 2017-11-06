@@ -20,7 +20,7 @@ public class MgServer implements Serializable {
     private Collection<MgLogEvent> mgLogEvents;
 
     @Id
-    @Column(name = "mon_group_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "mon_group_id", nullable = false)
     public Integer getMonGroupId() {
         return monGroupId;
     }
@@ -30,7 +30,7 @@ public class MgServer implements Serializable {
     }
 
     @Id
-    @Column(name = "server_resource_id", nullable = false, insertable = false, updatable = false)
+    @Column(name = "server_resource_id", nullable = false)
     public Integer getServerResourceId() {
         return serverResourceId;
     }
@@ -61,7 +61,7 @@ public class MgServer implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public MonGroup getMonGroup() {
         return monGroup;
     }
@@ -72,7 +72,7 @@ public class MgServer implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "server_resource_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "server_resource_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public ServerResource getServerResource() {
         return serverResource;
     }

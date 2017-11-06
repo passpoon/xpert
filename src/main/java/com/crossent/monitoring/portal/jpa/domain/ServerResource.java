@@ -11,9 +11,11 @@ public class ServerResource  implements Serializable {
     private String hostName;
     private String ip;
     private String description;
+    private Integer serverTypeId;
 
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     public Integer getId() {
         return id;
     }
@@ -61,6 +63,12 @@ public class ServerResource  implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Basic
+    @Column(name = "server_type_id", nullable = false)
+    public Integer getServerTypeId() { return serverTypeId; }
+
+    public void setServerTypeId(Integer serverTypeId) { this.serverTypeId = serverTypeId; }
 
     @Override
     public String toString() {
