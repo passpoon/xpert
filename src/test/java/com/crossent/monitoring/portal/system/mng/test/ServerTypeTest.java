@@ -98,17 +98,15 @@ public class ServerTypeTest extends AbstractMockTest{
 
         Integer serverTypeId = 2;
 
-        get("/system/management/server-types/"+serverTypeId+"/mesurements");
+        get("/system/management/server-types/"+serverTypeId+"/measurements");
     }
 
-    @Test
+    @Test  //다중 메저먼트 추가
     public void insertServerTypeMeasurement() throws Exception {
+        Integer serverTypeId = 21;
+        Integer[] measurementIds = {47, 48};
 
-        Integer serverTypeId = 2;
-        Measurement measurement = new Measurement();
-        measurement.setId(47);
-
-        post("/system/management/server-types/"+serverTypeId+"/mesurements", measurement);
+        post("/system/management/server-types/"+serverTypeId+"/measurements", measurementIds);
     }
 
     @Test
@@ -118,7 +116,7 @@ public class ServerTypeTest extends AbstractMockTest{
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("measurementIds", "47,48");
 
-        delete("/system/management/server-types/"+serverTypeId+"/mesurements", params);
+        delete("/system/management/server-types/"+serverTypeId+"/measurements", params);
     }
 
     @Test
@@ -126,7 +124,7 @@ public class ServerTypeTest extends AbstractMockTest{
         Integer serverTypeId = 2;
         Integer measurementId = 49;
 
-        delete("/system/management/server-types/"+serverTypeId+"/mesurements/"+measurementId+"");
+        delete("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"");
     }
 
 

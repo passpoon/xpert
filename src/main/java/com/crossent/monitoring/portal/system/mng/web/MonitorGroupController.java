@@ -7,6 +7,7 @@ import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.AppResource;
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
 import com.crossent.monitoring.portal.jpa.domain.ServerResource;
+import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.system.mng.service.MonitorGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

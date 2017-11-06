@@ -92,16 +92,15 @@ public class AppInfoTest extends AbstractMockTest {
     public void getAppInfoMeasurements() throws Exception {
         Integer appInfoId = 7;
 
-        get("/system/management/app-infos/"+appInfoId+"/mesurements");
+        get("/system/management/app-infos/"+appInfoId+"/measurements");
     }
 
     @Test
     public void insertAppInfoMeasurement() throws Exception {
-        Integer appInfoId = 3;
-        Measurement measurement = new Measurement();
-        measurement.setId(48);
+        Integer appInfoId = 13;
+        Integer[] measurementIds = {47, 48};
 
-        post("/system/management/app-infos/"+appInfoId+"/mesurements", measurement);
+        post("/system/management/app-infos/"+appInfoId+"/measurements", measurementIds);
     }
 
     @Test
@@ -111,7 +110,7 @@ public class AppInfoTest extends AbstractMockTest {
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("measurementIds", "47,48");
 
-        delete("/system/management/app-infos/"+appInfoId+"/mesurements", params);
+        delete("/system/management/app-infos/"+appInfoId+"/measurements", params);
     }
 
     @Test
@@ -119,6 +118,6 @@ public class AppInfoTest extends AbstractMockTest {
         Integer appInfoId = 2;
         Integer measurementId = 48;
 
-        delete("/system/management/app-infos/"+appInfoId+"/mesurements/"+measurementId+"");
+        delete("/system/management/app-infos/"+appInfoId+"/measurements/"+measurementId+"");
     }
 }

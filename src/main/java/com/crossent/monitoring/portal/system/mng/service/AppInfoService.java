@@ -156,13 +156,15 @@ public class AppInfoService {
         return measurements;
     }
 
-    public void insertAppInfoMeasurement(Integer appInfoId, Measurement measurement){
+    public void insertAppInfoMeasurement(Integer appInfoId, Integer[] measurementIds){
 
-        AppInfoMeasurementMap appInfoMeasurementMap = new AppInfoMeasurementMap();
-        appInfoMeasurementMap.setAppInfoId(appInfoId);
-        appInfoMeasurementMap.setMeasurementId(measurement.getId());
+        for(Integer measurementId : measurementIds) {
+            AppInfoMeasurementMap map = new AppInfoMeasurementMap();
+            map.setAppInfoId(appInfoId);
+            map.setMeasurementId(measurementId);
 
-        AppInfoMeasurementMap map = appInfoMeasurementMapRepository.save(appInfoMeasurementMap);
+            AppInfoMeasurementMap result = appInfoMeasurementMapRepository.save(map);
+        }
     }
 
     public void deleteAppInfoMeasurements(Integer appInfoId, Integer[] measurementIds) {

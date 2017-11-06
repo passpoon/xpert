@@ -64,7 +64,7 @@ public class AppInfoController extends BaseController {
         appInfoService.deleteAppInfo(appInfoId);
     }
 
-    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/mesurements" , method = RequestMethod.GET)
+    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements" , method = RequestMethod.GET)
     public Collection<Measurement> getAppInfoMeasurements(@PathVariable Integer appInfoId){
 
         Collection<Measurement> measurement = appInfoService.getAppInfoMeasurements(appInfoId);
@@ -72,21 +72,21 @@ public class AppInfoController extends BaseController {
     }
 
     @Transactional
-    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/mesurements" , method = RequestMethod.POST)
-    public void insertAppInfoMeasurement(@PathVariable Integer appInfoId, @RequestBody Measurement measurement){
+    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements" , method = RequestMethod.POST)
+    public void insertAppInfoMeasurement(@PathVariable Integer appInfoId, @RequestBody Integer[] measurementIds){
 
-        appInfoService.insertAppInfoMeasurement(appInfoId, measurement);
+        appInfoService.insertAppInfoMeasurement(appInfoId, measurementIds);
     }
 
     @Transactional
-    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/mesurements" , method = RequestMethod.DELETE)
+    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements" , method = RequestMethod.DELETE)
     public void deleteAppInfoMeasurements(@PathVariable Integer appInfoId, @RequestParam Integer[] measurementIds) {
 
         appInfoService.deleteAppInfoMeasurements(appInfoId, measurementIds);
     }
 
     @Transactional
-    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/mesurements/{measurementId}" , method = RequestMethod.DELETE)
+    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}" , method = RequestMethod.DELETE)
     public void deleteAppInfoMeasurement(@PathVariable Integer appInfoId, @PathVariable Integer measurementId) {
 
         appInfoService.deleteAppInfoMeasurement(appInfoId, measurementId);

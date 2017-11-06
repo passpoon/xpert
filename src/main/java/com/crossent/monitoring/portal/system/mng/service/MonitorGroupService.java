@@ -178,5 +178,4 @@ public class MonitorGroupService {
         mgAppRepository.deleteByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceIds);
     }
 
-
 }
