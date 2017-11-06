@@ -58,13 +58,14 @@ public class TestService {
 
     public void testElasticSearch(){
 
-        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery("@timestamp").from("2017-10-24T00:00:00").to("2017-10-26T00:00:00").timeZone("Asia/Seoul").format("strict_date_optional_time");
+        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery("@timestamp").from("2017-10-31T00:00:00").to("2017-10-31T23:00:00").timeZone("Asia/Seoul").format("strict_date_optional_time");
 
-        SearchResponse searchResponse = elasticsearchTemplate.query("sys*", "filebeat-log", rangeQueryBuilder);
+        SearchResponse searchResponse = elasticsearchTemplate.query("log-*", "filebeat-log", rangeQueryBuilder);
 
         //Set<String> result = new HashSet<String>();
 
         for (SearchHit hit : searchResponse.getHits()) {
+            logger.debug("getIndex :{}", hit.getIndex());
             logger.debug("toString :{}", hit.getSource());
             logger.debug("getId :{} : {} : {}", hit.getId(), hit.getSource().get("@timestamp"), hit.getSource().get("message"));
 
