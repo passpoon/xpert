@@ -35,11 +35,11 @@ public class AppInfoTest extends AbstractMockTest {
     @Test
     public void insertAppInfo() throws  Exception {
 
-        AppInfoDto appInfo = new AppInfoDto();
-        appInfo.setName("test3");
-        appInfo.setDescription("test Description3");
+        AppInfo appInfo = new AppInfo();
+        appInfo.setName("test4");
+        appInfo.setDescription("test Description4");
 
-        List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
+       /* List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
 
         MeasurementDto measurementDto = new MeasurementDto();
         measurementDto.setId(1);
@@ -49,7 +49,7 @@ public class AppInfoTest extends AbstractMockTest {
         measurementDto.setId(2);
         measurementDtoList.add(measurementDto);
 
-        appInfo.setMeasurements(measurementDtoList);
+        appInfo.setMeasurements(measurementDtoList);*/
         post("/system/management/app-infos", appInfo);
     }
 

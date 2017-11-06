@@ -38,10 +38,10 @@ public class ServerTypeTest extends AbstractMockTest{
     public void insertServerType() throws  Exception {
 
         ServerTypeDto serverType = new ServerTypeDto();
-        serverType.setName("bbb");
-        serverType.setDescription("cc");
+        serverType.setName("abc");
+        serverType.setDescription("bb");
 
-        List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
+        /*List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
 
         MeasurementDto measurementDto = new MeasurementDto();
         measurementDto.setId(1);
@@ -51,7 +51,7 @@ public class ServerTypeTest extends AbstractMockTest{
         measurementDto.setId(2);
         measurementDtoList.add(measurementDto);
 
-        serverType.setMeasurements(measurementDtoList);
+        serverType.setMeasurements(measurementDtoList);*/
 
         post("/system/management/server-types", serverType);
     }

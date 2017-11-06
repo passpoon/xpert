@@ -30,7 +30,7 @@ public class AppInfoController extends BaseController {
 
     @Transactional
     @RequestMapping(value = "/system/management/app-infos", method = RequestMethod.POST)
-    public void insertAppInfo(@RequestBody AppInfoDto appInfo){
+    public void insertAppInfo(@RequestBody AppInfo appInfo){
 
         appInfoService.insertAppInfo(appInfo);
     }

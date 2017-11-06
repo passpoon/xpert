@@ -90,7 +90,7 @@ public class ServerTypeService  {
         return resPage;
     }
 
-    public void insertServerType(ServerTypeDto serverType) {
+    public void insertServerType(ServerType serverType) {
 
         ServerType inServerType = new ServerType();
         inServerType.setName(serverType.getName());
@@ -99,14 +99,14 @@ public class ServerTypeService  {
 
         ServerType result = serverTypeRepository.save(inServerType);
 
-        List<MeasurementDto> measurements = serverType.getMeasurements();
+        /*List<MeasurementDto> measurements = serverType.getMeasurements();
         for(MeasurementDto measurementDto : measurements){
 
             ServerTypeMeasurementMap serverTypeMeasurementMap = new ServerTypeMeasurementMap();
             serverTypeMeasurementMap.setServerTypeId(result.getId());
             serverTypeMeasurementMap.setMeasurementId(measurementDto.getId());
             serverTypeMeasurementMapRepository.save(serverTypeMeasurementMap);
-        }
+        }*/
 
     }
 
