@@ -14,6 +14,9 @@ public class MonGroup  implements Serializable {
     private String description;
     private Collection<ServerResource> serverResource;
     private Collection<AppResource> appResource;
+    private Collection<User> users;
+    private Collection<MgUser> mgUsers;
+
 
     @Id
     @Column(name = "id", nullable = false)
@@ -62,6 +65,25 @@ public class MonGroup  implements Serializable {
     public Collection<AppResource> getAppResource() { return appResource; }
 
     public void setAppResource(Collection<AppResource> appResource) { this.appResource = appResource; }
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "mg_user",
+            joinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"))
+    public Collection<User> getUsers() { return users; }
+
+    public void setUsers(Collection<User> users) { this.users = users; }
+
+    @OneToMany(mappedBy = "monGroup")
+    public Collection<MgUser> getMgUsers() {
+        return mgUsers;
+    }
+
+
+    public void setMgUsers(Collection<MgUser> mgUsers) {
+        this.mgUsers = mgUsers;
+    }
 
     @Override
     public String toString() {

@@ -11,11 +11,12 @@ public class MgUser implements Serializable {
     private String userId;
     private MonGroup monGroup;
     private User user;
+    private String typeCodeCode;
     private TypeCode typeCode;
 
 
     @Id
-    @Column(name = "mon_group_id", nullable = false, updatable = false, insertable = false)
+    @Column(name = "mon_group_id", nullable = false)
     public Integer getMonGroupId() {
         return monGroupId;
     }
@@ -26,7 +27,7 @@ public class MgUser implements Serializable {
 
 
     @Id
-    @Column(name = "user_id", nullable = false, updatable = false, insertable = false)
+    @Column(name = "user_id", nullable = false)
     public String getUserId() {
         return userId;
     }
@@ -37,7 +38,7 @@ public class MgUser implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
     public MonGroup getMonGroup() {
         return monGroup;
     }
@@ -48,7 +49,7 @@ public class MgUser implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false, updatable = false, insertable = false)
     public User getUser() {
         return user;
     }
@@ -57,9 +58,13 @@ public class MgUser implements Serializable {
         this.user = user;
     }
 
+    @Column(name = "user_type_code", nullable = false)
+    public String getTypeCodeCode() { return typeCodeCode; }
+
+    public void setTypeCodeCode(String typeCodeCode) { this.typeCodeCode = typeCodeCode; }
 
     @ManyToOne
-    @JoinColumn(name = "user_type_code", referencedColumnName = "code", nullable = false)
+    @JoinColumn(name = "user_type_code", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
     public TypeCode getTypeCode() {
         return typeCode;
     }
@@ -68,11 +73,16 @@ public class MgUser implements Serializable {
         this.typeCode = typeCode;
     }
 
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("MgUser{");
         sb.append("monGroupId=").append(monGroupId);
         sb.append(", userId='").append(userId).append('\'');
+        sb.append(", monGroup='").append(monGroup).append('\'');
+        sb.append(", user='").append(user).append('\'');
+        sb.append(", typeCode='").append(typeCode).append('\'');
         sb.append('}');
         return sb.toString();
     }

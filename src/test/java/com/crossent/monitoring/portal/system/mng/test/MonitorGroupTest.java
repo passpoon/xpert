@@ -78,7 +78,7 @@ public class MonitorGroupTest extends AbstractMockTest {
     @Test
     public void getMonGroupServers() throws Exception {
 
-        Integer monitoringGroupId =  3;
+        Integer monitoringGroupId =  1;
 
         get("/system/management/monitoring-groups/"+monitoringGroupId+"/servers");
     }
@@ -142,5 +142,75 @@ public class MonitorGroupTest extends AbstractMockTest {
         Integer appResourceId = 1;
 
         delete("/system/management/monitoring-groups/"+monitoringGroupId+"/apps/"+appResourceId+"");
+    }
+
+    // 관리자
+    @Test
+    public void getMonGroupManagers() throws Exception {
+
+        Integer monitoringGroupId =  4;
+
+        get("/system/management/monitoring-groups/"+monitoringGroupId+"/managers");
+    }
+
+    @Test
+    public void insertMonGroupManagers() throws Exception {
+        Integer monitoringGroupId = 4;
+        String[] userIds = {"monuser9","monuser10"};
+
+        post("/system/management/monitoring-groups/"+monitoringGroupId+"/managers", userIds);
+    }
+
+    @Test
+    public void deleteMonGroupManagers() throws Exception {
+        Integer monitoringGroupId = 4;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("userIds", "monuser9,monuser10");
+
+        delete("/system/management/monitoring-groups/"+monitoringGroupId+"/managers", params);
+    }
+
+    @Test
+    public void deleteMonGroupManager() throws Exception {
+        Integer monitoringGroupId = 4;
+        String userId = "monuser10";
+
+        delete("/system/management/monitoring-groups/"+monitoringGroupId+"/managers/"+userId+"");
+    }
+
+    // 운영자
+    @Test
+    public void getMonGroupOperators() throws Exception {
+
+        Integer monitoringGroupId =  4;
+
+        get("/system/management/monitoring-groups/"+monitoringGroupId+"/operators");
+    }
+
+    @Test
+    public void insertMonGroupOperators() throws Exception {
+        Integer monitoringGroupId = 4;
+        String[] userIds = {"monuser9","monuser10"};
+
+        post("/system/management/monitoring-groups/"+monitoringGroupId+"/operators", userIds);
+    }
+
+    @Test
+    public void deleteMonGroupOperators() throws Exception {
+        Integer monitoringGroupId = 4;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("userIds", "monuser9,monuser10");
+
+        delete("/system/management/monitoring-groups/"+monitoringGroupId+"/operators", params);
+    }
+
+    @Test
+    public void deleteMonGroupOperator() throws Exception {
+        Integer monitoringGroupId = 4;
+        String userId = "monuser10";
+
+        delete("/system/management/monitoring-groups/"+monitoringGroupId+"/operators/"+userId+"");
     }
 }
