@@ -30,7 +30,7 @@ public class ServerTypeController extends BaseController{
 
     @Transactional
     @RequestMapping(value = "/system/management/server-types", method = RequestMethod.POST)
-    public void insertServerType(@RequestBody ServerTypeDto serverType) {
+    public void insertServerType(@RequestBody ServerType serverType) {
 
         serverTypeService.insertServerType(serverType);
     }
@@ -64,7 +64,7 @@ public class ServerTypeController extends BaseController{
         serverTypeService.deleteServerType(serverTypeId);
     }
 
-    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/mesurements", method = RequestMethod.GET)
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements", method = RequestMethod.GET)
     public Collection<Measurement> getServerTypeMeasurement(@PathVariable Integer serverTypeId) {
 
         Collection<Measurement> measurements = serverTypeService.getServerTypeMeasurement(serverTypeId);
@@ -72,21 +72,21 @@ public class ServerTypeController extends BaseController{
     }
 
     @Transactional
-    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/mesurements" , method = RequestMethod.POST)
-    public void insertServerTypeMeasurement(@PathVariable Integer serverTypeId, @RequestBody Measurement measurement){
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements" , method = RequestMethod.POST)
+    public void insertServerTypeMeasurement(@PathVariable Integer serverTypeId, @RequestBody Integer[] measurementIds){
 
-        serverTypeService.insertServerTypeMeasurement(serverTypeId, measurement);
+        serverTypeService.insertServerTypeMeasurement(serverTypeId, measurementIds);
     }
 
     @Transactional
-    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/mesurements" , method = RequestMethod.DELETE)
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements" , method = RequestMethod.DELETE)
     public void deleteServerTypeMeasurements(@PathVariable Integer serverTypeId, @RequestParam Integer[] measurementIds) {
 
         serverTypeService.deleteServerTypeMeasurements(serverTypeId, measurementIds);
     }
 
     @Transactional
-    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/mesurements/{measurementId}" , method = RequestMethod.DELETE)
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}" , method = RequestMethod.DELETE)
     public void deleteServerTypeMeasurement(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId) {
 
         serverTypeService.deleteServerTypeMeasurement(serverTypeId, measurementId);

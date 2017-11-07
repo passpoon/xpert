@@ -90,7 +90,7 @@ public class ServerTypeService  {
         return resPage;
     }
 
-    public void insertServerType(ServerTypeDto serverType) {
+    public void insertServerType(ServerType serverType) {
 
         ServerType inServerType = new ServerType();
         inServerType.setName(serverType.getName());
@@ -99,14 +99,14 @@ public class ServerTypeService  {
 
         ServerType result = serverTypeRepository.save(inServerType);
 
-        List<MeasurementDto> measurements = serverType.getMeasurements();
+        /*List<MeasurementDto> measurements = serverType.getMeasurements();
         for(MeasurementDto measurementDto : measurements){
 
             ServerTypeMeasurementMap serverTypeMeasurementMap = new ServerTypeMeasurementMap();
             serverTypeMeasurementMap.setServerTypeId(result.getId());
             serverTypeMeasurementMap.setMeasurementId(measurementDto.getId());
             serverTypeMeasurementMapRepository.save(serverTypeMeasurementMap);
-        }
+        }*/
 
     }
 
@@ -155,13 +155,15 @@ public class ServerTypeService  {
         return measurements;
     }
 
-    public void insertServerTypeMeasurement(Integer serverTypeId, Measurement req){
+    public void insertServerTypeMeasurement(Integer serverTypeId, Integer[] measurementIds){
 
-        ServerTypeMeasurementMap map = new ServerTypeMeasurementMap();
-        map.setServerTypeId(serverTypeId);
-        map.setMeasurementId(req.getId());
+        for(Integer measurementId : measurementIds) {
+            ServerTypeMeasurementMap map = new ServerTypeMeasurementMap();
+            map.setServerTypeId(serverTypeId);
+            map.setMeasurementId(measurementId);
 
-        ServerTypeMeasurementMap result = serverTypeMeasurementMapRepository.save(map);
+            ServerTypeMeasurementMap result = serverTypeMeasurementMapRepository.save(map);
+        }
     }
 
     public void deleteServerTypeMeasurements(Integer serverTypeId, Integer[] delMeasurements) {

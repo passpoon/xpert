@@ -90,7 +90,7 @@ public class AppInfoService {
     }
 
 
-    public void insertAppInfo(AppInfoDto appInfo) {
+    public void insertAppInfo(AppInfo appInfo) {
 
         AppInfo inAppInfo = new AppInfo();
         inAppInfo.setName(appInfo.getName());
@@ -98,7 +98,7 @@ public class AppInfoService {
 
         AppInfo result = appInfoRepository.save(inAppInfo);
 
-        List<MeasurementDto> measurements = appInfo.getMeasurements();
+        /*List<MeasurementDto> measurements = appInfo.getMeasurements();
         for(MeasurementDto measurementDto : measurements){
 
             AppInfoMeasurementMap appInfoMeasurementMap = new AppInfoMeasurementMap();
@@ -106,7 +106,7 @@ public class AppInfoService {
             appInfoMeasurementMap.setMeasurementId(measurementDto.getId());
 
             appInfoMeasurementMapRepository.save(appInfoMeasurementMap);
-        }
+        }*/
 
     }
 
@@ -156,13 +156,15 @@ public class AppInfoService {
         return measurements;
     }
 
-    public void insertAppInfoMeasurement(Integer appInfoId, Measurement measurement){
+    public void insertAppInfoMeasurement(Integer appInfoId, Integer[] measurementIds){
 
-        AppInfoMeasurementMap appInfoMeasurementMap = new AppInfoMeasurementMap();
-        appInfoMeasurementMap.setAppInfoId(appInfoId);
-        appInfoMeasurementMap.setMeasurementId(measurement.getId());
+        for(Integer measurementId : measurementIds) {
+            AppInfoMeasurementMap map = new AppInfoMeasurementMap();
+            map.setAppInfoId(appInfoId);
+            map.setMeasurementId(measurementId);
 
-        AppInfoMeasurementMap map = appInfoMeasurementMapRepository.save(appInfoMeasurementMap);
+            AppInfoMeasurementMap result = appInfoMeasurementMapRepository.save(map);
+        }
     }
 
     public void deleteAppInfoMeasurements(Integer appInfoId, Integer[] measurementIds) {

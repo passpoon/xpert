@@ -35,11 +35,11 @@ public class AppInfoTest extends AbstractMockTest {
     @Test
     public void insertAppInfo() throws  Exception {
 
-        AppInfoDto appInfo = new AppInfoDto();
-        appInfo.setName("test3");
-        appInfo.setDescription("test Description3");
+        AppInfo appInfo = new AppInfo();
+        appInfo.setName("test4");
+        appInfo.setDescription("test Description4");
 
-        List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
+       /* List<MeasurementDto> measurementDtoList = new ArrayList<MeasurementDto>();
 
         MeasurementDto measurementDto = new MeasurementDto();
         measurementDto.setId(1);
@@ -49,7 +49,7 @@ public class AppInfoTest extends AbstractMockTest {
         measurementDto.setId(2);
         measurementDtoList.add(measurementDto);
 
-        appInfo.setMeasurements(measurementDtoList);
+        appInfo.setMeasurements(measurementDtoList);*/
         post("/system/management/app-infos", appInfo);
     }
 
@@ -92,16 +92,15 @@ public class AppInfoTest extends AbstractMockTest {
     public void getAppInfoMeasurements() throws Exception {
         Integer appInfoId = 7;
 
-        get("/system/management/app-infos/"+appInfoId+"/mesurements");
+        get("/system/management/app-infos/"+appInfoId+"/measurements");
     }
 
     @Test
     public void insertAppInfoMeasurement() throws Exception {
-        Integer appInfoId = 3;
-        Measurement measurement = new Measurement();
-        measurement.setId(48);
+        Integer appInfoId = 13;
+        Integer[] measurementIds = {47, 48};
 
-        post("/system/management/app-infos/"+appInfoId+"/mesurements", measurement);
+        post("/system/management/app-infos/"+appInfoId+"/measurements", measurementIds);
     }
 
     @Test
@@ -111,7 +110,7 @@ public class AppInfoTest extends AbstractMockTest {
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("measurementIds", "47,48");
 
-        delete("/system/management/app-infos/"+appInfoId+"/mesurements", params);
+        delete("/system/management/app-infos/"+appInfoId+"/measurements", params);
     }
 
     @Test
@@ -119,6 +118,6 @@ public class AppInfoTest extends AbstractMockTest {
         Integer appInfoId = 2;
         Integer measurementId = 48;
 
-        delete("/system/management/app-infos/"+appInfoId+"/mesurements/"+measurementId+"");
+        delete("/system/management/app-infos/"+appInfoId+"/measurements/"+measurementId+"");
     }
 }
