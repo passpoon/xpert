@@ -25,7 +25,7 @@ public class AppInfoService {
     @Autowired
     AppInfoMeasurementMapRepository appInfoMeasurementMapRepository;
 
-    public PagingResVo<AppInfoDto> pagingUserGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    public PagingResVo<AppInfoDto> pagingAppInfo(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         PagingResVo<AppInfoDto> resPage = null;
         Map<String, String> keywords = searchReqVo.getKeywords();
