@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.catalina.Server;
 
 import javax.persistence.*;
@@ -12,9 +13,13 @@ public class MonGroup  implements Serializable {
     private Integer id;
     private String name;
     private String description;
+    @JsonIgnore
     private Collection<ServerResource> serverResource;
+    @JsonIgnore
     private Collection<AppResource> appResource;
+    @JsonIgnore
     private Collection<User> users;
+    @JsonIgnore
     private Collection<MgUser> mgUsers;
 
 
