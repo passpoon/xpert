@@ -37,6 +37,15 @@ public class MonitorGroupService {
     @Autowired
     TypeCodeRepository typeCodeRepository;
 
+    @Autowired
+    ServerTypeCriticalValueRepository serverTypeCriticalValueRepository;
+
+    @Autowired
+    MgServerCriticalValueRepository mgServerCriticalValueRepository;
+
+    @Autowired
+    ServerResourceRepository serverResourceRepository;
+
 
     public PagingResVo<MonGroup> pagingMonGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -139,7 +148,35 @@ public class MonitorGroupService {
             mgServer.setServerResourceId(resourceId);
 
             MgServer groupMap = mgServerRepository.save(mgServer);
-            logger.debug("groupMap :: ", groupMap);
+            logger.debug("groupMap :: {}", groupMap);
+
+//          ServerResource serverResource = groupMap.getServerResource();
+            ServerResource serverResource = serverResourceRepository.findById(groupMap.getServerResourceId());
+            ServerType serverType = serverResource.getServerType();
+            Collection<Measurement> measurements = serverType.getMeasurements();
+            for(Measurement measurement : measurements) {
+                Collection<Metric> metrics = measurement.getMetrics();
+                for(Metric metric : metrics) {
+                    Integer id = metric.getId();
+
+                    ServerTypeCriticalValuePK serverTypeCriticalValuePK = new ServerTypeCriticalValuePK();
+
+                    serverTypeCriticalValuePK.setServerTypeId(serverType.getId());
+                    serverTypeCriticalValuePK.setMeasurementId(measurement.getId());
+                    serverTypeCriticalValuePK.setMetricId(id);
+
+                    ServerTypeCriticalValue serverTypeCriticalValue = serverTypeCriticalValueRepository.findOne(serverTypeCriticalValuePK);
+                    if(serverTypeCriticalValue != null) {
+                        MgServerCriticalValue mgServerCriticalValue = new MgServerCriticalValue();
+                        mgServerCriticalValue.setMonGroupId(monitoringGroupId);
+                        mgServerCriticalValue.setServerResourceId(resourceId);
+                        mgServerCriticalValue.setMetricId(id);
+                        mgServerCriticalValue.setWarning(serverTypeCriticalValue.getWarning());
+                        mgServerCriticalValue.setCritical(serverTypeCriticalValue.getCritical());
+                        mgServerCriticalValueRepository.save(mgServerCriticalValue);
+                    }
+                }
+            }
         }
     }
 

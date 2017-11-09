@@ -10,7 +10,7 @@ public class MgAppGroupCriticalValue implements Serializable {
     private Integer mgAppGroupId;
     private Integer metricId;
     private Double critical;
-    private Double warnning;
+    private Double warning;
 
     @Id
     @Column(name = "mg_app_group_id", nullable = false)
@@ -43,13 +43,13 @@ public class MgAppGroupCriticalValue implements Serializable {
     }
 
     @Basic
-    @Column(name = "warnning", nullable = true, precision = 0)
-    public Double getWarnning() {
-        return warnning;
+    @Column(name = "warning", nullable = true, precision = 0)
+    public Double getWarning() {
+        return warning;
     }
 
-    public void setWarnning(Double warnning) {
-        this.warnning = warnning;
+    public void setWarning(Double warning) {
+        this.warning = warning;
     }
 
     @Override
@@ -58,7 +58,7 @@ public class MgAppGroupCriticalValue implements Serializable {
         sb.append("mgAppGroupId=").append(mgAppGroupId);
         sb.append(", metricId=").append(metricId);
         sb.append(", critical=").append(critical);
-        sb.append(", warnning=").append(warnning);
+        sb.append(", warning=").append(warning);
         sb.append('}');
         return sb.toString();
     }

@@ -18,7 +18,7 @@ public class MonitorGroupTest extends AbstractMockTest {
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("description", "pa");
+        /*searchReqVo.addKeyword("description", "pa");*/
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
@@ -85,7 +85,7 @@ public class MonitorGroupTest extends AbstractMockTest {
 
     @Test
     public void insertMonGroupServers() throws Exception {
-        Integer monitoringGroupId = 1;
+        Integer monitoringGroupId = 2;
         Integer[] serverResourceIds = {3, 4};
 
         post("/system/management/monitoring-groups/"+monitoringGroupId+"/servers", serverResourceIds);

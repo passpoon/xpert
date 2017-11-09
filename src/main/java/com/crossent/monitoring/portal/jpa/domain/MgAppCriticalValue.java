@@ -11,7 +11,9 @@ public class MgAppCriticalValue implements Serializable {
     private Integer appResourceId;
     private Integer metricId;
     private Double critical;
-    private Double warnning;
+    private Double warning;
+
+    private MgApp mgApp;
 
     @Id
     @Column(name = "mon_group_id", nullable = false)
@@ -54,14 +56,23 @@ public class MgAppCriticalValue implements Serializable {
     }
 
     @Basic
-    @Column(name = "warnning", nullable = true, precision = 0)
-    public Double getWarnning() {
-        return warnning;
+    @Column(name = "warning", nullable = true, precision = 0)
+    public Double getWarning() {
+        return warning;
     }
 
-    public void setWarnning(Double warnning) {
-        this.warnning = warnning;
-    }
+    public void setWarning(Double warning) { this.warning = warning; }
+
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="mon_group_id", referencedColumnName = "mon_group_id", insertable = false, updatable = false),
+            @JoinColumn(name="app_resource_id", referencedColumnName = "app_resource_id", insertable = false, updatable = false)
+    })
+    public MgApp getMgApp() { return mgApp; }
+
+    public void setMgApp(MgApp mgApp) { this.mgApp = mgApp; }
+
 
     @Override
     public String toString() {
@@ -70,7 +81,7 @@ public class MgAppCriticalValue implements Serializable {
         sb.append(", appResourceId=").append(appResourceId);
         sb.append(", metricId=").append(metricId);
         sb.append(", critical=").append(critical);
-        sb.append(", warnning=").append(warnning);
+        sb.append(", warning=").append(warning);
         sb.append('}');
         return sb.toString();
     }

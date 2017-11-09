@@ -1,5 +1,7 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,7 +13,13 @@ public class MgServerCriticalValue implements Serializable {
     private Integer serverResourceId;
     private Integer metricId;
     private Double critical;
-    private Double warring;
+    private Double warning;
+
+    @JsonIgnore
+    private MgServer mgServer;
+
+    /*@JsonIgnore
+    private Metric metric;*/
 
     @Id
     @Column(name = "mon_group_id", nullable = false)
@@ -54,14 +62,32 @@ public class MgServerCriticalValue implements Serializable {
     }
 
     @Basic
-    @Column(name = "warring", nullable = true, precision = 0)
-    public Double getWarring() {
-        return warring;
+    @Column(name = "warning", nullable = true, precision = 0)
+    public Double getWarning() {
+        return warning;
     }
 
-    public void setWarring(Double warring) {
-        this.warring = warring;
+    public void setWarning(Double warning) {
+        this.warning = warning;
     }
+
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="mon_group_id", referencedColumnName = "mon_group_id", insertable = false, updatable = false),
+            @JoinColumn(name="server_resource_id", referencedColumnName = "server_resource_id", insertable = false, updatable = false)
+    })
+    public MgServer getMgServer() { return mgServer; }
+
+    public void setMgServer(MgServer mgServer) { this.mgServer = mgServer; }
+
+    /*public Metric getMetric() {
+        return metric;
+    }
+
+    public void setMetric(Metric metric) {
+        this.metric = metric;
+    }*/
 
     @Override
     public String toString() {
@@ -70,7 +96,7 @@ public class MgServerCriticalValue implements Serializable {
         sb.append(", serverResourceId=").append(serverResourceId);
         sb.append(", metricId=").append(metricId);
         sb.append(", critical=").append(critical);
-        sb.append(", warring=").append(warring);
+        sb.append(", warning=").append(warning);
         sb.append('}');
         return sb.toString();
     }
