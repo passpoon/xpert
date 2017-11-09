@@ -20,7 +20,7 @@ public class MgApp implements Serializable{
     private MonGroup monGroup;
 
     @JsonIgnore
-    private Collection<MgAppCriticalValue> mgServerCriticalValues;
+    private Collection<MgAppCriticalValue> mgAppCriticalValues;
 
     @Id
     @Column(name = "mon_group_id", nullable = false)
@@ -85,9 +85,9 @@ public class MgApp implements Serializable{
 
 
     @OneToMany(mappedBy = "mgApp")
-    public Collection<MgAppCriticalValue> getMgServerCriticalValues() { return mgServerCriticalValues; }
+    public Collection<MgAppCriticalValue> getMgAppCriticalValues() { return mgAppCriticalValues; }
 
-    public void setMgServerCriticalValues(Collection<MgAppCriticalValue> mgServerCriticalValues) { this.mgServerCriticalValues = mgServerCriticalValues; }
+    public void setMgAppCriticalValues(Collection<MgAppCriticalValue> mgAppCriticalValues) { this.mgAppCriticalValues = mgAppCriticalValues; }
 
 
     @Override

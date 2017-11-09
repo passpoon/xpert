@@ -12,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class ApplicationService {
@@ -84,25 +81,22 @@ public class ApplicationService {
         return updateData;
     }
 
-    public MgAppCriticalValue getAppMetrics(Integer monitoringGroupId, Integer appResourceId) {
+    public Collection<MgAppCriticalValue> getAppMetrics(Integer monitoringGroupId, Integer appResourceId) {
 
-        MgAppCriticalValue id = mgAppCriticalValueRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
+        MgApp mgApp = mgAppRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
 
-        MgAppCriticalValue out = new MgAppCriticalValue();
-        out.setMetricId(id.getMetricId());
-        out.setWarning(id.getWarning());
-        out.setCritical(id.getCritical());
+        Collection<MgAppCriticalValue> mgAppCriticalValues = mgApp.getMgAppCriticalValues();
 
-        return out;
+        return mgAppCriticalValues;
     }
 
-    /*public MgAppCriticalValue updateAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer metricId, MgServerCriticalValue mgServerCriticalValue) {
+    public MgAppCriticalValue updateAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer metricId, MgAppCriticalValue mgAppCriticalValue) {
 
-        MgAppCriticalValue updateServerMetric = mgAppCriticalValueRepository.findByMonGroupIdAndAppResourceIdAndMetricId(monitoringGroupId, appResourceId, metricId);
+        MgAppCriticalValue updateAppMetric = mgAppCriticalValueRepository.findByMonGroupIdAndAppResourceIdAndMetricId(monitoringGroupId, appResourceId, metricId);
 
-        updateServerMetric.setWarning(mgServerCriticalValue.getWarning());
-        updateServerMetric.setCritical(mgServerCriticalValue.getCritical());
+        updateAppMetric.setWarning(mgAppCriticalValue.getWarning());
+        updateAppMetric.setCritical(mgAppCriticalValue.getCritical());
 
-        return updateServerMetric;
-    }*/
+        return updateAppMetric;
+    }
 }

@@ -10,5 +10,4 @@ public interface MgAppCriticalValueRepository extends CrudRepository<MgAppCritic
     public MgAppCriticalValue findByMonGroupIdAndAppResourceId(Integer monGroupId, Integer appResourceId);
 
     public MgAppCriticalValue findByMonGroupIdAndAppResourceIdAndMetricId(Integer monGroupId, Integer appResourceId, Integer metricId);
-
 }

@@ -5,6 +5,7 @@ import com.crossent.monitoring.portal.common.test.AbstractMockTest;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.MgApp;
+import com.crossent.monitoring.portal.jpa.domain.MgAppCriticalValue;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 
@@ -47,19 +48,19 @@ public class ApplicationTest extends AbstractMockTest {
 
         get("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/metrics");
     }
-/*
+
     @Test
     public void updateServerMetrics() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer serverResourceId =  1;
-        Integer metricId = 189;
+        Integer appResourceId =  1;
+        Integer metricId = 207;
 
-        MgServerCriticalValue update = new MgServerCriticalValue();
+        MgAppCriticalValue update = new MgAppCriticalValue();
         update.setWarning(80.0);
         update.setCritical(100.0);
 
-        put("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+serverResourceId+"/metrics/"+metricId+"", update);
-    }*/
+        put("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/metrics/"+metricId+"", update);
+    }
 
 
 }

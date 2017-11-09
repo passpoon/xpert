@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 @RestController
 public class ApplicationController extends BaseController {
@@ -34,21 +35,20 @@ public class ApplicationController extends BaseController {
     public void updateServer(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody MgApp mgApp) {
 
         applicationService.updateApp(monitoringGroupId, appResourceId, mgApp);
-
     }
 
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics", method = RequestMethod.GET)
-    public MgAppCriticalValue getServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
+    public Collection<MgAppCriticalValue> getServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
 
-        MgAppCriticalValue appMetrics = applicationService.getAppMetrics(monitoringGroupId, appResourceId);
+        Collection<MgAppCriticalValue> appMetrics = applicationService.getAppMetrics(monitoringGroupId, appResourceId);
 
         return appMetrics;
     }
 
-    /*@Transactional
-    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server/servers/{serverResourceId}/metrics/{metricId}", method = RequestMethod.PUT)
-    public void updateServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceID, @PathVariable Integer metricId, @RequestBody MgServerCriticalValue mgServerCriticalValue) {
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics/{metricId}", method = RequestMethod.PUT)
+    public void updateAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @PathVariable Integer metricId, @RequestBody MgAppCriticalValue mgAppCriticalValue) {
 
-        serverService.updateServerMetrics(monitoringGroupId, serverResourceID, metricId, mgServerCriticalValue);
-    }*/
+        applicationService.updateAppMetrics(monitoringGroupId, appResourceId, metricId, mgAppCriticalValue);
+    }
 }

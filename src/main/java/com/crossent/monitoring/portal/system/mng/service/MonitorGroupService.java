@@ -46,6 +46,15 @@ public class MonitorGroupService {
     @Autowired
     ServerResourceRepository serverResourceRepository;
 
+    @Autowired
+    AppResourceRepository appResourceRepository;
+
+    @Autowired
+    AppInfoCriticalValueRepository appInfoCriticalValueRepository;
+
+    @Autowired
+    MgAppCriticalValueRepository mgAppCriticalValueRepository;
+
 
     public PagingResVo<MonGroup> pagingMonGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -207,6 +216,33 @@ public class MonitorGroupService {
             mgApp.setAppResourceId(appId);
 
             MgApp groupMap = mgAppRepository.save(mgApp);
+
+            AppResource appResource = appResourceRepository.findById(groupMap.getAppResourceId());
+            AppInfo appInfo = appResource.getAppInfo();
+            Collection<Measurement> measurements = appInfo.getMeasurements();
+            for (Measurement measurement : measurements) {
+                Collection<Metric> metrics = measurement.getMetrics();
+                for (Metric metric : metrics) {
+                    Integer id = metric.getId();
+
+                    AppInfoCriticalValuePK appInfoCriticalValuePK = new AppInfoCriticalValuePK();
+
+                    appInfoCriticalValuePK.setAppInfoId(appInfo.getId());
+                    appInfoCriticalValuePK.setMeasurementId(measurement.getId());
+                    appInfoCriticalValuePK.setMetricId(id);
+
+                    AppInfoCriticalValue appInfoCriticalValue = appInfoCriticalValueRepository.findOne(appInfoCriticalValuePK);
+                    if (appInfoCriticalValue != null) {
+                        MgAppCriticalValue mgAppCriticalValue = new MgAppCriticalValue();
+                        mgAppCriticalValue.setMonGroupId(monitoringGroupId);
+                        mgAppCriticalValue.setAppResourceId(appId);
+                        mgAppCriticalValue.setMetricId(id);
+                        mgAppCriticalValue.setWarning(appInfoCriticalValue.getWarning());
+                        mgAppCriticalValue.setCritical(appInfoCriticalValue.getCritical());
+                        mgAppCriticalValueRepository.save(mgAppCriticalValue);
+                    }
+                }
+            }
         }
     }
 

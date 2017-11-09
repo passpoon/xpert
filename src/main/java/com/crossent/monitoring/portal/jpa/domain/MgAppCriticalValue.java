@@ -1,5 +1,7 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -13,6 +15,7 @@ public class MgAppCriticalValue implements Serializable {
     private Double critical;
     private Double warning;
 
+    @JsonIgnore
     private MgApp mgApp;
 
     @Id
