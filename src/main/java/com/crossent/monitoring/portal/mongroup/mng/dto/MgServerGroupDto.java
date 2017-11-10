@@ -1,28 +1,22 @@
-package com.crossent.monitoring.portal.jpa.domain;
+package com.crossent.monitoring.portal.mongroup.mng.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.crossent.monitoring.portal.jpa.domain.MonGroup;
+import com.crossent.monitoring.portal.jpa.domain.ServerType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "mg_server_group", schema = "mondb", catalog = "")
-public class MgServerGroup implements Serializable {
+public class MgServerGroupDto implements Serializable {
     private Integer id;
-    private Integer monGroupId;
     private String name;
-    private Integer serverTypeId;
     private String description;
     private String dashboardYn;
     private String monitoringYn;
-    @JsonIgnore
-    private MonGroup monGroup;
-    @JsonIgnore
-    private ServerType serverType;
 
-    @Id
-    @Column(name = "id", nullable = false)
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Integer monGroupId;
+    private Integer serverTypeId;
+
+
     public Integer getId() {
         return id;
     }
@@ -31,8 +25,6 @@ public class MgServerGroup implements Serializable {
         this.id = id;
     }
 
-    @Basic
-    @Column(name = "name", nullable = false, length = 100)
     public String getName() {
         return name;
     }
@@ -41,8 +33,6 @@ public class MgServerGroup implements Serializable {
         this.name = name;
     }
 
-    @Basic
-    @Column(name = "description", nullable = true, length = 200)
     public String getDescription() {
         return description;
     }
@@ -51,8 +41,6 @@ public class MgServerGroup implements Serializable {
         this.description = description;
     }
 
-    @Basic
-    @Column(name = "dashboard_yn", nullable = true, length = 1)
     public String getDashboardYn() {
         return dashboardYn;
     }
@@ -61,8 +49,6 @@ public class MgServerGroup implements Serializable {
         this.dashboardYn = dashboardYn;
     }
 
-    @Basic
-    @Column(name = "monitoring_yn", nullable = true, length = 1)
     public String getMonitoringYn() {
         return monitoringYn;
     }
@@ -72,34 +58,10 @@ public class MgServerGroup implements Serializable {
     }
 
 
-
-    @ManyToOne
-    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    public MonGroup getMonGroup() {
-        return monGroup;
-    }
-
-    public void setMonGroup(MonGroup monGroup) {
-        this.monGroup = monGroup;
-    }
-
-    @ManyToOne
-    @JoinColumn(name = "server_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    public ServerType getServerType() {
-        return serverType;
-    }
-
-    public void setServerType(ServerType serverType) {
-        this.serverType = serverType;
-    }
-
-    //추가
-    @Column(name = "mon_group_id", nullable = false)
     public Integer getMonGroupId() { return monGroupId; }
 
     public void setMonGroupId(Integer monGroupId) { this.monGroupId = monGroupId; }
 
-    @Column(name = "server_type_id", nullable = false)
     public Integer getServerTypeId() { return serverTypeId; }
 
     public void setServerTypeId(Integer serverTypeId) { this.serverTypeId = serverTypeId; }
@@ -112,6 +74,8 @@ public class MgServerGroup implements Serializable {
         sb.append(", description='").append(description).append('\'');
         sb.append(", dashboardYn='").append(dashboardYn).append('\'');
         sb.append(", monitoringYn='").append(monitoringYn).append('\'');
+        sb.append(", monGroupId='").append(monGroupId).append('\'');
+        sb.append(", serverTypeId='").append(serverTypeId).append('\'');
         sb.append('}');
         return sb.toString();
     }

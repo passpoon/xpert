@@ -9,4 +9,6 @@ public interface ServerTypeMeasurementMapRepository extends CrudRepository<Serve
 
     public void deleteByServerTypeIdAndMeasurementIdIn(Integer serverTypeId, Integer[] measurementIds);
     public void deleteByServerTypeIdAndMeasurementId(Integer serverTypeId, Integer measurementId);
+
+    public void deleteByServerTypeIdIn(Integer[] ids);
 }

@@ -30,13 +30,13 @@ public class UserTest extends AbstractMockTest {
     public void insertUser() throws Exception {
         User dto = new User();
 
-        dto.setId("monuser11");
+        dto.setId("monuser13");
         dto.setName("빼박");
         dto.setEmail("crossent@crossent.com");
         dto.setPhone("010-2222-3454");
         dto.setChatId("chat");
         dto.setDescription("test inset user");
-        dto.setUuid("dddddddd");
+        dto.setUuid("aaaaaa");
 
         post("/system/management/users", dto);
     }
@@ -45,7 +45,7 @@ public class UserTest extends AbstractMockTest {
     public void deleteUsers() throws Exception {
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("userIds", "test3,test4");
+        params.add("userIds", "monuser12,monuser13");
 
         delete("/system/management/users", params);
     }
@@ -75,7 +75,7 @@ public class UserTest extends AbstractMockTest {
     @Test
     public void deleteUser() throws Exception {
 
-        String userId = "test2";
+        String userId = "monuser13";
         delete("/system/management/users/" +userId);
     }
 
