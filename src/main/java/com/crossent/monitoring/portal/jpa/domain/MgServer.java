@@ -16,8 +16,12 @@ public class MgServer implements Serializable {
     private String monitoringYn;
     private MonGroup monGroup;
     private ServerResource serverResource;
+
     @JsonIgnore
     private Collection<MgLogEvent> mgLogEvents;
+
+    @JsonIgnore
+    private Collection<MgServerCriticalValue> mgServerCriticalValues;
 
     @Id
     @Column(name = "mon_group_id", nullable = false)
@@ -81,6 +85,13 @@ public class MgServer implements Serializable {
         this.serverResource = serverResource;
     }
 
+    //추가
+    @OneToMany(mappedBy = "mgServer")
+    public Collection<MgServerCriticalValue> getMgServerCriticalValues() { return mgServerCriticalValues; }
+
+    public void setMgServerCriticalValues(Collection<MgServerCriticalValue> mgServerCriticalValues) { this.mgServerCriticalValues = mgServerCriticalValues; }
+
+
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "mg_log_event_server_map",
             joinColumns = {@JoinColumn(name = "mon_group_id", referencedColumnName = "mon_group_id"), @JoinColumn(name = "server_resource_id", referencedColumnName = "server_resource_id")},
@@ -92,6 +103,7 @@ public class MgServer implements Serializable {
     public void setMgLogEvents(Collection<MgLogEvent> mgLogEvents) {
         this.mgLogEvents = mgLogEvents;
     }
+
 
     @Override
     public String toString() {

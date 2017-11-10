@@ -11,7 +11,7 @@ public class ServerTypeCriticalValue implements Serializable {
     private Integer measurementId;
     private Integer metricId;
     private Double critical;
-    private Double warnning;
+    private Double warning;
 
     @Id
     @Column(name = "server_type_id", nullable = false)
@@ -54,13 +54,13 @@ public class ServerTypeCriticalValue implements Serializable {
     }
 
     @Basic
-    @Column(name = "warnning", nullable = true, precision = 0)
-    public Double getWarnning() {
-        return warnning;
+    @Column(name = "warning", nullable = true, precision = 0)
+    public Double getWarning() {
+        return warning;
     }
 
-    public void setWarnning(Double warnning) {
-        this.warnning = warnning;
+    public void setWarning(Double warning) {
+        this.warning = warning;
     }
 
     @Override
@@ -70,7 +70,7 @@ public class ServerTypeCriticalValue implements Serializable {
         sb.append(", measurementId=").append(measurementId);
         sb.append(", metricId=").append(metricId);
         sb.append(", critical=").append(critical);
-        sb.append(", warnning=").append(warnning);
+        sb.append(", warning=").append(warning);
         sb.append('}');
         return sb.toString();
     }

@@ -2,8 +2,11 @@ package com.crossent.monitoring.portal.jpa.domain;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "mg_app", schema = "mondb")
@@ -15,6 +18,9 @@ public class MgApp implements Serializable{
     private String dashboardYn;
     private String monitoringYn;
     private MonGroup monGroup;
+
+    @JsonIgnore
+    private Collection<MgAppCriticalValue> mgAppCriticalValues;
 
     @Id
     @Column(name = "mon_group_id", nullable = false)
@@ -76,6 +82,13 @@ public class MgApp implements Serializable{
     public void setMonGroup(MonGroup monGroup) {
         this.monGroup = monGroup;
     }
+
+
+    @OneToMany(mappedBy = "mgApp")
+    public Collection<MgAppCriticalValue> getMgAppCriticalValues() { return mgAppCriticalValues; }
+
+    public void setMgAppCriticalValues(Collection<MgAppCriticalValue> mgAppCriticalValues) { this.mgAppCriticalValues = mgAppCriticalValues; }
+
 
     @Override
     public String toString() {

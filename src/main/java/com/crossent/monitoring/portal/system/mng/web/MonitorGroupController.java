@@ -7,7 +7,7 @@ import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.AppResource;
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
 import com.crossent.monitoring.portal.jpa.domain.ServerResource;
-import com.crossent.monitoring.portal.jpa.domain.User;
+import com.crossent.monitoring.portal.system.mng.dto.MgUserDto;
 import com.crossent.monitoring.portal.system.mng.service.MonitorGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -125,4 +125,63 @@ public class MonitorGroupController extends BaseController {
         monitorGroupService.deleteMonGroupApp(monitoringGroupId, appResourceId);
     }
 
+    // 관리자
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/managers", method = RequestMethod.GET)
+    public Collection<MgUserDto> getMonGroupManagers(@PathVariable Integer monitoringGroupId) {
+
+        Collection<MgUserDto> mgUserDto = monitorGroupService.getMonGroupManagers(monitoringGroupId);
+
+        return mgUserDto;
+    }
+
+    @Transactional // 다중 관리자추가
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/managers", method = RequestMethod.POST)
+    public void insertMonGroupManagers(@PathVariable Integer monitoringGroupId, @RequestBody String[] userIds) {
+
+        monitorGroupService.insertMonGroupManagers(monitoringGroupId, userIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/managers" , method = RequestMethod.DELETE)
+    public void deleteMonGroupManagers(@PathVariable Integer monitoringGroupId, @RequestParam String[] userIds) {
+
+        monitorGroupService.deleteMonGroupManagers(monitoringGroupId, userIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/managers/{userId}" , method = RequestMethod.DELETE)
+    public void deleteMonGroupManager(@PathVariable Integer monitoringGroupId, @PathVariable String userId) {
+
+        monitorGroupService.deleteMonGroupManager(monitoringGroupId, userId);
+    }
+
+    // 운영자
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/operators", method = RequestMethod.GET)
+    public Collection<MgUserDto> getMonGroupOperators(@PathVariable Integer monitoringGroupId) {
+
+        Collection<MgUserDto> mgUserDto = monitorGroupService.getMonGroupOperators(monitoringGroupId);
+
+        return mgUserDto;
+    }
+
+    @Transactional // 다중 관리자추가
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/operators", method = RequestMethod.POST)
+    public void insertMonGroupOperators(@PathVariable Integer monitoringGroupId, @RequestBody String[] userIds) {
+
+        monitorGroupService.insertMonGroupOperators(monitoringGroupId, userIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/operators" , method = RequestMethod.DELETE)
+    public void deleteMonGroupOperators(@PathVariable Integer monitoringGroupId, @RequestParam String[] userIds) {
+
+        monitorGroupService.deleteMonGroupOperators(monitoringGroupId, userIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/operators/{userId}" , method = RequestMethod.DELETE)
+    public void deleteMonGroupOperator(@PathVariable Integer monitoringGroupId, @PathVariable String userId) {
+
+        monitorGroupService.deleteMonGroupOperator(monitoringGroupId, userId);
+    }
 }

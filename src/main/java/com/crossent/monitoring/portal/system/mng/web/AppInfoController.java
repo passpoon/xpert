@@ -23,7 +23,7 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos", method = RequestMethod.GET)
     public PagingResVo pagingAppInfo(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
-        PagingResVo<AppInfoDto> resPage = appInfoService.pagingUserGroup(paging, search);
+        PagingResVo<AppInfoDto> resPage = appInfoService.pagingAppInfo(paging, search);
 
         return resPage;
     }

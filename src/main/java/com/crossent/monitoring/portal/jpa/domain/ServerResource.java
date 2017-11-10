@@ -1,5 +1,7 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,6 +14,9 @@ public class ServerResource  implements Serializable {
     private String ip;
     private String description;
     private Integer serverTypeId;
+
+    @JsonIgnore
+    private ServerType serverType;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -70,6 +75,12 @@ public class ServerResource  implements Serializable {
 
     public void setServerTypeId(Integer serverTypeId) { this.serverTypeId = serverTypeId; }
 
+    @ManyToOne
+    @JoinColumn(name = "server_type_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public ServerType getServerType() { return serverType; }
+
+    public void setServerType(ServerType serverType) { this.serverType = serverType; }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ServerResource{");
@@ -78,6 +89,7 @@ public class ServerResource  implements Serializable {
         sb.append(", hostName='").append(hostName).append('\'');
         sb.append(", ip='").append(ip).append('\'');
         sb.append(", description='").append(description).append('\'');
+        sb.append(", serverTypeId='").append(serverTypeId).append('\'');
         sb.append('}');
         return sb.toString();
     }
