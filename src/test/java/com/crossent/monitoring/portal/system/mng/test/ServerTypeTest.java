@@ -60,7 +60,7 @@ public class ServerTypeTest extends AbstractMockTest{
     public void deleteServerTypes() throws  Exception {
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("serverTypeIds", "5,7");
+        params.add("serverTypeIds", "22,23");
 
         delete("/system/management/server-types", params);
     }
@@ -88,7 +88,7 @@ public class ServerTypeTest extends AbstractMockTest{
     @Test
     public void deleteServerType() throws Exception {
 
-        Integer serverTypeId = 4;
+        Integer serverTypeId = 19;
 
         delete("/system/management/server-types/" + serverTypeId);
     }

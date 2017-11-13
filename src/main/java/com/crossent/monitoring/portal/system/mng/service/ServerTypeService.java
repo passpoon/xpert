@@ -6,6 +6,8 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
 import com.crossent.monitoring.portal.jpa.domain.ServerTypeMeasurementMap;
+import com.crossent.monitoring.portal.jpa.repository.MgServerGroupRepository;
+import com.crossent.monitoring.portal.jpa.repository.ServerResourceRepository;
 import com.crossent.monitoring.portal.jpa.repository.ServerTypeMeasurementMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.ServerTypeRepository;
 import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
@@ -24,6 +26,12 @@ public class ServerTypeService  {
 
     @Autowired
     ServerTypeMeasurementMapRepository serverTypeMeasurementMapRepository;
+
+    @Autowired
+    ServerResourceRepository serverResourceRepository;
+
+    @Autowired
+    MgServerGroupRepository mgServerGroupRepository;
 
     public PagingResVo<ServerTypeDto> pagingServerType(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -112,6 +120,11 @@ public class ServerTypeService  {
 
     public void deleteServerTypes(Integer[] serverTypeIds) {
 
+        // 서버 리소스, map, mg_server_group 삭제
+        /*serverTypeMeasurementMapRepository.deleteByServerTypeIdIn(serverTypeIds);
+        mgServerGroupRepository.deleteByServerTypeIdIn(serverTypeIds);
+        serverResourceRepository.deleteByIdIn(serverTypeIds);
+*/
         serverTypeRepository.deleteByIdIn(serverTypeIds);
     }
 
@@ -175,7 +188,4 @@ public class ServerTypeService  {
 
         serverTypeMeasurementMapRepository.deleteByServerTypeIdAndMeasurementId(serverTypeId, measurementId);
     }
-
-
-
 }

@@ -4,6 +4,8 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.User;
+import com.crossent.monitoring.portal.jpa.repository.UserGroupMapRepository;
+import com.crossent.monitoring.portal.jpa.repository.UserGroupRepository;
 import com.crossent.monitoring.portal.jpa.repository.UserRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +22,12 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    UserGroupRepository userGroupRepository;
+
+    @Autowired
+    UserGroupMapRepository userGroupMapRepository;
 
     public PagingResVo<User> pagingUser(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -88,6 +96,7 @@ public class UserService {
 
     public void deleteUsers(String[] delUsers) {
 
+        userGroupMapRepository.deleteByUserId(delUsers);
         userRepository.deleteByIdIn(delUsers);
     }
 
@@ -128,6 +137,7 @@ public class UserService {
 
     public void deleteUser(String userId) {
 
+        userGroupMapRepository.deleteByUserId(userId);
         userRepository.delete(userId);
     }
 
