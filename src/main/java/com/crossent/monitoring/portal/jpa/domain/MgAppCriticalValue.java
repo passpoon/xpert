@@ -18,6 +18,8 @@ public class MgAppCriticalValue implements Serializable {
     @JsonIgnore
     private MgApp mgApp;
 
+    private Metric metric;
+
     @Id
     @Column(name = "mon_group_id", nullable = false)
     public Integer getMonGroupId() {
@@ -76,6 +78,18 @@ public class MgAppCriticalValue implements Serializable {
 
     public void setMgApp(MgApp mgApp) { this.mgApp = mgApp; }
 
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="metric_id", referencedColumnName = "id", insertable = false, updatable = false)
+    })
+    public Metric getMetric() {
+        return metric;
+    }
+
+    public void setMetric(Metric metric) {
+        this.metric = metric;
+    }
 
     @Override
     public String toString() {

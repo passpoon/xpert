@@ -18,8 +18,7 @@ public class MgServerCriticalValue implements Serializable {
     @JsonIgnore
     private MgServer mgServer;
 
-    /*@JsonIgnore
-    private Metric metric;*/
+    private Metric metric;
 
     @Id
     @Column(name = "mon_group_id", nullable = false)
@@ -71,7 +70,6 @@ public class MgServerCriticalValue implements Serializable {
         this.warning = warning;
     }
 
-
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name="mon_group_id", referencedColumnName = "mon_group_id", insertable = false, updatable = false),
@@ -81,13 +79,17 @@ public class MgServerCriticalValue implements Serializable {
 
     public void setMgServer(MgServer mgServer) { this.mgServer = mgServer; }
 
-    /*public Metric getMetric() {
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="metric_id", referencedColumnName = "id", insertable = false, updatable = false)
+    })
+    public Metric getMetric() {
         return metric;
     }
 
     public void setMetric(Metric metric) {
         this.metric = metric;
-    }*/
+    }
 
     @Override
     public String toString() {

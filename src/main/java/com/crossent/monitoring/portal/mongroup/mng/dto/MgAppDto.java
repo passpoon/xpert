@@ -15,6 +15,7 @@ public class MgAppDto implements Serializable{
     private String dashboardYn;
     private String monitoringYn;
     private String applicationName;
+    private String hostName;
 
     public Integer getMonGroupId() {
         return monGroupId;
@@ -50,6 +51,10 @@ public class MgAppDto implements Serializable{
     public String getApplicationName() { return applicationName; }
 
     public void setApplicationName(String applicationName) { this.applicationName = applicationName; }
+
+    public String getHostName() { return hostName; }
+
+    public void setHostName(String hostName) { this.hostName = hostName; }
 
     @Override
     public String toString() {

@@ -36,6 +36,7 @@ public class ServerService {
         List<MgServerDto> mgServerDtos = new ArrayList<MgServerDto>();
         for(MgServer mgServer : content){
             MgServerDto mgServerDto = new MgServerDto();
+            mgServerDto.setMonGroupId(mgServer.getMonGroupId());
             mgServerDto.setServerResourceId(mgServer.getServerResourceId());
             mgServerDto.setServerName(mgServer.getServerResource().getName());
             mgServerDto.setHostName(mgServer.getServerResource().getHostName());
@@ -100,7 +101,6 @@ public class ServerService {
 
         MgServer mgServer = mgServerRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
         Collection<MgServerCriticalValue> mgServerCriticalValues = mgServer.getMgServerCriticalValues();
-        logger.debug("mgServerCriticalValues :: {} ", mgServerCriticalValues);
 
         return mgServerCriticalValues;
     }

@@ -1,9 +1,11 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.catalina.Server;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "mg_server_group", schema = "mondb", catalog = "")
@@ -15,10 +17,18 @@ public class MgServerGroup implements Serializable {
     private String description;
     private String dashboardYn;
     private String monitoringYn;
+
     @JsonIgnore
     private MonGroup monGroup;
+
     @JsonIgnore
     private ServerType serverType;
+
+    @JsonIgnore
+    private Collection<MgServerGroupCriticalValue> mgServerGroupCriticalValues;
+
+    @JsonIgnore
+    private Collection<MgServer> mgServers;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -103,6 +113,22 @@ public class MgServerGroup implements Serializable {
     public Integer getServerTypeId() { return serverTypeId; }
 
     public void setServerTypeId(Integer serverTypeId) { this.serverTypeId = serverTypeId; }
+
+    //추가
+    @OneToMany(mappedBy = "mgServerGroup")
+    public Collection<MgServerGroupCriticalValue> getMgServerGroupCriticalValues() { return mgServerGroupCriticalValues; }
+
+    public void setMgServerGroupCriticalValues(Collection<MgServerGroupCriticalValue> mgServerGroupCriticalValues) { this.mgServerGroupCriticalValues = mgServerGroupCriticalValues; }
+
+    //추가
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "mg_server_group_server",
+            joinColumns = {@JoinColumn(name = "server_group_id", referencedColumnName = "id")},
+            inverseJoinColumns ={ @JoinColumn(name = "mon_group_id", referencedColumnName = "mon_group_id"), @JoinColumn(name = "server_resource_id", referencedColumnName = "server_resource_id")})
+    public Collection<MgServer> getMgServers() { return mgServers; }
+
+    public void setMgServers(Collection<MgServer> mgServers) { this.mgServers = mgServers; }
+
 
     @Override
     public String toString() {

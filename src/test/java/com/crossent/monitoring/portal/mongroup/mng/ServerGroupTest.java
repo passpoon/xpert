@@ -5,8 +5,8 @@ import com.crossent.monitoring.portal.common.test.AbstractMockTest;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.MgServer;
-import com.crossent.monitoring.portal.jpa.domain.MgServerCriticalValue;
 import com.crossent.monitoring.portal.jpa.domain.MgServerGroup;
+import com.crossent.monitoring.portal.jpa.domain.MgServerGroupCriticalValue;
 import org.junit.Test;
 import org.springframework.util.LinkedMultiValueMap;
 
@@ -21,7 +21,7 @@ public class ServerGroupTest extends AbstractMockTest {
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("name", "서버");
+        /*searchReqVo.addKeyword("name", "서버");*/
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
@@ -35,9 +35,9 @@ public class ServerGroupTest extends AbstractMockTest {
         Integer monitoringGroupId = 1;
 
         MgServerGroup mgServerGroup = new MgServerGroup();
-        mgServerGroup.setName("serverGroup create");
-        mgServerGroup.setServerTypeId(2);
-        mgServerGroup.setDescription("서버그룹 생성 테스트");
+        mgServerGroup.setName("serverGroup insert");
+        mgServerGroup.setServerTypeId(8);
+        mgServerGroup.setDescription("서버그룹 생성 테스트2");
         mgServerGroup.setDashboardYn("N");
         mgServerGroup.setMonitoringYn("N");
 
@@ -56,25 +56,50 @@ public class ServerGroupTest extends AbstractMockTest {
         put("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"", update);
     }
 
-    /*@Test
+    @Test
     public void getServerGroupMetrics() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer serverResourceId = 1;
+        Integer serverGroupId = 1;
 
-        get("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/metrics");
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics");
     }
 
     @Test
-    public void updateServerMetrics() throws Exception {
-        Integer monitoringGroupId = 2;
-        Integer serverResourceId =  3;
-        Integer metricId = 116;
+    public void updateServerGroupMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId =  1;
+        Integer metricId = 207;
 
-        MgServerCriticalValue update = new MgServerCriticalValue();
+        MgServerGroupCriticalValue update = new MgServerGroupCriticalValue();
         update.setWarning(65.42);
         update.setCritical(80.01);
 
-        put("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/metrics/"+metricId+"", update);
-    }*/
+        put("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics/"+metricId+"", update);
+    }
 
+    @Test
+    public void getServerGroupServerResource() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 1;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/servers");
+    }
+
+    @Test  //다중 서버리소스 추가
+    public void insertServerGroupServerResources() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 1;
+        Integer[] serverResourceIds = {1, 6}; // Mg_server에 있는 server resource를 할당
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/servers", serverResourceIds);
+    }
+
+    @Test
+    public void deleteServerGroupServerResource() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 1;
+        Integer serverResourceId = 6;
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/servers/"+serverResourceId+"");
+    }
 }

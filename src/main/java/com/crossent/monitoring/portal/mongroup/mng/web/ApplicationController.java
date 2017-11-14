@@ -23,22 +23,22 @@ public class ApplicationController extends BaseController {
 
 
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps", method = RequestMethod.GET)
-    public PagingResVo pagingServer(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+    public PagingResVo pagingApp(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
-        PagingResVo<MgAppDto> resPage = applicationService.pagingServer(monitoringGroupId, paging, search);
+        PagingResVo<MgAppDto> resPage = applicationService.pagingApp(monitoringGroupId, paging, search);
 
         return resPage;
     }
 
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}", method = RequestMethod.PUT)
-    public void updateServer(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody MgApp mgApp) {
+    public void updateApp(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody MgApp mgApp) {
 
         applicationService.updateApp(monitoringGroupId, appResourceId, mgApp);
     }
 
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics", method = RequestMethod.GET)
-    public Collection<MgAppCriticalValue> getServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
+    public Collection<MgAppCriticalValue> getAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
 
         Collection<MgAppCriticalValue> appMetrics = applicationService.getAppMetrics(monitoringGroupId, appResourceId);
 

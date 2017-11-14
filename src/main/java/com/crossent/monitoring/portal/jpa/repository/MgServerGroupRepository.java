@@ -10,6 +10,8 @@ public interface MgServerGroupRepository extends JpaRepository<MgServerGroup, In
 
     public MgServerGroup findByMonGroupId(Integer monitorGroupId);
 
+    public MgServerGroup findById(Integer serverGroupId);
+
     public MgServerGroup findByMonGroupIdAndId(Integer monitorGroupId, Integer serverGroupId);
 
     public Page<MgServerGroup> findAllByMonGroupId(Pageable pageable, Integer monGroupId);

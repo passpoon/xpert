@@ -49,7 +49,6 @@ public class AppInfoCriticalValuePK implements Serializable {
         return sb.toString();
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

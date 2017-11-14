@@ -30,8 +30,8 @@ public class ServerResourceTest extends AbstractMockTest {
     public void insertServerResource() throws  Exception {
 
         ServerResource serverResource = new ServerResource();
-        serverResource.setName("aaa");
-        serverResource.setHostName("bbb");
+        serverResource.setName("name");
+        serverResource.setHostName("host");
         serverResource.setIp("10.10.10.10");
         serverResource.setServerTypeId(2);
         serverResource.setDescription("ccc");

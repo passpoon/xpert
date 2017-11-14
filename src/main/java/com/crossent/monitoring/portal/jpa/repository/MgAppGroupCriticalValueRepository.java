@@ -7,5 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface MgAppGroupCriticalValueRepository extends CrudRepository<MgAppGroupCriticalValue, MgAppGroupCriticalValuePK> {
 
-
+    public MgAppGroupCriticalValue findByMgAppGroupIdAndMetricId(Integer appGroupId, Integer metricId);
 }

@@ -3,13 +3,10 @@ package com.crossent.monitoring.portal.mongroup.mng.service;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
-import com.crossent.monitoring.portal.jpa.domain.MgServer;
-import com.crossent.monitoring.portal.jpa.domain.MgServerGroup;
-import com.crossent.monitoring.portal.jpa.domain.MgServerGroupCriticalValue;
-import com.crossent.monitoring.portal.jpa.domain.ServerType;
-import com.crossent.monitoring.portal.jpa.repository.MgServerGroupCriticalValueRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerGroupRepository;
+import com.crossent.monitoring.portal.jpa.domain.*;
+import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.mng.dto.MgServerGroupDto;
+import org.apache.catalina.Server;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,17 +19,23 @@ import java.util.*;
 public class ServerGroupService {
     private static Logger logger = LoggerFactory.getLogger(ServerGroupService.class);
 
-    /*@Autowired
-    MgServerRepository mgServerRepository;*/
-
-    /*@Autowired
-    MgServerCriticalValueRepository mgServerCriticalValueRepository;*/
-
     @Autowired
     MgServerGroupRepository mgServerGroupRepository;
 
     @Autowired
     MgServerGroupCriticalValueRepository mgServerGroupCriticalValueRepository;
+
+    @Autowired
+    ServerTypeRepository serverTypeRepository;
+
+    @Autowired
+    ServerTypeCriticalValueRepository serverTypeCriticalValueRepository;
+
+    @Autowired
+    ServerResourceRepository serverResourceRepository;
+
+    @Autowired
+    MgServerGroupServerRepository mgServerGroupServerRepository;
 
     public PagingResVo<MgServerGroupDto> pagingServerGroup(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -48,6 +51,7 @@ public class ServerGroupService {
             mgServerGroupDto.setMonGroupId(mgServerGroup.getMonGroup().getId());
             mgServerGroupDto.setName(mgServerGroup.getName());
             mgServerGroupDto.setServerTypeId(mgServerGroup.getServerType().getId());
+            mgServerGroupDto.setServerTypeName(mgServerGroup.getServerType().getName());
             mgServerGroupDto.setDescription(mgServerGroup.getDescription());
             mgServerGroupDto.setMonitoringYn(mgServerGroup.getMonitoringYn());
             mgServerGroupDto.setDashboardYn(mgServerGroup.getDashboardYn());
@@ -100,6 +104,32 @@ public class ServerGroupService {
         mg.setMonitoringYn(mgServerGroup.getMonitoringYn());
 
         MgServerGroup result = mgServerGroupRepository.save(mg);
+
+        ServerType serverType = serverTypeRepository.findById(result.getServerTypeId());
+        Collection<Measurement> measurements = serverType.getMeasurements();
+        for(Measurement measurement : measurements) {
+            Collection<Metric> metrics = measurement.getMetrics();
+            for(Metric metric : metrics) {
+                Integer id = metric.getId();
+
+                ServerTypeCriticalValuePK serverTypeCriticalValuePK = new ServerTypeCriticalValuePK();
+
+                serverTypeCriticalValuePK.setServerTypeId(serverType.getId());
+                serverTypeCriticalValuePK.setMeasurementId(measurement.getId());
+                serverTypeCriticalValuePK.setMetricId(id);
+
+                ServerTypeCriticalValue serverTypeCriticalValue = serverTypeCriticalValueRepository.findOne(serverTypeCriticalValuePK);
+                if(serverTypeCriticalValue != null) {
+                    MgServerGroupCriticalValue mgServerGroupCriticalValue = new MgServerGroupCriticalValue();
+                    mgServerGroupCriticalValue.setServerGroupId(mgServerGroup.getId());
+                    mgServerGroupCriticalValue.setMetricId(id);
+                    mgServerGroupCriticalValue.setWarning(serverTypeCriticalValue.getWarning());
+                    mgServerGroupCriticalValue.setCritical(serverTypeCriticalValue.getCritical());
+
+                    mgServerGroupCriticalValueRepository.save(mgServerGroupCriticalValue);
+                }
+            }
+        }
     }
 
 
@@ -115,33 +145,49 @@ public class ServerGroupService {
         return updateData;
     }
 
-    /*public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId) {
+    public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId) {
 
-        MgServerGroupCriticalValue id = mgServerGroupCriticalValueRepository.findByMonGroupIdAndServerGroupId(monitoringGroupId, serverGroupId);
+        MgServerGroup mgServerGroup = mgServerGroupRepository.findById(serverGroupId);
+        Collection<MgServerGroupCriticalValue> mgServerGroupCriticalValues = mgServerGroup.getMgServerGroupCriticalValues();
 
-        MgServerGroupCriticalValue out = new MgServerGroupCriticalValue();
-        out.setMetricId(id.getMetricId());
-        out.setWarning(id.getWarning());
-        out.setCritical(id.getCritical());
+        return mgServerGroupCriticalValues;
+    }
+
+    public MgServerGroupCriticalValue updateServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId, Integer metricId, MgServerGroupCriticalValue mgServerGroupCriticalValue) {
+
+        MgServerGroupCriticalValue updateServerGroupMetric = mgServerGroupCriticalValueRepository.findByServerGroupIdAndMetricId(serverGroupId, metricId);
+
+        updateServerGroupMetric.setWarning(mgServerGroupCriticalValue.getWarning());
+        updateServerGroupMetric.setCritical(mgServerGroupCriticalValue.getCritical());
+
+        MgServerGroupCriticalValue updateData = mgServerGroupCriticalValueRepository.save(updateServerGroupMetric);
+
+        return updateData;
+    }
+
+    public Collection<MgServer> getServerGroupServerResource(Integer monitoringGroupId, Integer serverGroupId) {
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
 
-        return null;
-        Collection<MgServerGroupCriticalValue> mgServerCriticalValues = mgServerGroup.g // 테스트
+        Collection<MgServer> mgServers = mgServerGroup.getMgServers();
 
-        return mgServerCriticalValues;
-    }*/
+        return mgServers;
+    }
 
-    /*public MgServerCriticalValue updateServerMetrics(Integer monitoringGroupId, Integer serverResourceId, Integer metricId, MgServerCriticalValue mgServerCriticalValue) {
+    public void insertServerGroupServerResources(Integer monitoringGroupId, Integer serverGroupId, Integer[] serverResourceIds) {
 
-        MgServerCriticalValue updateServerMetric = mgServerCriticalValueRepository.findByMonGroupIdAndServerResourceIdAndMetricId(monitoringGroupId, serverResourceId, metricId);
+        for(Integer serverResourceId : serverResourceIds) {
+            MgServerGroupServer map = new MgServerGroupServer();
+            map.setMonGroupId(monitoringGroupId);
+            map.setServerGroupId(serverGroupId);
+            map.setServerResourceId(serverResourceId);
 
-        updateServerMetric.setWarning(mgServerCriticalValue.getWarning());
-        updateServerMetric.setCritical(mgServerCriticalValue.getCritical());
+            MgServerGroupServer result = mgServerGroupServerRepository.save(map);
+        }
+    }
 
-        MgServerCriticalValue updateData = mgServerCriticalValueRepository.save(updateServerMetric);
+    public void deleteServerGroupServerResource(Integer monitoringGroupId, Integer serverGroupId, Integer serverResourceId) {
 
-        return updateData;
-    }*/
-
+        mgServerGroupServerRepository.deleteByMonGroupIdAndServerGroupIdAndServerResourceId(monitoringGroupId, serverGroupId, serverResourceId);
+    }
 }

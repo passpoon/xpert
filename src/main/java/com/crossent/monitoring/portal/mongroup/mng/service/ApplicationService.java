@@ -23,7 +23,7 @@ public class ApplicationService {
     @Autowired
     MgAppCriticalValueRepository mgAppCriticalValueRepository;
 
-    public PagingResVo<MgAppDto> pagingServer(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    public PagingResVo<MgAppDto> pagingApp(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Page<MgApp> allMonGroupId = mgAppRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
 
@@ -33,8 +33,10 @@ public class ApplicationService {
         List<MgAppDto> mgAppDtos = new ArrayList<MgAppDto>();
         for(MgApp mgApp : content){
             MgAppDto mgAppDto = new MgAppDto();
+            mgAppDto.setMonGroupId(mgApp.getMonGroupId());
             mgAppDto.setAppResourceId(mgApp.getAppResourceId());
             mgAppDto.setApplicationName(mgApp.getAppResource().getName());
+            mgAppDto.setHostName(mgApp.getAppResource().getServerResource().getHostName());
             mgAppDto.setMonitoringYn(mgApp.getMonitoringYn());
             mgAppDto.setDashboardYn(mgApp.getDashboardYn());
 

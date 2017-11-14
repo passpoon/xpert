@@ -1,12 +1,12 @@
 package com.crossent.monitoring.portal.mongroup.mng.dto;
 
+import com.crossent.monitoring.portal.jpa.domain.AppInfo;
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
-import com.crossent.monitoring.portal.jpa.domain.ServerType;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-public class MgServerGroupDto implements Serializable {
+public class MgAppGroupDto implements Serializable {
     private Integer id;
     private String name;
     private String description;
@@ -14,8 +14,8 @@ public class MgServerGroupDto implements Serializable {
     private String monitoringYn;
 
     private Integer monGroupId;
-    private Integer serverTypeId;
-    private String serverTypeName;
+    private Integer appInfoId;
+    private String appInfoName;
 
 
     public Integer getId() {
@@ -58,29 +58,28 @@ public class MgServerGroupDto implements Serializable {
         this.monitoringYn = monitoringYn;
     }
 
-
     public Integer getMonGroupId() { return monGroupId; }
 
     public void setMonGroupId(Integer monGroupId) { this.monGroupId = monGroupId; }
 
-    public Integer getServerTypeId() { return serverTypeId; }
+    public Integer getAppInfoId() { return appInfoId; }
 
-    public void setServerTypeId(Integer serverTypeId) { this.serverTypeId = serverTypeId; }
+    public void setAppInfoId(Integer appInfoId) { this.appInfoId = appInfoId; }
 
-    public String getServerTypeName() { return serverTypeName; }
+    public String getAppInfoName() { return appInfoName; }
 
-    public void setServerTypeName(String serverTypeName) { this.serverTypeName = serverTypeName; }
+    public void setAppInfoName(String appInfoName) { this.appInfoName = appInfoName; }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("MgServerGroup{");
+        final StringBuilder sb = new StringBuilder("MgAppGroup{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", dashboardYn='").append(dashboardYn).append('\'');
         sb.append(", monitoringYn='").append(monitoringYn).append('\'');
-        sb.append(", monGroupId='").append(monGroupId).append('\'');
-        sb.append(", serverTypeId='").append(serverTypeId).append('\'');
+        sb.append(", appInfoId='").append(appInfoId).append('\'');
+        sb.append(", appInfoName='").append(appInfoName).append('\'');
         sb.append('}');
         return sb.toString();
     }

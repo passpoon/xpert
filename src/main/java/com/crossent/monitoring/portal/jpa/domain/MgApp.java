@@ -40,18 +40,6 @@ public class MgApp implements Serializable{
         this.appResourceId = appResourceId;
     }
 
-    @ManyToOne
-    @JoinColumn(name = "app_resource_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
-    public AppResource getAppResource() {
-        return appResource;
-    }
-
-    public void setAppResource(AppResource appResource) {
-        this.appResource = appResource;
-    }
-
-
-
     @Basic
     @Column(name = "dashboard_yn", nullable = true, length = 1)
     public String getDashboardYn() {
@@ -83,7 +71,17 @@ public class MgApp implements Serializable{
         this.monGroup = monGroup;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "app_resource_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public AppResource getAppResource() {
+        return appResource;
+    }
 
+    public void setAppResource(AppResource appResource) {
+        this.appResource = appResource;
+    }
+
+    //추가
     @OneToMany(mappedBy = "mgApp")
     public Collection<MgAppCriticalValue> getMgAppCriticalValues() { return mgAppCriticalValues; }
 

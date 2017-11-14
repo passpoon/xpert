@@ -1,5 +1,7 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -11,6 +13,11 @@ public class MgServerGroupCriticalValue implements Serializable {
     private Integer metricId;
     private Double critical;
     private Double warning;
+
+    @JsonIgnore
+    private MgServerGroup mgServerGroup;
+
+    private Metric metric;
 
     @Id
     @Column(name = "server_group_id", nullable = false)
@@ -51,6 +58,23 @@ public class MgServerGroupCriticalValue implements Serializable {
     public void setWarning(Double warning) {
         this.warning = warning;
     }
+
+    // 추가
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="server_group_id", referencedColumnName = "id", insertable = false, updatable = false)
+    })
+    public MgServerGroup getMgServerGroup() { return mgServerGroup; }
+
+    public void setMgServerGroup(MgServerGroup mgServerGroup) { this.mgServerGroup = mgServerGroup; }
+
+    @ManyToOne
+    @JoinColumns({
+            @JoinColumn(name="metric_id", referencedColumnName = "id", insertable = false, updatable = false)
+    })
+    public Metric getMetric() { return metric; }
+
+    public void setMetric(Metric metric) { this.metric = metric; }
 
     @Override
     public String toString() {

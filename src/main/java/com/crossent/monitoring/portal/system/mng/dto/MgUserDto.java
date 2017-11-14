@@ -22,9 +22,7 @@ public class MgUserDto implements Serializable {
         return monGroupId;
     }
 
-    public void setMonGroupId(Integer monGroupId) {
-        this.monGroupId = monGroupId;
-    }
+    public void setMonGroupId(Integer monGroupId) { this.monGroupId = monGroupId; }
 
     public String getUserName() { return userName; }
 
