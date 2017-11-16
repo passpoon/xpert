@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "server_resource", schema = "mondb")
@@ -17,6 +18,9 @@ public class ServerResource  implements Serializable {
 
     @JsonIgnore
     private ServerType serverType;
+
+    @JsonIgnore
+    private Collection<MonGroup> monGroups;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -80,6 +84,22 @@ public class ServerResource  implements Serializable {
     public ServerType getServerType() { return serverType; }
 
     public void setServerType(ServerType serverType) { this.serverType = serverType; }
+
+    //common
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "mg_server",
+            joinColumns = @JoinColumn(name = "server_resource_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))
+    public Collection<MonGroup> getMonGroups() {
+        return monGroups;
+    }
+
+    public void setMonGroups(Collection<MonGroup> monGroups) {
+        this.monGroups = monGroups;
+    }
+
+
+
 
     @Override
     public String toString() {

@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Collection;
+
 
 public interface AppResourceRepository extends JpaRepository<AppResource, Integer> {
 
@@ -15,4 +17,6 @@ public interface AppResourceRepository extends JpaRepository<AppResource, Intege
     public Page<AppResource> findByDescriptionLike(Pageable pageable, String description);
 
     public void deleteByIdIn(Integer[] ids);
+
+    public Collection<AppResource> findAllByNameLikeAndMonGroups_Id(String name, Integer monitoringGroupId);
 }

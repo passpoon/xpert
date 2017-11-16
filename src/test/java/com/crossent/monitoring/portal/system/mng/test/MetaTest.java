@@ -111,4 +111,16 @@ public class MetaTest extends AbstractMockTest {
 
         delete("/system/management/meta/"+metaId+"/manuals/"+manualId+"");
     }
+
+    @Test
+    public void getManuals() throws Exception {
+
+        Integer metaId =  12;
+        String name = "aa";
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("metaId", "12");
+        params.add("name", name);
+
+        get("/system/management/meta/manuals", params);
+    }
 }

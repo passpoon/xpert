@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Collection;
 
 
 public interface ServerTypeRepository extends JpaRepository<ServerType, Integer> {
@@ -17,4 +18,6 @@ public interface ServerTypeRepository extends JpaRepository<ServerType, Integer>
     public Page<ServerType> findByDescriptionLike(Pageable pageable, String description);
 
     public void deleteByIdIn(Integer[] ids);
+
+    /*public Collection<ServerType> findAllByNameLikeAndServerResources_Id(String name, Integer serverResourceId);*/
 }

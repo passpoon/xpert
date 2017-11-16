@@ -1,7 +1,10 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "manual", schema = "mondb")
@@ -10,6 +13,9 @@ public class Manual implements Serializable {
     private String name;
     private String link;
     private String description;
+
+    @JsonIgnore
+    private Collection<Meta> metas;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -51,6 +57,15 @@ public class Manual implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "meta_manual_map",
+            joinColumns = @JoinColumn(name = "manual_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "meta_id", referencedColumnName="id"))
+    public Collection<Meta> getMetas() { return metas; }
+
+    public void setMetas(Collection<Meta> metas) { this.metas = metas; }
 
     @Override
     public String toString() {

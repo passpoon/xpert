@@ -105,7 +105,7 @@ public class ServerGroupService {
 
         MgServerGroup result = mgServerGroupRepository.save(mg);
 
-        ServerType serverType = serverTypeRepository.findById(result.getServerTypeId());
+       ServerType serverType = serverTypeRepository.findById(result.getServerTypeId());
         Collection<Measurement> measurements = serverType.getMeasurements();
         for(Measurement measurement : measurements) {
             Collection<Metric> metrics = measurement.getMetrics();

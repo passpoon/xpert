@@ -12,10 +12,12 @@ public class ServerType implements Serializable {
     private Integer id;
     private String name;
     private String description;
+
     @JsonIgnore
     private Collection<Measurement> measurements;
 
-
+    @JsonIgnore
+    private Collection<ServerResource> serverResources;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -59,6 +61,12 @@ public class ServerType implements Serializable {
     public void setMeasurements(Collection<Measurement> measurements) {
         this.measurements = measurements;
     }
+
+    /*//common
+    @OneToMany(mappedBy = "server_type")
+    public Collection<ServerResource> getServerResources() { return serverResources; }
+
+    public void setServerResources(Collection<ServerResource> serverResources) { this.serverResources = serverResources; }*/
 
     @Override
     public String toString() {

@@ -2,7 +2,6 @@ package com.crossent.monitoring.portal.system.common.service;
 
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
 import com.crossent.monitoring.portal.jpa.domain.User;
-import com.crossent.monitoring.portal.jpa.repository.MonGroupRepository;
 import com.crossent.monitoring.portal.jpa.repository.UserRepository;
 import com.crossent.monitoring.portal.system.common.dto.MonGroupDto;
 import com.crossent.monitoring.portal.system.common.dto.UserDto;

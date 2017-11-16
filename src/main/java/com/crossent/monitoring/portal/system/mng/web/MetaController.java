@@ -92,4 +92,12 @@ public class MetaController extends BaseController{
 
         metaService.deleteMetaManual(metaId, manualId);
     }
+
+    @RequestMapping(value = "/system/management/meta/manuals", method = RequestMethod.GET)
+    public Collection<Manual> getManuals(@RequestParam Integer metaId, @RequestParam String name) {
+
+        Collection<Manual> manuals = metaService.getManuals(metaId, name);
+
+        return manuals;
+    }
 }

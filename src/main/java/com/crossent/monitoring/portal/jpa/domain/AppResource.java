@@ -19,6 +19,9 @@ public class AppResource implements Serializable {
     @JsonIgnore
     private Collection<MgApp> mgApps;
 
+    @JsonIgnore
+    private Collection<MonGroup> monGroups;
+
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -125,6 +128,15 @@ public class AppResource implements Serializable {
     public void setServerResourceId(Integer serverResourceId) {
         this.serverResourceId = serverResourceId;
     }
+
+    //common
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "mg_app",
+            joinColumns = @JoinColumn(name = "app_resource_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))
+    public Collection<MonGroup> getMonGroups() { return monGroups; }
+
+    public void setMonGroups(Collection<MonGroup> monGroups) { this.monGroups = monGroups; }
 
     @Override
     public String toString() {

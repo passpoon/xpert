@@ -18,4 +18,6 @@ public interface UserRepository extends JpaRepository<User, String> {
     public Page<User> findByEmailLike(Pageable pageable, String email);
 
     public void deleteByIdIn(String[] ids);
+
+    public Collection<User> findAllByNameLikeAndMonGroups_Id(String name, Integer monitoringGroupId);
 }

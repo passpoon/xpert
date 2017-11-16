@@ -199,6 +199,13 @@ public class MonitorGroupService {
         mgServerRepository.deleteByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
     }
 
+    public Collection<ServerResource> getServers(Integer monitoringGroupId, String name) {
+
+        Collection<ServerResource> servers = serverResourceRepository.findAllByNameLikeAndMonGroups_Id("%"+name+"%", monitoringGroupId);
+
+        return servers;
+    }
+
     // 어플리케이션
     public Collection<AppResource> getMonGroupApps(Integer monitoringGroupId) {
 
@@ -254,6 +261,13 @@ public class MonitorGroupService {
     public void deleteMonGroupApp(Integer monitoringGroupId, Integer appResourceIds) {
 
         mgAppRepository.deleteByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceIds);
+    }
+
+    public Collection<AppResource> getApps(Integer monitoringGroupId, String name) {
+
+        Collection<AppResource> appResources= appResourceRepository.findAllByNameLikeAndMonGroups_Id("%"+name+"%", monitoringGroupId);
+
+        return appResources;
     }
 
     // 관리자

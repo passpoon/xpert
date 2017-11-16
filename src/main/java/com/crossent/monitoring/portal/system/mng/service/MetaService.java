@@ -6,6 +6,7 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Manual;
 import com.crossent.monitoring.portal.jpa.domain.Meta;
 import com.crossent.monitoring.portal.jpa.domain.MetaManualMap;
+import com.crossent.monitoring.portal.jpa.repository.ManualRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetaManualMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,9 @@ public class MetaService {
 
     @Autowired
     MetaManualMapRepository metaManualMapRepository;
+
+    @Autowired
+    ManualRepository manualRepository;
 
     public PagingResVo<Meta> pagingMeta(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -153,5 +157,12 @@ public class MetaService {
     public void deleteMetaManual(Integer metaId, Integer manualId) {
 
         metaManualMapRepository.deleteByMetaIdAndManualId(metaId, manualId);
+    }
+
+    public Collection<Manual> getManuals(Integer metaId, String name) {
+
+        Collection<Manual> manuals = manualRepository.findAllByNameLikeAndAndMetas_Id("%"+name+"%", metaId);
+
+        return manuals;
     }
 }
