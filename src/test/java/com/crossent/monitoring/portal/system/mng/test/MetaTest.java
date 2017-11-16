@@ -18,7 +18,7 @@ public class MetaTest extends AbstractMockTest {
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("prog", "ap");
+        /*searchReqVo.addKeyword("prog", "ap");*/
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
@@ -32,7 +32,6 @@ public class MetaTest extends AbstractMockTest {
 
         Meta meta = new Meta();
         meta.setProg("zzz");
-        meta.setManualId(2);
         meta.setStartPoint(11);
         meta.setEndPoint(22);
         meta.setLogSource("ddbbbb");
@@ -68,7 +67,6 @@ public class MetaTest extends AbstractMockTest {
         dto.setLogSource("yyy");
         dto.setStartPoint(456);
         dto.setEndPoint(457);
-        dto.setManualId(2);
         dto.setStateCodeId("200");
 
         put("/system/management/meta/" + metaId, dto);
@@ -79,5 +77,38 @@ public class MetaTest extends AbstractMockTest {
         Integer metaId = 11;
 
         delete("/system/management/meta/" + metaId);
+    }
+
+    @Test
+    public void getMetaManuals() throws Exception {
+        Integer metaId = 12;
+
+        get("/system/management/meta/"+metaId+"/manuals");
+    }
+
+    @Test
+    public void insertMetaManuals() throws  Exception {
+        Integer metaId = 12;
+        Integer[] manualIds = {2};
+
+        post("/system/management/meta/"+metaId+"/manuals", manualIds);
+    }
+
+    @Test
+    public void deleteMetaManuals() throws Exception {
+        Integer metaId = 12;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("manualIds", "1,2");
+
+        delete("/system/management/meta/"+metaId+"/manuals", params);
+    }
+
+    @Test
+    public void deleteMetaManual() throws Exception {
+        Integer metaId = 12;
+        Integer manualId = 2;
+
+        delete("/system/management/meta/"+metaId+"/manuals/"+manualId+"");
     }
 }

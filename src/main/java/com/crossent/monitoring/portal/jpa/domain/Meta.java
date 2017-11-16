@@ -1,7 +1,10 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "meta", schema = "mondb")
@@ -12,10 +15,11 @@ public class Meta implements Serializable {
     private Integer startPoint;
     private Integer endPoint;
     private String pattern;
-    private Manual manual;
     private StateCode stateCode;
-    private Integer manualId;
     private String stateCodeId;
+
+    @JsonIgnore
+    private Collection<Manual> manuals;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -80,16 +84,6 @@ public class Meta implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "manual_id", referencedColumnName = "id", insertable = false, updatable = false)
-    public Manual getManual() {
-        return manual;
-    }
-
-    public void setManual(Manual manual) {
-        this.manual = manual;
-    }
-
-    @ManyToOne
     @JoinColumn(name = "state_code", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
     public StateCode getStateCode() {
         return stateCode;
@@ -99,15 +93,23 @@ public class Meta implements Serializable {
         this.stateCode = stateCode;
     }
 
-    @Column(name = "manual_id", nullable = true)
+    /*@Column(name = "manual_id", nullable = true)
     public Integer getManualId() { return manualId; }
 
-    public void setManualId(Integer manualId) { this.manualId = manualId; }
+    public void setManualId(Integer manualId) { this.manualId = manualId; }*/
 
     @Column(name = "state_code", nullable = false, length = 10)
     public String getStateCodeId() { return stateCodeId; }
 
     public void setStateCodeId(String stateCodeId) { this.stateCodeId = stateCodeId; }
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "meta_manual_map",
+            joinColumns = @JoinColumn(name = "meta_id", referencedColumnName="id"),
+            inverseJoinColumns = @JoinColumn(name = "manual_id", referencedColumnName="id"))
+    public Collection<Manual> getManuals() { return manuals; }
+
+    public void setManuals(Collection<Manual> manuals) { this.manuals = manuals; }
 
     @Override
     public String toString() {
@@ -118,7 +120,6 @@ public class Meta implements Serializable {
         sb.append(", startPoint=").append(startPoint);
         sb.append(", endPoint=").append(endPoint);
         sb.append(", pattern='").append(pattern).append('\'');
-        sb.append(", manual=").append(manual);
         sb.append('}');
         return sb.toString();
     }

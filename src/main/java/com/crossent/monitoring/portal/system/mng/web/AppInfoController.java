@@ -73,9 +73,9 @@ public class AppInfoController extends BaseController {
 
     @Transactional
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements" , method = RequestMethod.POST)
-    public void insertAppInfoMeasurement(@PathVariable Integer appInfoId, @RequestBody Integer[] measurementIds){
+    public void insertAppInfoMeasurements(@PathVariable Integer appInfoId, @RequestBody Integer[] measurementIds){
 
-        appInfoService.insertAppInfoMeasurement(appInfoId, measurementIds);
+        appInfoService.insertAppInfoMeasurements(appInfoId, measurementIds);
     }
 
     @Transactional

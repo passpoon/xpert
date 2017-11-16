@@ -156,7 +156,7 @@ public class AppInfoService {
         return measurements;
     }
 
-    public void insertAppInfoMeasurement(Integer appInfoId, Integer[] measurementIds){
+    public void insertAppInfoMeasurements(Integer appInfoId, Integer[] measurementIds){
 
         for(Integer measurementId : measurementIds) {
             AppInfoMeasurementMap map = new AppInfoMeasurementMap();
@@ -176,5 +176,4 @@ public class AppInfoService {
 
         appInfoMeasurementMapRepository.deleteByAppInfoIdAndMeasurementId(appInfoId, measurementId);
     }
-
 }

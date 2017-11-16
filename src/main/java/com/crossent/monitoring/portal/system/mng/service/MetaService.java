@@ -3,12 +3,16 @@ package com.crossent.monitoring.portal.system.mng.service;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
+import com.crossent.monitoring.portal.jpa.domain.Manual;
 import com.crossent.monitoring.portal.jpa.domain.Meta;
+import com.crossent.monitoring.portal.jpa.domain.MetaManualMap;
+import com.crossent.monitoring.portal.jpa.repository.MetaManualMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -17,6 +21,9 @@ public class MetaService {
 
     @Autowired
     MetaRepository metaRepository;
+
+    @Autowired
+    MetaManualMapRepository metaManualMapRepository;
 
     public PagingResVo<Meta> pagingMeta(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -69,7 +76,6 @@ public class MetaService {
         in.setStartPoint(meta.getStartPoint());
         in.setEndPoint(meta.getEndPoint());
         in.setPattern(meta.getPattern());
-        in.setManualId(meta.getManualId());
         in.setStateCodeId(meta.getStateCodeId());
 
         Meta resUser = metaRepository.save(in);
@@ -89,7 +95,6 @@ public class MetaService {
         out.setStateCode(meta.getStateCode());
         out.setPattern(meta.getPattern());
         out.setLogSource(meta.getLogSource());
-        out.setManual(meta.getManual());
         out.setProg(meta.getProg());
         out.setStartPoint(meta.getStartPoint());
         out.setEndPoint(meta.getEndPoint());
@@ -97,16 +102,15 @@ public class MetaService {
         return out;
     }
 
-    public Meta updateMeta(Integer manualId, Meta meta) {
+    public Meta updateMeta(Integer metaId, Meta meta) {
 
-        Meta getData = metaRepository.findOne(manualId);
+        Meta getData = metaRepository.findOne(metaId);
 
         if (getData == null) {
             return null;
         }
         getData.setProg(meta.getProg());
         getData.setStateCodeId(meta.getStateCodeId());
-        getData.setManualId(meta.getManualId());
         getData.setStartPoint(meta.getStartPoint());
         getData.setEndPoint(meta.getEndPoint());
         getData.setLogSource(meta.getLogSource());
@@ -120,5 +124,34 @@ public class MetaService {
     public void deleteMeta(Integer metaId) {
 
         metaRepository.delete(metaId);
+    }
+
+    public Collection<Manual> getMetaManuals(Integer metaId){
+
+        Meta meta = metaRepository.findById(metaId);
+        Collection<Manual> manuals = meta.getManuals();
+
+        return manuals;
+    }
+
+    public void insertMetaManuals(Integer metaId, Integer[] manualIds){
+
+        for(Integer manualId : manualIds) {
+            MetaManualMap map = new MetaManualMap();
+            map.setMetaId(metaId);
+            map.setManualId(manualId);
+
+            MetaManualMap result = metaManualMapRepository.save(map);
+        }
+    }
+
+    public void deleteMetaManuals(Integer metaId, Integer[] manualIds) {
+
+        metaManualMapRepository.deleteByMetaIdAndManualIdIn(metaId, manualIds);
+    }
+
+    public void deleteMetaManual(Integer metaId, Integer manualId) {
+
+        metaManualMapRepository.deleteByMetaIdAndManualId(metaId, manualId);
     }
 }

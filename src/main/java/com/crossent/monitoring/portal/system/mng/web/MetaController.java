@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Collection;
 
 @RestController
 public class MetaController extends BaseController{
@@ -61,5 +62,34 @@ public class MetaController extends BaseController{
     public void deleteMeta(@PathVariable Integer metaId){
 
         metaService.deleteMeta(metaId);
+    }
+
+    @RequestMapping(value = "/system/management/meta/{metaId}/manuals", method = RequestMethod.GET)
+    public Collection<Manual> getMetaManuals(@PathVariable Integer metaId) {
+
+        Collection<Manual> manual = metaService.getMetaManuals(metaId);
+
+        return manual;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/meta/{metaId}/manuals" , method = RequestMethod.POST)
+    public void insertMetaManuals(@PathVariable Integer metaId, @RequestBody Integer[] manualIds){
+
+        metaService.insertMetaManuals(metaId, manualIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/meta/{metaId}/manuals" , method = RequestMethod.DELETE)
+    public void deleteMetaManuals(@PathVariable Integer metaId, @RequestParam Integer[] manualIds) {
+
+        metaService.deleteMetaManuals(metaId, manualIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/meta/{metaId}/manuals/{manualId}" , method = RequestMethod.DELETE)
+    public void deleteMetaManual(@PathVariable Integer metaId, @PathVariable Integer manualId) {
+
+        metaService.deleteMetaManual(metaId, manualId);
     }
 }
