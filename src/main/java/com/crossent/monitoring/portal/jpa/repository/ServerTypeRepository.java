@@ -19,5 +19,5 @@ public interface ServerTypeRepository extends JpaRepository<ServerType, Integer>
 
     public void deleteByIdIn(Integer[] ids);
 
-    /*public Collection<ServerType> findAllByNameLikeAndServerResources_Id(String name, Integer serverResourceId);*/
+    public Collection<ServerType> findAllByNameLikeAndServerResources_Id(String name, Integer serverResourceId);
 }

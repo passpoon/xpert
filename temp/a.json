@@ -1,64 +1,7 @@
 [
   {
-    "monGroupId": 1,
-    "appResourceId": 7,
-    "appResource": {
-      "id": 7,
-      "name": "test1",
-      "description": "test Des",
-      "appInfo": {
-        "id": 1,
-        "name": "mysql",
-        "description": "test mysql"
-      },
-      "appInfoId": 1,
-      "serverResourceId": 3,
-      "serverResource": {
-        "id": 3,
-        "name": "moncollectd01",
-        "hostName": "collect1",
-        "ip": "10.10.20.14",
-        "description": "server resource test",
-        "serverTypeId": 2
-      }
-    },
-    "dashboardYn": null,
-    "monitoringYn": null,
-    "monGroup": {
-      "id": 1,
-      "name": "Baremetal",
-      "description": "하드웨어 장비 및 어플리케이션"
-    }
-  },
-  {
-    "monGroupId": 1,
-    "appResourceId": 14,
-    "appResource": {
-      "id": 14,
-      "name": "test2",
-      "description": "test2233",
-      "appInfo": {
-        "id": 1,
-        "name": "mysql",
-        "description": "test mysql"
-      },
-      "appInfoId": 1,
-      "serverResourceId": 3,
-      "serverResource": {
-        "id": 3,
-        "name": "moncollectd01",
-        "hostName": "collect1",
-        "ip": "10.10.20.14",
-        "description": "server resource test",
-        "serverTypeId": 2
-      }
-    },
-    "dashboardYn": null,
-    "monitoringYn": null,
-    "monGroup": {
-      "id": 1,
-      "name": "Baremetal",
-      "description": "하드웨어 장비 및 어플리케이션"
-    }
+    "id": 2,
+    "name": "small",
+    "description": "서버타입 수정"
   }
 ]

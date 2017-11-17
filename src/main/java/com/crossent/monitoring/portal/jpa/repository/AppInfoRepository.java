@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Collection;
+
 
 public interface AppInfoRepository extends JpaRepository<AppInfo, Integer> {
 
@@ -15,4 +17,6 @@ public interface AppInfoRepository extends JpaRepository<AppInfo, Integer> {
     public Page<AppInfo> findByDescriptionLike(Pageable pageable, String description);
 
     public void deleteByIdIn(Integer[] ids);
+
+    public Collection<AppInfo> findAllByNameLikeAndAppResources_Id(String name, Integer appResourceId);
 }

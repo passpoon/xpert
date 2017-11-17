@@ -237,4 +237,17 @@ public class MonitorGroupTest extends AbstractMockTest {
 
         delete("/system/management/monitoring-groups/"+monitoringGroupId+"/operators/"+userId+"");
     }
+
+    // 관리자 조회
+    @Test
+    public void getMongGroupMangers() throws Exception {
+
+        Integer monitoringGroupId = 4;
+        String name = "관리";
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("monitoringGroupId", "4");
+        params.add("name", name);
+
+        get("/system/common/monitoring-groups/managers", params);
+    }
 }

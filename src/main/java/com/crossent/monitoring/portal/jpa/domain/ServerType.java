@@ -62,11 +62,11 @@ public class ServerType implements Serializable {
         this.measurements = measurements;
     }
 
-    /*//common
-    @OneToMany(mappedBy = "server_type")
+    //common
+    @OneToMany(mappedBy = "serverType")
     public Collection<ServerResource> getServerResources() { return serverResources; }
 
-    public void setServerResources(Collection<ServerResource> serverResources) { this.serverResources = serverResources; }*/
+    public void setServerResources(Collection<ServerResource> serverResources) { this.serverResources = serverResources; }
 
     @Override
     public String toString() {

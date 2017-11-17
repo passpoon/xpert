@@ -10,6 +10,7 @@ import com.crossent.monitoring.portal.system.mng.dto.MgUserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -55,6 +56,8 @@ public class MonitorGroupService {
     @Autowired
     MgAppCriticalValueRepository mgAppCriticalValueRepository;
 
+    @Autowired
+    UserRepository userRepository;
 
     public PagingResVo<MonGroup> pagingMonGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -348,5 +351,14 @@ public class MonitorGroupService {
     public void deleteMonGroupOperator(Integer monitoringGroupId, String userId) {
 
         mgUserRepository.deleteByMonGroupIdAndUserId(monitoringGroupId, userId);
+    }
+
+    // 모니터링 그룹(사용자 조회)
+    public Collection<User> getMonGroupUsers(Integer monitoringGroupId, String name) {
+
+        //Collection<User> users = userRepository.findAllByNameLikeAndMonGroups_IdIsNotIn("%"+name+"%", monitoringGroupId);
+
+        //return users;
+        return null;
     }
 }

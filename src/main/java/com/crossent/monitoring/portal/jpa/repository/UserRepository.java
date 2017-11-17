@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.jpa.repository;
 
+import com.crossent.monitoring.portal.jpa.domain.MgUser;
 import com.crossent.monitoring.portal.jpa.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -19,5 +20,7 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     public void deleteByIdIn(String[] ids);
 
-    public Collection<User> findAllByNameLikeAndMonGroups_Id(String name, Integer monitoringGroupId);
+    //namelike 조회 후 mgUser안에 들어가지 않은 목록 넣기
+    public Collection<User> findAllByNameLikeAndMgUsersNotIn(String name, Collection<MgUser> mgUsers);
+
 }

@@ -4,9 +4,7 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
-import com.crossent.monitoring.portal.jpa.domain.AppResource;
-import com.crossent.monitoring.portal.jpa.domain.MonGroup;
-import com.crossent.monitoring.portal.jpa.domain.ServerResource;
+import com.crossent.monitoring.portal.jpa.domain.*;
 import com.crossent.monitoring.portal.system.mng.dto.MgUserDto;
 import com.crossent.monitoring.portal.system.mng.service.MonitorGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -200,4 +198,16 @@ public class MonitorGroupController extends BaseController {
 
         monitorGroupService.deleteMonGroupOperator(monitoringGroupId, userId);
     }
+
+    // 모니터링 그룹(관리자 조회)   type_code에 따라 분류 되어야함 현재는 name으로만 조회해오고 있음
+    @RequestMapping(value = "/system/common/monitoring-groups/managers", method = RequestMethod.GET)
+    public Collection<User> getMonGroupManagers(@RequestParam Integer monitoringGroupId, @RequestParam String name) {
+
+        Collection<User> managers = monitorGroupService.getMonGroupUsers(monitoringGroupId, name);
+
+        return managers;
+    }
+
+    // 모니터링 그룹(운영자 조회)
+    //@RequestMapping(value = "/system/common/monitoring-groups/operators", method = RequestMethod.GET)
 }

@@ -16,8 +16,12 @@ public class User implements Serializable {
     private String chatId;
     private String description;
     private String uuid;
+
     @JsonIgnore
     private Collection<MonGroup> monGroups;
+
+    @JsonIgnore
+    private Collection<MgUser> mgUsers;
 
     @Id
     @Column(name = "id", nullable = false, length = 20)
@@ -100,6 +104,11 @@ public class User implements Serializable {
     public void setMonGroups(Collection<MonGroup> monGroups) {
         this.monGroups = monGroups;
     }
+
+    @OneToMany(mappedBy = "")
+    public Collection<MgUser> getMgUsers() { return mgUsers; }
+
+    public void setMgUsers(Collection<MgUser> mgUsers) { this.mgUsers = mgUsers; }
 
     @Override
     public String toString() {

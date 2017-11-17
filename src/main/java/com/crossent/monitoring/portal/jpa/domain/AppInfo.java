@@ -12,10 +12,13 @@ public class AppInfo implements Serializable {
     private Integer id;
     private String name;
     private String description;
+
     @JsonIgnore
     private Collection<MgAppGroup> mgAppGroups;
     @JsonIgnore
     private Collection<Measurement> measurements;
+    @JsonIgnore
+    private Collection<AppResource> appResources;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -79,7 +82,6 @@ public class AppInfo implements Serializable {
         this.mgAppGroups = mgAppGroups;
     }
 
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "app_info_measurement_map",
             joinColumns = @JoinColumn(name = "app_info_id", referencedColumnName="id"),
@@ -91,6 +93,12 @@ public class AppInfo implements Serializable {
     public void setMeasurements(Collection<Measurement> measurements) {
         this.measurements = measurements;
     }
+
+    @OneToMany(mappedBy = "appInfo")
+    public Collection<AppResource> getAppResources() { return appResources; }
+
+    public void setAppResources(Collection<AppResource> appResources) { this.appResources = appResources; }
+
 
     @Override
     public String toString() {

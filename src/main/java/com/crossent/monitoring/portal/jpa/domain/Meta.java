@@ -93,11 +93,6 @@ public class Meta implements Serializable {
         this.stateCode = stateCode;
     }
 
-    /*@Column(name = "manual_id", nullable = true)
-    public Integer getManualId() { return manualId; }
-
-    public void setManualId(Integer manualId) { this.manualId = manualId; }*/
-
     @Column(name = "state_code", nullable = false, length = 10)
     public String getStateCodeId() { return stateCodeId; }
 
