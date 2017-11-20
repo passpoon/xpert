@@ -199,7 +199,7 @@ public class MonitorGroupController extends BaseController {
         monitorGroupService.deleteMonGroupOperator(monitoringGroupId, userId);
     }
 
-    // 모니터링 그룹(관리자 조회)   type_code에 따라 분류 되어야함 현재는 name으로만 조회해오고 있음
+    // 모니터링 그룹(관리자 조회)
     @RequestMapping(value = "/system/common/monitoring-groups/managers", method = RequestMethod.GET)
     public Collection<User> getMonGroupManagers(@RequestParam Integer monitoringGroupId, @RequestParam String name) {
 
@@ -209,5 +209,11 @@ public class MonitorGroupController extends BaseController {
     }
 
     // 모니터링 그룹(운영자 조회)
-    //@RequestMapping(value = "/system/common/monitoring-groups/operators", method = RequestMethod.GET)
+    @RequestMapping(value = "/system/common/monitoring-groups/operators", method = RequestMethod.GET)
+    public Collection<User> getMonGroupOperators(@RequestParam Integer monitoringGroupId, @RequestParam String name) {
+
+        Collection<User> operators = monitorGroupService.getMonGroupUsers(monitoringGroupId, name);
+
+        return operators;
+    }
 }
