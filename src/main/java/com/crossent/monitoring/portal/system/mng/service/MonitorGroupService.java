@@ -357,8 +357,16 @@ public class MonitorGroupService {
     public Collection<User> getMonGroupUsers(Integer monitoringGroupId, String name) {
 
         //Collection<User> users = userRepository.findAllByNameLikeAndMonGroups_IdIsNotIn("%"+name+"%", monitoringGroupId);
+        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupId(monitoringGroupId);
 
-        //return users;
-        return null;
+        List<String> ids = new ArrayList<String>();
+        for(MgUser mgUser : mgUsers){
+
+            ids.add(mgUser.getUserId());
+
+        }
+        Collection<User> users = userRepository.findAllByNameLikeAndIdNotIn("%" + name + "%", ids);
+
+        return users;
     }
 }
