@@ -15,4 +15,6 @@ public interface MgUserRepository extends CrudRepository<MgUser, MgUserPK> {
 
     public void deleteByMonGroupIdAndUserIdIn(Integer monGroupId, String[] userIds);
     public void deleteByMonGroupIdAndUserId(Integer monGroupId, String userId);
+  
+    public Collection<MgUser> findAllByMonGroupId(Integer monGroupId);
 }
