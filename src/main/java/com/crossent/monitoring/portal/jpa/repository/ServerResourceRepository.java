@@ -20,6 +20,7 @@ public interface ServerResourceRepository extends JpaRepository<ServerResource, 
     public Page<ServerResource> findByDescriptionLike(Pageable pageable, String description);
 
     public void deleteByIdIn(Integer[] ids);
+    public void deleteByServerTypeIdIn(Integer[] serverTypeIds);
 
     public Collection<ServerResource> findAllByNameLikeAndMonGroups_Id(String name, Integer monitoringGroupId);
 }

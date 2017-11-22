@@ -20,4 +20,7 @@ public interface ServerTypeRepository extends JpaRepository<ServerType, Integer>
     public void deleteByIdIn(Integer[] ids);
 
     public Collection<ServerType> findAllByNameLikeAndServerResources_Id(String name, Integer serverResourceId);
+
+    public Page<ServerType> findAllById(Pageable pageable, Integer id);
+    public Page<ServerType> findAllByIdAndMeasurements_NameLike(Pageable pageable, Integer id, String name);
 }

@@ -53,8 +53,8 @@ public class ServerTest extends AbstractMockTest {
     @Test
     public void updateServerMetrics() throws Exception {
         Integer monitoringGroupId = 2;
-        Integer serverResourceId =  3;
-        Integer metricId = 116;
+        Integer serverResourceId =  4;
+        Integer metricId = 54 ;
 
         MgServerCriticalValue update = new MgServerCriticalValue();
         update.setWarning(65.42);
@@ -62,5 +62,4 @@ public class ServerTest extends AbstractMockTest {
 
         put("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/metrics/"+metricId+"", update);
     }
-
 }

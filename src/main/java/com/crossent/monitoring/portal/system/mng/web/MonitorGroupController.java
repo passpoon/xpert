@@ -93,13 +93,13 @@ public class MonitorGroupController extends BaseController {
         monitorGroupService.deleteMonGroupServer(monitoringGroupId, serverResourceId);
     }
 
-    @RequestMapping(value = "/system/management/monitoring-groups/servers", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/system/management/monitoring-groups/servers", method = RequestMethod.GET)
     public Collection<ServerResource> getServers(@RequestParam Integer monitoringGroupId, @RequestParam String name) {
 
         Collection<ServerResource> serverResources = monitorGroupService.getServers(monitoringGroupId, name);
 
         return serverResources;
-    }
+    }*/
 
     // 어플리케이션
     @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/apps", method = RequestMethod.GET)
@@ -131,13 +131,13 @@ public class MonitorGroupController extends BaseController {
         monitorGroupService.deleteMonGroupApp(monitoringGroupId, appResourceId);
     }
 
-    @RequestMapping(value = "/system/management/monitoring-groups/apps", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/system/management/monitoring-groups/apps", method = RequestMethod.GET)
     public Collection<AppResource> getApps(@RequestParam Integer monitoringGroupId, @RequestParam String name) {
 
         Collection<AppResource> appResources = monitorGroupService.getApps(monitoringGroupId, name);
 
         return appResources;
-    }
+    }*/
 
     // 관리자
     @RequestMapping(value = "/system/management/monitoring-groups/{monitoringGroupId}/managers", method = RequestMethod.GET)
@@ -199,7 +199,7 @@ public class MonitorGroupController extends BaseController {
         monitorGroupService.deleteMonGroupOperator(monitoringGroupId, userId);
     }
 
-    // 모니터링 그룹(관리자 조회)
+    /*// 모니터링 그룹(관리자 조회)
     @RequestMapping(value = "/system/common/monitoring-groups/managers", method = RequestMethod.GET)
     public Collection<User> getMonGroupManagers(@RequestParam Integer monitoringGroupId, @RequestParam String name) {
 
@@ -215,5 +215,5 @@ public class MonitorGroupController extends BaseController {
         Collection<User> operators = monitorGroupService.getMonGroupUsers(monitoringGroupId, name);
 
         return operators;
-    }
+    }*/
 }

@@ -105,7 +105,7 @@ public class User implements Serializable {
         this.monGroups = monGroups;
     }
 
-    @OneToMany(mappedBy = "")
+    @OneToMany(mappedBy = "user")
     public Collection<MgUser> getMgUsers() { return mgUsers; }
 
     public void setMgUsers(Collection<MgUser> mgUsers) { this.mgUsers = mgUsers; }

@@ -68,7 +68,7 @@ public class UserGroupTest extends AbstractMockTest {
 
     @Test
     public void deleteUserGroup() throws Exception {
-        String userGroupId = "aa";
+        String userGroupId = "bbb";
 
         delete("/system/management/user-groups/" + userGroupId);
     }

@@ -5,8 +5,10 @@ import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.AppInfo;
+import com.crossent.monitoring.portal.jpa.domain.AppInfoCriticalValue;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
+import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
 import com.crossent.monitoring.portal.system.mng.service.AppInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -90,6 +92,21 @@ public class AppInfoController extends BaseController {
     public void deleteAppInfoMeasurement(@PathVariable Integer appInfoId, @PathVariable Integer measurementId) {
 
         appInfoService.deleteAppInfoMeasurement(appInfoId, measurementId);
+    }
+
+    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/critical", method = RequestMethod.GET)
+    public PagingResVo pagingAppInfoCritical(@PathVariable Integer appInfoId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+
+        PagingResVo<MeasurementDto> resPage = appInfoService.pagingAppInfoCritical(appInfoId, paging, search);
+
+        return resPage;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}/metrics/{metricId}", method = RequestMethod.PUT)
+    public void updateAppInfoCritical(@PathVariable Integer appInfoId, @PathVariable Integer measurementId, @PathVariable Integer metricId, @RequestBody AppInfoCriticalValue appInfoCriticalValue) {
+
+        appInfoService.updateAppInfoCritical(appInfoId, measurementId, metricId, appInfoCriticalValue);
     }
 
 }

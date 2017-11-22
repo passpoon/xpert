@@ -6,9 +6,11 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Manual;
 import com.crossent.monitoring.portal.jpa.domain.Meta;
 import com.crossent.monitoring.portal.jpa.domain.MetaManualMap;
+import com.crossent.monitoring.portal.jpa.domain.StateCode;
 import com.crossent.monitoring.portal.jpa.repository.ManualRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetaManualMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetaRepository;
+import com.crossent.monitoring.portal.jpa.repository.StateCodeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,9 @@ public class MetaService {
 
     @Autowired
     ManualRepository manualRepository;
+
+    @Autowired
+    StateCodeRepository stateCodeRepository;
 
     public PagingResVo<Meta> pagingMeta(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -164,5 +169,12 @@ public class MetaService {
         Collection<Manual> manuals = manualRepository.findAllByNameLikeAndAndMetas_Id("%"+name+"%", metaId);
 
         return manuals;
+    }
+
+    public Collection<StateCode> getStateCodes() {
+
+        String code = "00002%";
+
+       return  stateCodeRepository.findAllByCodeLike(code);
     }
 }

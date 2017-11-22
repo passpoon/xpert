@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -96,7 +97,6 @@ public class UserService {
 
     public void deleteUsers(String[] delUsers) {
 
-        userGroupMapRepository.deleteByUserId(delUsers);
         userRepository.deleteByIdIn(delUsers);
     }
 
@@ -137,7 +137,6 @@ public class UserService {
 
     public void deleteUser(String userId) {
 
-        userGroupMapRepository.deleteByUserId(userId);
         userRepository.delete(userId);
     }
 

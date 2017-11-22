@@ -6,6 +6,7 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.Manual;
 import com.crossent.monitoring.portal.jpa.domain.Meta;
+import com.crossent.monitoring.portal.jpa.domain.StateCode;
 import com.crossent.monitoring.portal.system.mng.service.ManualService;
 import com.crossent.monitoring.portal.system.mng.service.MetaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,11 +94,19 @@ public class MetaController extends BaseController{
         metaService.deleteMetaManual(metaId, manualId);
     }
 
-    @RequestMapping(value = "/system/management/meta/manuals", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/system/management/meta/manuals", method = RequestMethod.GET)
     public Collection<Manual> getManuals(@RequestParam Integer metaId, @RequestParam String name) {
 
         Collection<Manual> manuals = metaService.getManuals(metaId, name);
 
         return manuals;
+    }*/
+
+    @RequestMapping(value = "/system/management/meta/state-codes", method = RequestMethod.GET)
+    public Collection<StateCode> getStateCodes() {
+
+        Collection<StateCode> stateCodes = metaService.getStateCodes();
+
+        return stateCodes;
     }
 }

@@ -8,5 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface ServerTypeCriticalValueRepository extends CrudRepository<ServerTypeCriticalValue, ServerTypeCriticalValuePK> {
 
+    public ServerTypeCriticalValue findAllByServerTypeIdAndMeasurementIdAndMetricId(Integer serverTypeId, Integer measurementId, Integer metricId);
 
 }

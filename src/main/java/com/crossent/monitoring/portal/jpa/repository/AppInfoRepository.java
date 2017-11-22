@@ -19,4 +19,7 @@ public interface AppInfoRepository extends JpaRepository<AppInfo, Integer> {
     public void deleteByIdIn(Integer[] ids);
 
     public Collection<AppInfo> findAllByNameLikeAndAppResources_Id(String name, Integer appResourceId);
+
+    public Page<AppInfo> findAllById(Pageable pageable, Integer id);
+    public Page<AppInfo> findAllByIdAndMeasurements_NameLike(Pageable pageable, Integer id, String name);
 }

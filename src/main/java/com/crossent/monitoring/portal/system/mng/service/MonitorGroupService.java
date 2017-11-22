@@ -14,10 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebCl
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MonitorGroupService {
@@ -202,12 +199,12 @@ public class MonitorGroupService {
         mgServerRepository.deleteByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
     }
 
-    public Collection<ServerResource> getServers(Integer monitoringGroupId, String name) {
+    /*public Collection<ServerResource> getServers(Integer monitoringGroupId, String name) {
 
         Collection<ServerResource> servers = serverResourceRepository.findAllByNameLikeAndMonGroups_Id("%"+name+"%", monitoringGroupId);
 
         return servers;
-    }
+    }*/
 
     // 어플리케이션
     public Collection<AppResource> getMonGroupApps(Integer monitoringGroupId) {
@@ -266,12 +263,12 @@ public class MonitorGroupService {
         mgAppRepository.deleteByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceIds);
     }
 
-    public Collection<AppResource> getApps(Integer monitoringGroupId, String name) {
+    /*public Collection<AppResource> getApps(Integer monitoringGroupId, String name) {
 
         Collection<AppResource> appResources= appResourceRepository.findAllByNameLikeAndMonGroups_Id("%"+name+"%", monitoringGroupId);
 
         return appResources;
-    }
+    }*/
 
     // 관리자
     public Collection<MgUserDto> getMonGroupManagers(Integer monitoringGroupId) {
@@ -353,7 +350,7 @@ public class MonitorGroupService {
         mgUserRepository.deleteByMonGroupIdAndUserId(monitoringGroupId, userId);
     }
 
-    // 모니터링 그룹(사용자 조회)
+    /*// 모니터링 그룹(사용자 조회)
     public Collection<User> getMonGroupUsers(Integer monitoringGroupId, String name) {
 
         //Collection<User> users = userRepository.findAllByNameLikeAndMonGroups_IdIsNotIn("%"+name+"%", monitoringGroupId);
@@ -368,5 +365,5 @@ public class MonitorGroupService {
         Collection<User> users = userRepository.findAllByNameLikeAndIdNotIn("%" + name + "%", ids);
 
         return users;
-    }
+    }*/
 }

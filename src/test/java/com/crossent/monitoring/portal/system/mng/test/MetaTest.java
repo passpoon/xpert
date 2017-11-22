@@ -123,4 +123,10 @@ public class MetaTest extends AbstractMockTest {
 
         get("/system/management/meta/manuals", params);
     }
+
+    @Test
+    public void getStateCodes() throws Exception {
+
+        get("/system/management/meta/state-codes");
+    }
 }

@@ -18,7 +18,7 @@ public class MonGroupTest extends AbstractMockTest {
 
     @Test
     public void listUsers() throws Exception {
-        String uuid = "d490c2b6-5649-4138-ae51-636702c40092";
+        String uuid = "35b268fb-6707-4a23-8db7-ffece8feb78e";
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("uuid", uuid);
         super.get("/system/common/user", params);

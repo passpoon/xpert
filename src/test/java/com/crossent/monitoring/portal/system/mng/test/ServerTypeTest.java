@@ -6,6 +6,7 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
+import com.crossent.monitoring.portal.jpa.domain.ServerTypeCriticalValue;
 import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
 import com.crossent.monitoring.portal.system.mng.dto.ServerTypeDto;
 import org.junit.Test;
@@ -127,6 +128,41 @@ public class ServerTypeTest extends AbstractMockTest{
         delete("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"");
     }
 
+    @Test
+    public void getServerTypeMeasuremenMetrics() throws  Exception {
 
+        Integer serverTypeId = 8;
 
+        get("/system/management/server-types/"+serverTypeId+"/critical");
+    }
+
+    @Test
+    public void pagingCritical() throws  Exception {
+        Integer serverTypeId = 8;
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(10);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+        get("/system/management/server-types/"+serverTypeId+"/critical", params);
+    }
+
+    @Test
+    public void updateCritical() throws Exception {
+        Integer serverTypeId = 8;
+        Integer measurementId =  6;
+        Integer metricId = 27;
+
+        ServerTypeCriticalValue update = new ServerTypeCriticalValue();
+        update.setWarning(65.42);
+        update.setCritical(80.01);
+
+        put("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics/"+metricId+"", update);
+    }
 }

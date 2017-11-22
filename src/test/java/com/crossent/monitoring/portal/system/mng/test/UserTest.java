@@ -45,7 +45,7 @@ public class UserTest extends AbstractMockTest {
     public void deleteUsers() throws Exception {
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("userIds", "monuser12,monuser13");
+        params.add("userIds", "test1");
 
         delete("/system/management/users", params);
     }

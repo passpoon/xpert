@@ -22,5 +22,4 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     //namelike 조회 후 mgUser안에 들어가지 않은 목록 넣기
     public Collection<User> findAllByNameLikeAndIdNotIn(String name, Collection<String> ids);
-
 }

@@ -6,6 +6,8 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
+import com.crossent.monitoring.portal.jpa.domain.ServerTypeCriticalValue;
+import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
 import com.crossent.monitoring.portal.system.mng.dto.ServerTypeDto;
 import com.crossent.monitoring.portal.system.mng.service.ServerTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -92,4 +94,18 @@ public class ServerTypeController extends BaseController{
         serverTypeService.deleteServerTypeMeasurement(serverTypeId, measurementId);
     }
 
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/critical", method = RequestMethod.GET)
+    public PagingResVo pagingServerTypeCritical(@PathVariable Integer serverTypeId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+
+        PagingResVo<MeasurementDto> resPage = serverTypeService.pagingServerTypeCritical(serverTypeId, paging, search);
+
+        return resPage;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}/metrics/{metricId}", method = RequestMethod.PUT)
+    public void updateServerTypeCritical(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId, @PathVariable Integer metricId, @RequestBody ServerTypeCriticalValue serverTypeCriticalValue) {
+
+        serverTypeService.updateServerTypeCritical(serverTypeId, measurementId, metricId, serverTypeCriticalValue);
+    }
 }

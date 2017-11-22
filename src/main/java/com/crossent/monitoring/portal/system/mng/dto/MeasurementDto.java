@@ -1,5 +1,7 @@
 package com.crossent.monitoring.portal.system.mng.dto;
 
+import com.crossent.monitoring.portal.jpa.domain.Metric;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -8,6 +10,7 @@ public class MeasurementDto implements Serializable {
     private Integer id;
     private String name;
     private String description;
+    private List<MetricDto> metrics;
 
     public Integer getId() {
         return id;
@@ -33,4 +36,7 @@ public class MeasurementDto implements Serializable {
         this.description = description;
     }
 
+    public List<MetricDto> getMetrics() { return metrics; }
+
+    public void setMetrics(List<MetricDto> metrics) { this.metrics = metrics; }
 }

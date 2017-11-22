@@ -34,7 +34,7 @@ public class TestService {
     private ElasticsearchTemplate elasticsearchTemplate;
 
     public void testInfluxdb(){
-        Query query = new Query("select * from cpu where time > now() - 5m", influxDBTemplate.getDatabase());
+        Query query = new Query("select * from cpu where time > now() - 5m; select * from mem where time > now() - 5m", influxDBTemplate.getDatabase());
 
         QueryResult qr = influxDBTemplate.query(query);
         List<Result> results = qr.getResults();

@@ -5,6 +5,7 @@ import com.crossent.monitoring.portal.common.test.AbstractMockTest;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.AppInfo;
+import com.crossent.monitoring.portal.jpa.domain.AppInfoCriticalValue;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
 import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
@@ -119,5 +120,35 @@ public class AppInfoTest extends AbstractMockTest {
         Integer measurementId = 48;
 
         delete("/system/management/app-infos/"+appInfoId+"/measurements/"+measurementId+"");
+    }
+
+    @Test
+    public void pagingAppInfoCritical() throws  Exception {
+        Integer appInfoId = 16;
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(10);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+        get("/system/management/app-infos/"+appInfoId+"/critical", params);
+    }
+
+    @Test
+    public void updateCritical() throws Exception {
+        Integer appInfoId = 16;
+        Integer measurementId = 66;
+        Integer metricId = 91;
+
+        AppInfoCriticalValue update = new AppInfoCriticalValue();
+        update.setWarning(65.42);
+        update.setCritical(80.01);
+
+        put("/system/management/app-infos/"+appInfoId+"/measurements/"+measurementId+"/metrics/"+metricId+"", update);
     }
 }

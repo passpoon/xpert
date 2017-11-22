@@ -10,6 +10,8 @@ public class MetricDto implements Serializable {
     private String description;
     private String type;
     private String metricTypeCode;
+    private Double critical;
+    private Double warning;
 
     public Integer getId() {
         return id;
@@ -49,6 +51,22 @@ public class MetricDto implements Serializable {
 
     public void setMetricTypeCode(String metricTypeCode) {
         this.metricTypeCode = metricTypeCode;
+    }
+
+    public Double getCritical() {
+        return critical;
+    }
+
+    public void setCritical(Double critical) {
+        this.critical = critical;
+    }
+
+    public Double getWarning() {
+        return warning;
+    }
+
+    public void setWarning(Double warning) {
+        this.warning = warning;
     }
 
     @Override

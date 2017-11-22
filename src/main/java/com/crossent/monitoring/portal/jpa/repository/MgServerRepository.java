@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 
 public interface MgServerRepository extends JpaRepository<MgServer, MgServerPK> {
@@ -27,4 +28,6 @@ public interface MgServerRepository extends JpaRepository<MgServer, MgServerPK> 
 
     //public MgServer findById(Integer id); 해당 도메인에 찾고자 하는 것이 없을경우 에러
     //public void deleteByIdIn(Integer[] ids);
+
+    public List<MgServer> findByMonGroupId(Integer monGroupId);
 }

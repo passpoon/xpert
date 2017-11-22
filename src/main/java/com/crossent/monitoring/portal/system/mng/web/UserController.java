@@ -65,8 +65,5 @@ public class UserController extends BaseController {
     public void deleteUser(@PathVariable String userId){
 
         userService.deleteUser(userId);
-
     }
-
-
 }
