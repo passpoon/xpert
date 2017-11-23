@@ -13,6 +13,7 @@ import com.crossent.monitoring.portal.system.mng.dto.ServerTypeDto;
 import com.crossent.monitoring.portal.system.mng.service.ServerTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import retrofit2.http.Path;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
@@ -95,12 +96,36 @@ public class ServerTypeController extends BaseController{
         serverTypeService.deleteServerTypeMeasurement(serverTypeId, measurementId);
     }
 
-    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/critical", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/system/management/server-types/{serverTypeId}/critical", method = RequestMethod.GET)
     public PagingResVo pagingServerTypeCritical(@PathVariable Integer serverTypeId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
         PagingResVo<MeasurementDto> resPage = serverTypeService.pagingServerTypeCritical(serverTypeId, paging, search);
 
         return resPage;
+    }*/
+
+    /*@RequestMapping(value = "/system/management/server-types/{serverTypeId}/critical", method = RequestMethod.GET)
+    public Collection<MeasurementDto> getServerTypeCritical(@PathVariable Integer serverTypeId) {
+
+        Collection<MeasurementDto> measurementDtos = serverTypeService.getServerTypeCritical(serverTypeId);
+
+        return measurementDtos;
+    }*/
+
+    /*@RequestMapping(value = "/system/management/server-types//measurements/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<Metric> getServerTypeMeasurementMetrics(@PathVariable Integer measurementId) {
+
+        Collection<Metric> metrics = serverTypeService.getServerTypeMeasurementMetrics(measurementId);
+
+        return metrics;
+    }*/
+
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<ServerTypeCriticalValue> getServerTypeMeasurementMetrics(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId) {
+
+        Collection<ServerTypeCriticalValue> serverTypeCriticalValues = serverTypeService.getServerTypeMeasurementMetrics(serverTypeId, measurementId);
+
+        return serverTypeCriticalValues;
     }
 
     @Transactional
@@ -110,11 +135,24 @@ public class ServerTypeController extends BaseController{
         serverTypeService.updateServerTypeCritical(serverTypeId, measurementId, metricId, serverTypeCriticalValue);
     }
 
-    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
-    public Collection<Metric> getServerTypeMeasurementMetrics(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId){
+    @Transactional
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}" , method = RequestMethod.POST)
+    public void insertServerTypeMeasurementMetrics(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId, @RequestBody Integer[] metricIds){
 
-        Collection<Metric> metrics = serverTypeService.getServerTypeMeasurementMetrics(serverTypeId ,measurementId);
+        serverTypeService.insertServerTypeMeasurementMetrics(serverTypeId, measurementId, metricIds);
+    }
 
-        return metrics;
+    @Transactional
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}/metrics" , method = RequestMethod.DELETE)
+    public void deleteServerTypeMeasurementsMetrics(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId, @RequestParam Integer[] metricIds) {
+
+        serverTypeService.deleteServerTypeMeasurementsMetrics(serverTypeId, measurementId, metricIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}/metrics/{metricId}" , method = RequestMethod.DELETE)
+    public void deleteServerTypeMeasurementsMetric(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId, @PathVariable Integer metricId) {
+
+        serverTypeService.deleteServerTypeMeasurementsMetric(serverTypeId, measurementId, metricId);
     }
 }

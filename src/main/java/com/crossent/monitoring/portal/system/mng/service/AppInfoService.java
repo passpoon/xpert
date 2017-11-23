@@ -7,6 +7,7 @@ import com.crossent.monitoring.portal.jpa.domain.*;
 import com.crossent.monitoring.portal.jpa.repository.AppInfoCriticalValueRepository;
 import com.crossent.monitoring.portal.jpa.repository.AppInfoMeasurementMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.AppInfoRepository;
+import com.crossent.monitoring.portal.jpa.repository.MeasurementRepository;
 import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
 import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
 import com.crossent.monitoring.portal.system.mng.dto.MetricDto;
@@ -27,6 +28,9 @@ public class AppInfoService {
 
     @Autowired
     AppInfoCriticalValueRepository appInfoCriticalValueRepository;
+
+    @Autowired
+    MeasurementRepository measurementRepository;
 
     public PagingResVo<AppInfoDto> pagingAppInfo(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -180,7 +184,7 @@ public class AppInfoService {
         appInfoMeasurementMapRepository.deleteByAppInfoIdAndMeasurementId(appInfoId, measurementId);
     }
 
-    public PagingResVo<MeasurementDto> pagingAppInfoCritical(Integer appInfoId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    /*public PagingResVo<MeasurementDto> pagingAppInfoCritical(Integer appInfoId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Page<AppInfo> appInfos = appInfoRepository.findAllById(pagingReqVo.toPagingRequest(), appInfoId);
 
@@ -239,11 +243,18 @@ public class AppInfoService {
         }
 
         return resPage;
+    }*/
+
+    public Collection<AppInfoCriticalValue> getAppInfoMeasurementMetrics(Integer appInfoId, Integer measurementId) {
+
+        Collection<AppInfoCriticalValue> appInfoCriticalValues = appInfoCriticalValueRepository.findAllByAppInfoIdAndMeasurementId(appInfoId, measurementId);
+
+        return  appInfoCriticalValues;
     }
 
     public AppInfoCriticalValue updateAppInfoCritical(Integer appInfoId, Integer measurementId, Integer metricId, AppInfoCriticalValue appInfoCriticalValue) {
 
-        AppInfoCriticalValue update = appInfoCriticalValueRepository.findAllByAppInfoIdAndMeasurementIdAndMetricId(appInfoId, measurementId, metricId);
+        AppInfoCriticalValue update = appInfoCriticalValueRepository.findByAppInfoIdAndMeasurementIdAndMetricId(appInfoId, measurementId, metricId);
 
         update.setWarning(appInfoCriticalValue.getWarning());
         update.setCritical(appInfoCriticalValue.getCritical());
@@ -251,5 +262,27 @@ public class AppInfoService {
         AppInfoCriticalValue updateData = appInfoCriticalValueRepository.save(update);
 
         return updateData;
+    }
+
+    public void insertAppInfoMeasurementMetrics(Integer appInfoId, Integer measurementId, Integer[] metricIds){
+
+        for(Integer metricId : metricIds) {
+            AppInfoCriticalValue value = new AppInfoCriticalValue();
+            value.setAppInfoId(appInfoId);
+            value.setMeasurementId(measurementId);
+            value.setMetricId(metricId);
+
+            AppInfoCriticalValue result = appInfoCriticalValueRepository.save(value);
+        }
+    }
+
+    public void deleteAppInfoMeasurementsMetrics(Integer appInfoId, Integer measurementId, Integer[] metricIds) {
+
+        appInfoCriticalValueRepository.deleteByAppInfoIdAndMeasurementIdAndMetricIdIn(appInfoId, measurementId, metricIds);
+    }
+
+    public void deleteAppInfoMeasurementsMetrics(Integer appInfoId, Integer measurementId, Integer metricId) {
+
+        appInfoCriticalValueRepository.deleteByAppInfoIdAndMeasurementIdAndMetricId(appInfoId, measurementId, metricId);
     }
 }

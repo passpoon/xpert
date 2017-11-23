@@ -1,7 +1,10 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Collection;
 
 @Entity
 @Table(name = "server_type_critical_value", schema = "mondb", catalog = "")
@@ -12,6 +15,9 @@ public class ServerTypeCriticalValue implements Serializable {
     private Integer metricId;
     private Double critical;
     private Double warning;
+
+    @JsonIgnore
+    private Metric metrics;
 
     @Id
     @Column(name = "server_type_id", nullable = false)
@@ -62,6 +68,13 @@ public class ServerTypeCriticalValue implements Serializable {
     public void setWarning(Double warning) {
         this.warning = warning;
     }
+
+
+    @ManyToOne
+    @JoinColumn(name = "metric_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public Metric getMetrics() { return metrics; }
+
+    public void setMetrics(Metric metrics) { this.metrics = metrics; }
 
     @Override
     public String toString() {

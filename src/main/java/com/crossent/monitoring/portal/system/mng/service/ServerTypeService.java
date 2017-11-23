@@ -195,7 +195,7 @@ public class ServerTypeService  {
         serverTypeMeasurementMapRepository.deleteByServerTypeIdAndMeasurementId(serverTypeId, measurementId);
     }
 
-    public PagingResVo<MeasurementDto> pagingServerTypeCritical(Integer serverTypeId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    /*public PagingResVo<MeasurementDto> pagingServerTypeCritical(Integer serverTypeId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Page<ServerType> serverTypes = serverTypeRepository.findAllById(pagingReqVo.toPagingRequest(), serverTypeId);
 
@@ -254,11 +254,49 @@ public class ServerTypeService  {
         }
 
         return resPage;
+    }*/
+
+    /*public Collection<MeasurementDto> getServerTypeCritical(Integer serverTypeId) {
+
+        ServerType serverType = serverTypeRepository.findById(serverTypeId);
+
+        Collection<Measurement> measurements = serverType.getMeasurements();
+        List<MeasurementDto> measurementDtos = new ArrayList<MeasurementDto>();
+        for(Measurement measurement : measurements){
+            MeasurementDto measurementDto = new MeasurementDto();
+            measurementDto.setId(measurement.getId());
+            measurementDto.setName(measurement.getName());
+            measurementDto.setDescription(measurement.getDescription());
+
+            Collection<Metric> metrics = measurement.getMetrics();
+            List<MetricDto> metricDtos = new ArrayList<MetricDto>();
+            for(Metric metric : metrics){
+                MetricDto metricDto = new MetricDto();
+                metricDto.setId(metric.getId());
+                metricDto.setName(metric.getName());
+
+                ServerTypeCriticalValue id = serverTypeCriticalValueRepository.findAllByServerTypeIdAndMeasurementIdAndMetricId(serverTypeId, measurement.getId(), metric.getId());
+                metricDto.setWarning(id.getWarning());
+                metricDto.setCritical(id.getCritical());
+
+                metricDtos.add(metricDto);
+            }
+            measurementDto.setMetrics(metricDtos);
+            measurementDtos.add(measurementDto);
+        }
+        return measurementDtos;
+    }*/
+
+    public Collection<ServerTypeCriticalValue> getServerTypeMeasurementMetrics(Integer serverTypeId, Integer measurementId) {
+
+        Collection<ServerTypeCriticalValue> serverTypeCriticalValues = serverTypeCriticalValueRepository.findAllByServerTypeIdAndMeasurementId(serverTypeId, measurementId);
+
+        return  serverTypeCriticalValues;
     }
 
     public ServerTypeCriticalValue updateServerTypeCritical(Integer serverTypeId, Integer measurementId, Integer metricId, ServerTypeCriticalValue serverTypeCriticalValue) {
 
-        ServerTypeCriticalValue update = serverTypeCriticalValueRepository.findAllByServerTypeIdAndMeasurementIdAndMetricId(serverTypeId, measurementId, metricId);
+        ServerTypeCriticalValue update = serverTypeCriticalValueRepository.findByServerTypeIdAndMeasurementIdAndMetricId(serverTypeId, measurementId, metricId);
 
         update.setWarning(serverTypeCriticalValue.getWarning());
         update.setCritical(serverTypeCriticalValue.getCritical());
@@ -268,12 +306,25 @@ public class ServerTypeService  {
         return updateData;
     }
 
-    public Collection<Metric> getServerTypeMeasurementMetrics(Integer serverTypeId, Integer measurementId){
+    public void insertServerTypeMeasurementMetrics(Integer serverTypeId, Integer measurementId, Integer[] metricIds){
 
-//        ServerTypeMeasurementMap serverType = serverTypeMeasurementMapRepository.findByServerTypeId(serverTypeId);
-        Measurement measurement = measurementRepository.findById(measurementId);
-        Collection<Metric> metrics = measurement.getMetrics();
+        for(Integer metricId : metricIds) {
+            ServerTypeCriticalValue value = new ServerTypeCriticalValue();
+            value.setServerTypeId(serverTypeId);
+            value.setMeasurementId(measurementId);
+            value.setMetricId(metricId);
 
-        return metrics;
+            ServerTypeCriticalValue result = serverTypeCriticalValueRepository.save(value);
+        }
+    }
+
+    public void deleteServerTypeMeasurementsMetrics(Integer serverTypeId, Integer measurementId, Integer[] metricIds) {
+
+        serverTypeCriticalValueRepository.deleteByServerTypeIdAndMeasurementIdAndMetricIdIn(serverTypeId, measurementId, metricIds);
+    }
+
+    public void deleteServerTypeMeasurementsMetric(Integer serverTypeId, Integer measurementId, Integer metricId) {
+
+        serverTypeCriticalValueRepository.deleteByServerTypeIdAndMeasurementIdAndMetricId(serverTypeId, measurementId, metricId);
     }
 }

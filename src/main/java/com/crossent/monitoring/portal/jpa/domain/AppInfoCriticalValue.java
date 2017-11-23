@@ -1,5 +1,7 @@
 package com.crossent.monitoring.portal.jpa.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -12,6 +14,9 @@ public class AppInfoCriticalValue implements Serializable {
     private Integer metricId;
     private Double critical;
     private Double warning;
+
+    @JsonIgnore
+    private Metric metrics;
 
     @Id
     @Column(name = "app_info_id", nullable = false)
@@ -62,6 +67,12 @@ public class AppInfoCriticalValue implements Serializable {
     public void setWarning(Double warning) {
         this.warning = warning;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "metric_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public Metric getMetrics() { return metrics; }
+
+    public void setMetrics(Metric metrics) { this.metrics = metrics; }
 
     @Override
     public String toString() {

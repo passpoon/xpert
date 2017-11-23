@@ -136,7 +136,7 @@ public class ServerTypeTest extends AbstractMockTest{
         get("/system/management/server-types/"+serverTypeId+"/critical");
     }
 
-    @Test
+    /*@Test
     public void pagingCritical() throws  Exception {
         Integer serverTypeId = 8;
 
@@ -151,6 +151,32 @@ public class ServerTypeTest extends AbstractMockTest{
         params.add("search", JsonUtil.ObjectToJson(searchReqVo));
 
         get("/system/management/server-types/"+serverTypeId+"/critical", params);
+    }*/
+
+    @Test
+    public void getServerTypeCritical() throws  Exception {
+
+        Integer serverTypeId = 2;
+
+        get("/system/management/server-types/"+serverTypeId+"/critical");
+    }
+
+    /*@Test
+    public void getServerTypeMeasurementMetrics() throws Exception {
+
+        Integer serverTypeId = 2;
+        Integer measurementId = 1;
+
+        get("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics");
+    }*/
+
+    @Test
+    public void getServerTypeMeasurementMetrics() throws Exception {
+
+        Integer serverTypeId = 2;
+        Integer measurementId = 1;
+
+        get("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics");
     }
 
     @Test
@@ -166,12 +192,32 @@ public class ServerTypeTest extends AbstractMockTest{
         put("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics/"+metricId+"", update);
     }
 
-    @Test
-    public void getServerTypeMeasurementMetrics() throws Exception {
-
+    @Test  //다중 메트릭 추가
+    public void insertServerTypeMeasurementMetrics() throws Exception {
         Integer serverTypeId = 2;
-        Integer measurementId = 1;
+        Integer measurementId = 2;
+        Integer[] metricIds = {9, 10, 11};
 
-        get("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics");
+        post("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"", metricIds);
+    }
+
+    @Test
+    public void deleteServerTypeMeasurementsMetrics() throws Exception {
+        Integer serverTypeId = 2;
+        Integer measurementId = 2;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("metricIds", "10,11");
+
+        delete("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics", params);
+    }
+
+    @Test
+    public void deleteServerTypeMeasurementsMetric() throws Exception {
+        Integer serverTypeId = 2;
+        Integer measurementId = 2;
+        Integer metricId = 9;
+
+        delete("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics/"+metricId+"");
     }
 }

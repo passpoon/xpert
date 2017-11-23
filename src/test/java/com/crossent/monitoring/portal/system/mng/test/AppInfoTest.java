@@ -140,6 +140,15 @@ public class AppInfoTest extends AbstractMockTest {
     }
 
     @Test
+    public void getAppInfoMeasurementMetrics() throws Exception {
+
+        Integer appInfoId = 1;
+        Integer measurementId = 1;
+
+        get("/system/management/app-infos/"+appInfoId+"/measurements/"+measurementId+"/metrics");
+    }
+
+    @Test
     public void updateCritical() throws Exception {
         Integer appInfoId = 16;
         Integer measurementId = 66;
@@ -150,5 +159,34 @@ public class AppInfoTest extends AbstractMockTest {
         update.setCritical(80.01);
 
         put("/system/management/app-infos/"+appInfoId+"/measurements/"+measurementId+"/metrics/"+metricId+"", update);
+    }
+
+    @Test  //다중 메트릭 추가
+    public void insertAppInfoMeasurementMetrics() throws Exception {
+        Integer serverTypeId = 2;
+        Integer measurementId = 2;
+        Integer[] metricIds = {9, 10, 11};
+
+        post("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"", metricIds);
+    }
+
+    @Test
+    public void deleteAppInfoMeasurementsMetrics() throws Exception {
+        Integer serverTypeId = 2;
+        Integer measurementId = 2;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("metricIds", "10,11");
+
+        delete("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics", params);
+    }
+
+    @Test
+    public void deleteAppInfoMeasurementsMetric() throws Exception {
+        Integer serverTypeId = 2;
+        Integer measurementId = 2;
+        Integer metricId = 9;
+
+        delete("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics/"+metricId+"");
     }
 }

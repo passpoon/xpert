@@ -2,13 +2,11 @@ package com.crossent.monitoring.portal.system.common.web;
 
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.AppInfo;
+import com.crossent.monitoring.portal.jpa.domain.Metric;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
 import com.crossent.monitoring.portal.system.common.service.CommonService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -18,7 +16,7 @@ public class CommonController extends BaseController {
     @Autowired
     CommonService commonService;
 
-    // 서버 유형 조회
+    /*// 서버 유형 조회
     @RequestMapping(value = "/common/server-types", method = RequestMethod.GET)
     public Collection<ServerType> getServerTypes(@RequestParam Integer serverResourceId, @RequestParam String name) {
 
@@ -34,6 +32,14 @@ public class CommonController extends BaseController {
         Collection<AppInfo> appInfos = commonService.getAppInfos(appResourceId, name);
 
         return appInfos;
-    }
+    }*/
 
+    // 메저먼트 메트릭 조회
+    @RequestMapping(value = "/common/measurement/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<Metric> geteMeasurementMetrics(@PathVariable Integer measurementId) {
+
+        Collection<Metric> metrics = commonService.getMeasurementMetrics(measurementId);
+
+        return metrics;
+    }
 }
