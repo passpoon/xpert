@@ -5,6 +5,7 @@ import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
+import com.crossent.monitoring.portal.jpa.domain.Metric;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
 import com.crossent.monitoring.portal.jpa.domain.ServerTypeCriticalValue;
 import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
@@ -107,5 +108,13 @@ public class ServerTypeController extends BaseController{
     public void updateServerTypeCritical(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId, @PathVariable Integer metricId, @RequestBody ServerTypeCriticalValue serverTypeCriticalValue) {
 
         serverTypeService.updateServerTypeCritical(serverTypeId, measurementId, metricId, serverTypeCriticalValue);
+    }
+
+    @RequestMapping(value = "/system/management/server-types/{serverTypeId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<Metric> getServerTypeMeasurementMetrics(@PathVariable Integer serverTypeId, @PathVariable Integer measurementId){
+
+        Collection<Metric> metrics = serverTypeService.getServerTypeMeasurementMetrics(serverTypeId ,measurementId);
+
+        return metrics;
     }
 }

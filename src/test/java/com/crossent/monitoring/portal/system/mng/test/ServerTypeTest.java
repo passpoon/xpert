@@ -165,4 +165,13 @@ public class ServerTypeTest extends AbstractMockTest{
 
         put("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics/"+metricId+"", update);
     }
+
+    @Test
+    public void getServerTypeMeasurementMetrics() throws Exception {
+
+        Integer serverTypeId = 2;
+        Integer measurementId = 1;
+
+        get("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics");
+    }
 }

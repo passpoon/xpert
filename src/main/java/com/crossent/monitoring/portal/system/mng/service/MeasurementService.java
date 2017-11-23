@@ -112,9 +112,9 @@ public class MeasurementService {
         measurementRepository.delete(measurementId);
     }
 
-    public Collection<Metric> getMeasurementMetrics(Integer userGroupId){
+    public Collection<Metric> getMeasurementMetrics(Integer measurementId){
 
-        Measurement measurement = measurementRepository.findById(userGroupId);
+        Measurement measurement = measurementRepository.findById(measurementId);
         Collection<Metric> metrics = measurement.getMetrics();
 
         return metrics;

@@ -36,6 +36,9 @@ public class ServerTypeService  {
     @Autowired
     ServerTypeCriticalValueRepository serverTypeCriticalValueRepository;
 
+    @Autowired
+    MeasurementRepository measurementRepository;
+
     public PagingResVo<ServerTypeDto> pagingServerType(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         PagingResVo<ServerTypeDto> resPage = null;
@@ -263,5 +266,14 @@ public class ServerTypeService  {
         ServerTypeCriticalValue updateData = serverTypeCriticalValueRepository.save(update);
 
         return updateData;
+    }
+
+    public Collection<Metric> getServerTypeMeasurementMetrics(Integer serverTypeId, Integer measurementId){
+
+//        ServerTypeMeasurementMap serverType = serverTypeMeasurementMapRepository.findByServerTypeId(serverTypeId);
+        Measurement measurement = measurementRepository.findById(measurementId);
+        Collection<Metric> metrics = measurement.getMetrics();
+
+        return metrics;
     }
 }
