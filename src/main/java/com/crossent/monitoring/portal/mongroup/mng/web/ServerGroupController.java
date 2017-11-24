@@ -34,6 +34,14 @@ public class ServerGroupController extends BaseController {
         serverGroupService.createServerGroup(monitoringGroupId, mgServerGroup);
     }
 
+    /*@RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-types", method = RequestMethod.GET)
+    public Collection<MgServerGroupDto> getServerGroupServerTypes(@PathVariable Integer monitoringGroupId) {
+
+        Collection<MgServerGroupDto> mgServerGroups = serverGroupService.getServerGroupServerTypes(monitoringGroupId);
+
+        return mgServerGroups;
+    }*/
+
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}", method = RequestMethod.PUT)
     public void updateServerGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody MgServerGroup mgServerGroup) {

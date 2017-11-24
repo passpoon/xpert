@@ -46,7 +46,9 @@ public class ApplicationGroupTest extends AbstractMockTest {
         Integer monitoringGroupId = 1;
         Integer appGroupId =  3;
 
-        MgServer update = new MgServer();
+        MgAppGroup update = new MgAppGroup();
+        update.setName("aaa");
+        update.setAppInfoId(1);
         update.setMonitoringYn("Y");
         update.setDashboardYn("Y");
 

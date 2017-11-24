@@ -132,11 +132,34 @@ public class ServerGroupService {
         }
     }
 
+    /*public Collection<MgServerGroupDto> getServerGroupServerTypes(Integer monitoringGroupId) {
+
+        Collection<MgServerGroup> mgServerGroups = mgServerGroupRepository.findAllByMonGroupId(monitoringGroupId);
+
+        Collection<MgServerGroupDto> mgServerGroupDtos = new ArrayList<>();
+        for(MgServerGroup mgServerGroup : mgServerGroups){
+            MgServerGroupDto mgServerGroupDto = new MgServerGroupDto();
+            mgServerGroupDto.setId(mgServerGroup.getId());
+            mgServerGroupDto.setMonGroupId(mgServerGroup.getMonGroup().getId());
+            mgServerGroupDto.setName(mgServerGroup.getName());
+            mgServerGroupDto.setServerTypeId(mgServerGroup.getServerType().getId());
+            mgServerGroupDto.setServerTypeName(mgServerGroup.getServerType().getName());
+            mgServerGroupDto.setDescription(mgServerGroup.getDescription());
+            mgServerGroupDto.setMonitoringYn(mgServerGroup.getMonitoringYn());
+            mgServerGroupDto.setDashboardYn(mgServerGroup.getDashboardYn());
+
+            mgServerGroupDtos.add(mgServerGroupDto);
+        }
+
+        return mgServerGroupDtos;
+    }*/
 
     public MgServerGroup updateServerGroup(Integer monitoringGroupId, Integer serverGroupId, MgServerGroup mgServerGroup) {
 
         MgServerGroup updateServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
 
+        updateServerGroup.setName(mgServerGroup.getName());
+        updateServerGroup.setServerTypeId(mgServerGroup.getServerTypeId());
         updateServerGroup.setMonitoringYn(mgServerGroup.getMonitoringYn());
         updateServerGroup.setDashboardYn(mgServerGroup.getDashboardYn());
 

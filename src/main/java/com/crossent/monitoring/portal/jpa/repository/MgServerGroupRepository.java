@@ -5,10 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Collection;
+
 
 public interface MgServerGroupRepository extends JpaRepository<MgServerGroup, Integer> {
 
     public MgServerGroup findByMonGroupId(Integer monitorGroupId);
+    public Collection<MgServerGroup> findAllByMonGroupId(Integer monitorGroupId);
 
     public MgServerGroup findById(Integer serverGroupId);
 

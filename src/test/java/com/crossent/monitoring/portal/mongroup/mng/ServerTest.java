@@ -14,7 +14,7 @@ public class ServerTest extends AbstractMockTest {
 
     @Test
     public void pageServer() throws Exception {
-        Integer monitoringGroupId = 1;
+        Integer monitoringGroupId = 2;
 
         PagingReqVo pagingReqVo = new PagingReqVo();
         pagingReqVo.setPage(0);

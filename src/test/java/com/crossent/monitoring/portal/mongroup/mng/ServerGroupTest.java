@@ -45,11 +45,20 @@ public class ServerGroupTest extends AbstractMockTest {
     }
 
     @Test
-    public void updateServerGroup() throws Exception {
+    public void getServerGroupServerTypes() throws Exception {
+        Integer monitoringGroupId = 1;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-types");
+    }
+
+    @Test
+    public void updateMgServerGroup() throws Exception {
         Integer monitoringGroupId = 1;
         Integer serverGroupId =  1;
 
-        MgServer update = new MgServer();
+        MgServerGroup update = new MgServerGroup();
+        update.setName("서버그룹 1 수정");
+        update.setServerTypeId(2);
         update.setMonitoringYn("N");
         update.setDashboardYn("N");
 

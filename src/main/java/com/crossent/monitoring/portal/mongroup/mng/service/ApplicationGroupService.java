@@ -19,24 +19,6 @@ import java.util.*;
 public class ApplicationGroupService {
     private static Logger logger = LoggerFactory.getLogger(ApplicationGroupService.class);
 
-    /*@Autowired
-    MgServerGroupRepository mgServerGroupRepository;
-
-    @Autowired
-    MgServerGroupCriticalValueRepository mgServerGroupCriticalValueRepository;
-
-    @Autowired
-    ServerTypeRepository serverTypeRepository;
-
-    @Autowired
-    ServerTypeCriticalValueRepository serverTypeCriticalValueRepository;
-
-    @Autowired
-    ServerResourceRepository serverResourceRepository;
-
-    @Autowired
-    MgServerGroupServerRepository mgServerGroupServerRepository;*/
-
     @Autowired
     MgAppGroupRepository mgAppGroupRepository;
 
@@ -149,6 +131,8 @@ public class ApplicationGroupService {
 
         MgAppGroup updateAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
 
+        updateAppGroup.setName(mgAppGroup.getName());
+        updateAppGroup.setAppInfoId(mgAppGroup.getAppInfoId());
         updateAppGroup.setMonitoringYn(mgAppGroup.getMonitoringYn());
         updateAppGroup.setDashboardYn(mgAppGroup.getDashboardYn());
 

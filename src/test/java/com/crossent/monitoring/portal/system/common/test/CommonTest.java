@@ -6,7 +6,7 @@ import org.springframework.util.LinkedMultiValueMap;
 
 public class CommonTest extends AbstractMockTest {
 
-    // 서버유형 조회
+    /*// 서버유형 조회
     @Test
     public void getServerTypes() throws Exception {
 
@@ -17,9 +17,9 @@ public class CommonTest extends AbstractMockTest {
         params.add("name", name);
 
         get("/common/server-types", params);
-    }
+    }*/
 
-    // 어플리케이션 정보 조회
+    /*// 어플리케이션 정보 조회
     @Test
     public void getAppInfos() throws Exception {
 
@@ -30,5 +30,28 @@ public class CommonTest extends AbstractMockTest {
         params.add("name", name);
 
         get("/common/app-infos", params);
+    }*/
+
+    // 메저먼트 메트릭 조회
+    @Test
+    public void geteMeasurementMetrics() throws Exception {
+
+        Integer measurementId = 1;
+
+        get("/common/measurement/"+measurementId+"/metrics");
+    }
+
+    // 서버 타입 조회
+    @Test
+    public void getServerTypes() throws Exception {
+
+        get("/common/server-types");
+    }
+
+    // 어플리케이션 정보 조회
+    @Test
+    public void getAppInfos() throws Exception {
+
+        get("/common/app-infos");
     }
 }

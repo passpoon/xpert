@@ -49,4 +49,19 @@ public class CommonService {
         return metrics;
     }
 
+    // 서버 유형 조회
+    public Collection<ServerType> getServerTypes() {
+
+        Collection<ServerType> serverTypes = serverTypeRepository.findAll();
+
+        return serverTypes;
+    }
+
+    // 어플리케이션 정보 조회
+    public Collection<AppInfo> getAppInfos() {
+
+        Collection<AppInfo> appInfos = appInfoRepository.findAll();
+
+        return appInfos;
+    }
 }

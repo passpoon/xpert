@@ -5,6 +5,7 @@ import com.crossent.monitoring.portal.jpa.domain.AppInfo;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
 import com.crossent.monitoring.portal.system.common.service.CommonService;
+import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -41,5 +42,23 @@ public class CommonController extends BaseController {
         Collection<Metric> metrics = commonService.getMeasurementMetrics(measurementId);
 
         return metrics;
+    }
+
+    // 서버 유형 조회
+    @RequestMapping(value = "/common/server-types", method = RequestMethod.GET)
+    public Collection<ServerType> getServerTypes() {
+
+        Collection<ServerType> serverTypes = commonService.getServerTypes();
+
+        return serverTypes;
+    }
+
+    // 어플리케이션 정보 조회
+    @RequestMapping(value = "/common/app-infos", method = RequestMethod.GET)
+    public Collection<AppInfo> getAppInfos() {
+
+        Collection<AppInfo> appInfos = commonService.getAppInfos();
+
+        return appInfos;
     }
 }
