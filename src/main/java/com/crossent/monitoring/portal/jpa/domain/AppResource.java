@@ -16,6 +16,8 @@ public class AppResource implements Serializable {
     private Integer appInfoId;
     private Integer serverResourceId;
     private ServerResource serverResource;
+    private String uuid;
+
     @JsonIgnore
     private Collection<MgApp> mgApps;
 
@@ -52,6 +54,12 @@ public class AppResource implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Basic
+    @Column(name = "uuid", nullable = true, length = 45)
+    public String getUuid() { return uuid; }
+
+    public void setUuid(String uuid) { this.uuid = uuid; }
 
     @Override
     public boolean equals(Object o) {

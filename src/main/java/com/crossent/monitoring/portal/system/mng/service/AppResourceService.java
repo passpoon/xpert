@@ -62,6 +62,7 @@ public class AppResourceService {
         in.setName(appResource.getName());
         in.setAppInfoId(appResource.getAppInfoId());
         in.setServerResourceId(appResource.getServerResourceId());
+        in.setUuid(appResource.getUuid());
         in.setDescription(appResource.getDescription());
 
         AppResource resUser = appResourceRepository.save(in);

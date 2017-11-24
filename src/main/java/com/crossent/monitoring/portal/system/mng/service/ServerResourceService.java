@@ -69,6 +69,7 @@ public class ServerResourceService {
         in.setHostName(serverResource.getHostName());
         in.setIp(serverResource.getIp());
         in.setServerTypeId(serverResource.getServerTypeId());
+        in.setUuid(serverResource.getUuid());
         in.setDescription(serverResource.getDescription());
 
         ServerResource resUser = serverResourceRepository.save(in);

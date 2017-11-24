@@ -86,7 +86,7 @@ public class MonitorGroupTest extends AbstractMockTest {
     @Test
     public void insertMonGroupServers() throws Exception {
         Integer monitoringGroupId = 2;
-        Integer[] serverResourceIds = {3, 4};
+        Integer[] serverResourceIds = {4};
 
         post("/system/management/monitoring-groups/"+monitoringGroupId+"/servers", serverResourceIds);
     }

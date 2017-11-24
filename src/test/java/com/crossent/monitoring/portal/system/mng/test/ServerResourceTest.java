@@ -11,13 +11,13 @@ import org.springframework.util.LinkedMultiValueMap;
 public class ServerResourceTest extends AbstractMockTest {
 
     @Test
-    public void pageUserGroup() throws Exception {
+    public void pageServerResource() throws Exception {
         PagingReqVo pagingReqVo = new PagingReqVo();
         pagingReqVo.setPage(0);
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("hostname", "age");
+//        searchReqVo.addKeyword("hostname", "age");
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
@@ -34,6 +34,7 @@ public class ServerResourceTest extends AbstractMockTest {
         serverResource.setHostName("host");
         serverResource.setIp("10.10.10.10");
         serverResource.setServerTypeId(2);
+        serverResource.setUuid("aa");
         serverResource.setDescription("ccc");
 
         post("/system/management/servers", serverResource);

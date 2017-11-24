@@ -1,7 +1,22 @@
-[
-  {
-    "id": 2,
-    "name": "small",
-    "description": "서버타입 수정"
-  }
-]
+{
+  "number": 0,
+  "size": 10,
+  "totalPages": 1,
+  "numberOfElements": 1,
+  "totalElements": 1,
+  "hasNextPage": false,
+  "list": [
+    {
+      "id": 2,
+      "name": "어플리케이션 그룹2",
+      "description": "redis 어플리케이션",
+      "dashboardYn": null,
+      "monitoringYn": null,
+      "monGroupId": 2,
+      "appInfoId": 2,
+      "appInfoName": "redis"
+    }
+  ],
+  "firstPage": true,
+  "lastPage": true
+}

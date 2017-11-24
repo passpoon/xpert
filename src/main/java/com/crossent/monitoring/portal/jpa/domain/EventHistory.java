@@ -18,6 +18,7 @@ public class EventHistory implements Serializable {
     private String updateDttm;
     private MonGroup monGroup;
     private StateCode stateCode;
+    private String resourceUuid;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -139,6 +140,12 @@ public class EventHistory implements Serializable {
     public void setStateCode(StateCode stateCode) {
         this.stateCode = stateCode;
     }
+
+    @Basic
+    @Column(name = "resource_uuid", nullable = true, length = 100)
+    public String getResourceUuid() { return resourceUuid; }
+
+    public void setResourceUuid(String resourceUuid) { this.resourceUuid = resourceUuid; }
 
     @Override
     public String toString() {

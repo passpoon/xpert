@@ -14,6 +14,8 @@ public class ServerResource  implements Serializable {
     private String hostName;
     private String ip;
     private String description;
+    private String uuid;
+
     private Integer serverTypeId;
 
     @JsonIgnore
@@ -72,6 +74,12 @@ public class ServerResource  implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Basic
+    @Column(name = "uuid", nullable = true, length = 45)
+    public String getUuid() { return uuid; }
+
+    public void setUuid(String uuid) { this.uuid = uuid; }
 
     @Basic
     @Column(name = "server_type_id", nullable = false)

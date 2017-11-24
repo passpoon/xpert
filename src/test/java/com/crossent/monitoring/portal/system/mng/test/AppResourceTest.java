@@ -33,6 +33,7 @@ public class AppResourceTest extends AbstractMockTest {
         appResource.setName("aaa");
         appResource.setAppInfoId(2);
         appResource.setServerResourceId(5);
+        appResource.setUuid("Aaaa");
         appResource.setDescription("ccc");
 
         post("/system/management/apps", appResource);

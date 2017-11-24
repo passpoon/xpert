@@ -56,6 +56,9 @@ public class MonitorGroupService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    MgServerTitleMapRepository mgServerTitleMapRepository;
+
     public PagingResVo<MonGroup> pagingMonGroup(PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Map<String, String> keywords = searchReqVo.getKeywords();
@@ -185,6 +188,11 @@ public class MonitorGroupService {
                         mgServerCriticalValueRepository.save(mgServerCriticalValue);
                     }
                 }
+                MgServerTitleMap map = new MgServerTitleMap();
+                map.setMonGroupId(monitoringGroupId);
+                map.setMeasurementId(measurement.getId());
+
+                mgServerTitleMapRepository.save(map);
             }
         }
     }

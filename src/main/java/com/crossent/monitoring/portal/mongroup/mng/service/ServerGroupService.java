@@ -37,6 +37,9 @@ public class ServerGroupService {
     @Autowired
     MgServerGroupServerRepository mgServerGroupServerRepository;
 
+    @Autowired
+    MgServerGroupTitleMapRepository mgServerGroupTitleMapRepository;
+
     public PagingResVo<MgServerGroupDto> pagingServerGroup(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Page<MgServerGroup> allByMonGroupId = mgServerGroupRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
@@ -94,8 +97,8 @@ public class ServerGroupService {
     public void createServerGroup(Integer monitoringGroupId, MgServerGroup mgServerGroup) {
 
         /*MgServerGroup byMonGroupId = mgServerGroupRepository.findByMonGroupId(monitoringGroupId);*/
-
         MgServerGroup mg = new MgServerGroup();
+
         mg.setName(mgServerGroup.getName());
         mg.setMonGroupId(monitoringGroupId);
         mg.setServerTypeId(mgServerGroup.getServerTypeId());
@@ -121,7 +124,8 @@ public class ServerGroupService {
                 ServerTypeCriticalValue serverTypeCriticalValue = serverTypeCriticalValueRepository.findOne(serverTypeCriticalValuePK);
                 if(serverTypeCriticalValue != null) {
                     MgServerGroupCriticalValue mgServerGroupCriticalValue = new MgServerGroupCriticalValue();
-                    mgServerGroupCriticalValue.setServerGroupId(mgServerGroup.getId());
+                    /*mgServerGroupCriticalValue.setServerGroupId(mgServerGroup.getId());*/
+                    mgServerGroupCriticalValue.setServerGroupId(result.getId());
                     mgServerGroupCriticalValue.setMetricId(id);
                     mgServerGroupCriticalValue.setWarning(serverTypeCriticalValue.getWarning());
                     mgServerGroupCriticalValue.setCritical(serverTypeCriticalValue.getCritical());
@@ -129,6 +133,11 @@ public class ServerGroupService {
                     mgServerGroupCriticalValueRepository.save(mgServerGroupCriticalValue);
                 }
             }
+            MgServerGroupTitleMap map = new MgServerGroupTitleMap();
+            map.setMonGroupId(monitoringGroupId);
+            map.setMeasurementId(measurement.getId());
+
+            mgServerGroupTitleMapRepository.save(map);
         }
     }
 
