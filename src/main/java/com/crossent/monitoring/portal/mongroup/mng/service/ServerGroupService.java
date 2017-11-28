@@ -141,27 +141,22 @@ public class ServerGroupService {
         }
     }
 
-    /*public Collection<MgServerGroupDto> getServerGroupServerTypes(Integer monitoringGroupId) {
+    public MgServerGroupDto getServerGroup(Integer monitoringGroupId, Integer serverGroupId) {
 
-        Collection<MgServerGroup> mgServerGroups = mgServerGroupRepository.findAllByMonGroupId(monitoringGroupId);
+        MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
 
-        Collection<MgServerGroupDto> mgServerGroupDtos = new ArrayList<>();
-        for(MgServerGroup mgServerGroup : mgServerGroups){
-            MgServerGroupDto mgServerGroupDto = new MgServerGroupDto();
-            mgServerGroupDto.setId(mgServerGroup.getId());
-            mgServerGroupDto.setMonGroupId(mgServerGroup.getMonGroup().getId());
-            mgServerGroupDto.setName(mgServerGroup.getName());
-            mgServerGroupDto.setServerTypeId(mgServerGroup.getServerType().getId());
-            mgServerGroupDto.setServerTypeName(mgServerGroup.getServerType().getName());
-            mgServerGroupDto.setDescription(mgServerGroup.getDescription());
-            mgServerGroupDto.setMonitoringYn(mgServerGroup.getMonitoringYn());
-            mgServerGroupDto.setDashboardYn(mgServerGroup.getDashboardYn());
+        MgServerGroupDto mgServerGroupDto = new MgServerGroupDto();
+        mgServerGroupDto.setId(serverGroupId);
+        mgServerGroupDto.setMonGroupId(monitoringGroupId);
+        mgServerGroupDto.setName(mgServerGroup.getName());
+        mgServerGroupDto.setServerTypeId(mgServerGroup.getServerTypeId());
+        mgServerGroupDto.setServerTypeName(mgServerGroup.getServerType().getName());
+        mgServerGroupDto.setDescription(mgServerGroup.getDescription());
+        mgServerGroupDto.setDashboardYn(mgServerGroup.getDashboardYn());
+        mgServerGroupDto.setMonitoringYn(mgServerGroup.getMonitoringYn());
 
-            mgServerGroupDtos.add(mgServerGroupDto);
-        }
-
-        return mgServerGroupDtos;
-    }*/
+        return mgServerGroupDto;
+    }
 
     public MgServerGroup updateServerGroup(Integer monitoringGroupId, Integer serverGroupId, MgServerGroup mgServerGroup) {
 
@@ -175,6 +170,11 @@ public class ServerGroupService {
         MgServerGroup updateData = mgServerGroupRepository.save(updateServerGroup);
 
         return updateData;
+    }
+
+    public void deleteMgServerGroups(Integer monitoringGroupId, Integer[] serverGroupIds) {
+
+        mgServerGroupRepository.deleteByMonGroupIdAndIdIn(monitoringGroupId, serverGroupIds);
     }
 
     public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId) {
@@ -216,6 +216,11 @@ public class ServerGroupService {
 
             MgServerGroupServer result = mgServerGroupServerRepository.save(map);
         }
+    }
+
+    public void deleteServerGroupServerResources(Integer monitoringGroupId, Integer serverGroupId, Integer[] serverResourceIds) {
+
+        mgServerGroupServerRepository.deleteByMonGroupIdAndServerGroupIdAndServerResourceIdIn(monitoringGroupId, serverGroupId, serverResourceIds);
     }
 
     public void deleteServerGroupServerResource(Integer monitoringGroupId, Integer serverGroupId, Integer serverResourceId) {

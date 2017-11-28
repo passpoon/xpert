@@ -16,4 +16,6 @@ public interface MgAppGroupRepository extends JpaRepository<MgAppGroup, Integer>
     public MgAppGroup findByMonGroupIdAndId(Integer monGroupId, Integer appGroupId);
 
     public MgAppGroup findById(Integer appGroupId);
+
+    public void deleteByMonGroupIdAndIdIn(Integer monGroupId, Integer[] Ids);
 }

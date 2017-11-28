@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.ws.rs.PathParam;
 import java.util.Collection;
 
 @RestController
@@ -34,19 +35,26 @@ public class ServerGroupController extends BaseController {
         serverGroupService.createServerGroup(monitoringGroupId, mgServerGroup);
     }
 
-    /*@RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-types", method = RequestMethod.GET)
-    public Collection<MgServerGroupDto> getServerGroupServerTypes(@PathVariable Integer monitoringGroupId) {
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}", method = RequestMethod.GET)
+    public MgServerGroupDto getServerGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
 
-        Collection<MgServerGroupDto> mgServerGroups = serverGroupService.getServerGroupServerTypes(monitoringGroupId);
+        MgServerGroupDto mgServerGroupDto = serverGroupService.getServerGroup(monitoringGroupId, serverGroupId);
 
-        return mgServerGroups;
-    }*/
+        return mgServerGroupDto;
+    }
 
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}", method = RequestMethod.PUT)
     public void updateServerGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody MgServerGroup mgServerGroup) {
 
         serverGroupService.updateServerGroup(monitoringGroupId, serverGroupId, mgServerGroup);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups", method = RequestMethod.DELETE)
+    public void deleteServerGroups(@PathVariable Integer monitoringGroupId, @RequestParam Integer[] serverGroupIds) {
+
+        serverGroupService.deleteMgServerGroups(monitoringGroupId, serverGroupIds);
     }
 
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics", method = RequestMethod.GET)
@@ -77,6 +85,13 @@ public class ServerGroupController extends BaseController {
     public void insertServerGroupServerResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody Integer[] serverResourceIds) {
 
         serverGroupService.insertServerGroupServerResources(monitoringGroupId, serverGroupId, serverResourceIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/servers" , method = RequestMethod.DELETE)
+    public void deleteServerGroupServerResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestParam Integer[] serverResourceIds) {
+
+        serverGroupService.deleteServerGroupServerResources(monitoringGroupId, serverGroupId, serverResourceIds);
     }
 
     @Transactional

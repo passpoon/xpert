@@ -7,5 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface MgServerGroupServerRepository extends CrudRepository<MgServerGroupServer, MgServerGroupServerPK> {
 
+    public void deleteByMonGroupIdAndServerGroupIdAndServerResourceIdIn(Integer monGroupId, Integer serverGroupId, Integer[] serverResourceIds);
+
     public void deleteByMonGroupIdAndServerGroupIdAndServerResourceId(Integer monGroupId, Integer serverGroupId, Integer serverResourceId);
 }

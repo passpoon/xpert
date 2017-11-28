@@ -127,6 +127,23 @@ public class ApplicationGroupService {
         }
     }
 
+    public MgAppGroupDto getAppGroup(Integer monitoringGroupId, Integer appGroupId) {
+
+        MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+
+        MgAppGroupDto mgAppGroupDto = new MgAppGroupDto();
+        mgAppGroupDto.setId(appGroupId);
+        mgAppGroupDto.setMonGroupId(monitoringGroupId);
+        mgAppGroupDto.setName(mgAppGroup.getName());
+        mgAppGroupDto.setAppInfoId(mgAppGroup.getAppInfoId());
+        mgAppGroupDto.setAppInfoName(mgAppGroup.getAppInfo().getName());
+        mgAppGroupDto.setDescription(mgAppGroup.getDescription());
+        mgAppGroupDto.setDashboardYn(mgAppGroup.getDashboardYn());
+        mgAppGroupDto.setMonitoringYn(mgAppGroup.getMonitoringYn());
+
+        return mgAppGroupDto;
+    }
+
     public MgAppGroup updateAppGroup(Integer monitoringGroupId, Integer appGroupId, MgAppGroup mgAppGroup) {
 
         MgAppGroup updateAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
@@ -139,6 +156,11 @@ public class ApplicationGroupService {
         MgAppGroup updateData = mgAppGroupRepository.save(updateAppGroup);
 
         return updateData;
+    }
+
+    public void deleteAppGroups(Integer monitoringGroupId, Integer[] appGroupIds) {
+
+        mgAppGroupRepository.deleteByMonGroupIdAndIdIn(monitoringGroupId, appGroupIds);
     }
 
     public Collection<MgAppGroupCriticalValue> getAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId) {
@@ -179,6 +201,11 @@ public class ApplicationGroupService {
 
             MgAppGroupApp result = mgAppGroupAppRepository.save(map);
         }
+    }
+
+    public void deleteAppGroupAppResources(Integer monitoringGroupId, Integer appGroupId, Integer[] appResourceIds) {
+
+        mgAppGroupAppRepository.deleteByMonGroupIdAndAppGroupIdAndAppResourceIdIn(monitoringGroupId, appGroupId, appResourceIds);
     }
 
     public void deleteAppGroupAppResource(Integer monitoringGroupId, Integer appGroupId, Integer appResourceId) {

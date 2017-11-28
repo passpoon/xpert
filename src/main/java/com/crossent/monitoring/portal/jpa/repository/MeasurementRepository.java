@@ -14,7 +14,6 @@ public interface MeasurementRepository extends JpaRepository<Measurement, Intege
 
     //public Measurement findByName(@Param("name") String Name);
 
-   //
     public Measurement findById(Integer id);
 
     public Page<Measurement> findByNameLike(Pageable pageable, String name);

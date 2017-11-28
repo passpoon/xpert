@@ -37,11 +37,26 @@ public class ApplicationGroupController extends BaseController {
        applicationGroupService.createAppGroup(monitoringGroupId, mgAppGroup);
     }
 
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}", method = RequestMethod.GET)
+    public MgAppGroupDto getAppGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId) {
+
+        MgAppGroupDto mgAppGroupDto = applicationGroupService.getAppGroup(monitoringGroupId, appGroupId);
+
+        return mgAppGroupDto;
+    }
+
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}", method = RequestMethod.PUT)
     public void updateAppGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestBody MgAppGroup mgAppGroup) {
 
         applicationGroupService.updateAppGroup(monitoringGroupId, appGroupId, mgAppGroup);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups", method = RequestMethod.DELETE)
+    public void deleteAppGroups(@PathVariable Integer monitoringGroupId, @RequestParam Integer[] appGroupIds) {
+
+        applicationGroupService.deleteAppGroups(monitoringGroupId, appGroupIds);
     }
 
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/metrics", method = RequestMethod.GET)
@@ -72,6 +87,13 @@ public class ApplicationGroupController extends BaseController {
     public void insertAppGroupAppResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestBody Integer[] appResourceIds) {
 
         applicationGroupService.insertAppGroupAppResources(monitoringGroupId, appGroupId, appResourceIds);
+    }
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/apps" , method = RequestMethod.DELETE)
+    public void deleteAppGroupAppResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestParam Integer[] appResourceIds) {
+
+        applicationGroupService.deleteAppGroupAppResources(monitoringGroupId, appGroupId, appResourceIds);
     }
 
     @Transactional

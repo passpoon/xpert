@@ -23,4 +23,6 @@ public interface MgServerGroupRepository extends JpaRepository<MgServerGroup, In
     public Page<MgServerGroup> findAllByMonGroupIdAndDescriptionLike(Integer monGroupId, Pageable pageable, String description);
 
     public void deleteByServerTypeIdIn(Integer[] ids);
+
+    public void deleteByMonGroupIdAndIdIn(Integer monitorGroupId, Integer[] ids);
 }

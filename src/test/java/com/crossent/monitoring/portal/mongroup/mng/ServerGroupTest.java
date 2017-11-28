@@ -45,10 +45,11 @@ public class ServerGroupTest extends AbstractMockTest {
     }
 
     @Test
-    public void getServerGroupServerTypes() throws Exception {
+    public void getServerGroup() throws Exception {
         Integer monitoringGroupId = 1;
+        Integer serverGroupId = 1;
 
-        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-types");
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"");
     }
 
     @Test
@@ -63,6 +64,16 @@ public class ServerGroupTest extends AbstractMockTest {
         update.setDashboardYn("N");
 
         put("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"", update);
+    }
+
+    @Test
+    public void deleteMgServerGroups() throws Exception {
+        Integer monitoringGroupId = 1;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("serverGroupIds", "13");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups", params);
     }
 
     @Test
@@ -101,6 +112,17 @@ public class ServerGroupTest extends AbstractMockTest {
         Integer[] serverResourceIds = {1, 6}; // Mg_server에 있는 server resource를 할당
 
         post("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/servers", serverResourceIds);
+    }
+
+    @Test
+    public void deleteServerGroupServerResources() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 1;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("serverResourceIds", "6");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/servers", params);
     }
 
     @Test
