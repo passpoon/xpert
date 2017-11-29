@@ -6,9 +6,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "mg_server_critical_value", schema = "mondb", catalog = "")
+@Table(name = "mg_server_critical_value", schema = "mondb")
 @IdClass(MgServerCriticalValuePK.class)
-public class MgServerCriticalValue implements Serializable {
+public class MgServerCriticalValue implements Serializable, CriticalValueInterface {
     private Integer monGroupId;
     private Integer serverResourceId;
     private Integer metricId;

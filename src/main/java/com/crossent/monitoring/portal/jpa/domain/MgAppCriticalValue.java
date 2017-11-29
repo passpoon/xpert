@@ -8,7 +8,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "mg_app_critical_value", schema = "mondb", catalog = "")
 @IdClass(MgAppCriticalValuePK.class)
-public class MgAppCriticalValue implements Serializable {
+public class MgAppCriticalValue implements Serializable, CriticalValueInterface{
     private Integer monGroupId;
     private Integer appResourceId;
     private Integer metricId;

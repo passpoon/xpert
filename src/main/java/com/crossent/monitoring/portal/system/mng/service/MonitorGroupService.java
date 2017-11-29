@@ -1,6 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
-import com.crossent.monitoring.portal.common.constants.CodeConstants;
+import com.crossent.monitoring.portal.common.constants.Constants;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -10,7 +10,6 @@ import com.crossent.monitoring.portal.system.mng.dto.MgUserDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.AutoConfigureWebClient;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
@@ -281,7 +280,7 @@ public class MonitorGroupService {
     // 관리자
     public Collection<MgUserDto> getMonGroupManagers(Integer monitoringGroupId) {
 
-        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, CodeConstants.MG_GROUP_MANAGER);
+        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, Constants.MG_GROUP_MANAGER);
 
         Collection<MgUserDto> mgUserDtos = new ArrayList<MgUserDto>();
 
@@ -303,7 +302,7 @@ public class MonitorGroupService {
             MgUser mgUser = new MgUser();
             mgUser.setMonGroupId(monitoringGroupId);
             mgUser.setUserId(userId);
-            mgUser.setTypeCodeCode(CodeConstants.MG_GROUP_MANAGER);
+            mgUser.setTypeCodeCode(Constants.MG_GROUP_MANAGER);
 
             MgUser groupMap = mgUserRepository.save(mgUser);
         }
@@ -322,7 +321,7 @@ public class MonitorGroupService {
     // 운영자
     public Collection<MgUserDto> getMonGroupOperators(Integer monitoringGroupId) {
 
-        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, CodeConstants.MG_GROUP_OPERRATOR);
+        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, Constants.MG_GROUP_OPERRATOR);
 
         Collection<MgUserDto> mgUserDtos = new ArrayList<MgUserDto>();
 
@@ -342,7 +341,7 @@ public class MonitorGroupService {
             MgUser mgUser = new MgUser();
             mgUser.setMonGroupId(monitoringGroupId);
             mgUser.setUserId(userId);
-            mgUser.setTypeCodeCode(CodeConstants.MG_GROUP_OPERRATOR);
+            mgUser.setTypeCodeCode(Constants.MG_GROUP_OPERRATOR);
 
             MgUser groupMap = mgUserRepository.save(mgUser);
         }

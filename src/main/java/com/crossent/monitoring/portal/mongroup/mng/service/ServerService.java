@@ -65,11 +65,11 @@ public class ServerService {
         } else {
             switch (key) {
                 case "serverResourceName": {
-                    mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_NameLike(monitoringGroupId, pagingReqVo.toPagingRequest(), keyword);
+                    mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_NameLike(pagingReqVo.toPagingRequest(), monitoringGroupId,  keyword);
                 }
                 break;
                 case "hostName": {
-                    mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_HostNameLike(monitoringGroupId, pagingReqVo.toPagingRequest(), keyword);
+                    mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_HostNameLike(pagingReqVo.toPagingRequest(), monitoringGroupId,  keyword);
                 }
                 break;
             }
