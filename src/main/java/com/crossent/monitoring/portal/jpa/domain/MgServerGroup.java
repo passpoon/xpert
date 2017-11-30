@@ -121,7 +121,7 @@ public class MgServerGroup implements Serializable {
     public void setMgServerGroupCriticalValues(Collection<MgServerGroupCriticalValue> mgServerGroupCriticalValues) { this.mgServerGroupCriticalValues = mgServerGroupCriticalValues; }
 
     //추가
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_server_group_server",
             joinColumns = {@JoinColumn(name = "server_group_id", referencedColumnName = "id")},
             inverseJoinColumns ={ @JoinColumn(name = "mon_group_id", referencedColumnName = "mon_group_id"), @JoinColumn(name = "server_resource_id", referencedColumnName = "server_resource_id")})

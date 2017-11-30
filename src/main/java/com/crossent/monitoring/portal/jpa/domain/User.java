@@ -93,7 +93,7 @@ public class User implements Serializable {
         this.uuid = uuid;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_user",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))

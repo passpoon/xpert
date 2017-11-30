@@ -98,7 +98,7 @@ public class Meta implements Serializable {
 
     public void setStateCodeId(String stateCodeId) { this.stateCodeId = stateCodeId; }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "meta_manual_map",
             joinColumns = @JoinColumn(name = "meta_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "manual_id", referencedColumnName="id"))

@@ -54,7 +54,7 @@ public class MonGroup  implements Serializable {
         this.description = description;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_server",
             joinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "server_resource_id", referencedColumnName="id"))
@@ -63,7 +63,7 @@ public class MonGroup  implements Serializable {
     public void setServerResource(Collection<ServerResource> serverResource) { this.serverResource = serverResource; }
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_app",
             joinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "app_resource_id", referencedColumnName="id"))
@@ -72,7 +72,7 @@ public class MonGroup  implements Serializable {
     public void setAppResource(Collection<AppResource> appResource) { this.appResource = appResource; }
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_user",
             joinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"))

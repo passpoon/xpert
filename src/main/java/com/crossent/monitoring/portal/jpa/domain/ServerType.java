@@ -50,7 +50,7 @@ public class ServerType implements Serializable {
         this.description = description;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "server_type_measurement_map",
             joinColumns = @JoinColumn(name = "server_type_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "measurement_id", referencedColumnName="id"))

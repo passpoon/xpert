@@ -68,7 +68,7 @@ public class MgAlarm implements Serializable {
         this.monGroup = monGroup;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_alarm_app_group_map",
             joinColumns = @JoinColumn(name = "mg_alarm_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "mg_app_group_id", referencedColumnName = "id"))
@@ -80,7 +80,7 @@ public class MgAlarm implements Serializable {
         this.mgAppGroups = mgAppGroups;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_alarm_app_map",
             joinColumns = @JoinColumn(name = "mg_alarm_id", referencedColumnName = "id"),
             inverseJoinColumns = {@JoinColumn(name = "app_resource_id", referencedColumnName = "app_resource_id"),
@@ -93,7 +93,7 @@ public class MgAlarm implements Serializable {
         this.mgApps = mgApps;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_alarm_log_event_map",
             joinColumns = @JoinColumn(name = "mg_alarm_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "mg_log_event_id", referencedColumnName = "id"))
@@ -105,7 +105,7 @@ public class MgAlarm implements Serializable {
         this.mgLogEvents = mgLogEvents;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_alarm_server_group_map",
             joinColumns = @JoinColumn(name = "mg_alarm_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "mg_server_group_id", referencedColumnName = "id"))
@@ -117,7 +117,7 @@ public class MgAlarm implements Serializable {
         this.mgServerGroups = mgServerGroups;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_alarm_server_map",
             joinColumns = @JoinColumn(name = "mg_alarm_id", referencedColumnName = "id"),
             inverseJoinColumns = {@JoinColumn(name = "server_resource_id", referencedColumnName = "server_resource_id"),
