@@ -221,7 +221,7 @@ public class MonServerService {
             if(processInfoForServer == null){
                 procStatus = StatusEnum.Error;
 
-                processStatusDto.setStandardCnt(0L);
+                processStatusDto.setTotalCnt(0L);
                 processStatusDto.setNomalCnt(0L);
                 processStatusDto.setAbnomalCnt(0L);
 
@@ -235,7 +235,7 @@ public class MonServerService {
                 if(abnormalCnt > 0){
                     procStatus = StatusEnum.Error;
                 }
-                processStatusDto.setStandardCnt(totalCnt);
+                processStatusDto.setTotalCnt(totalCnt);
                 processStatusDto.setNomalCnt(normalCnt);
                 processStatusDto.setAbnomalCnt(abnormalCnt);
 

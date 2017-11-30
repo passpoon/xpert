@@ -4,7 +4,7 @@ import com.crossent.monitoring.portal.common.constants.StatusEnum;
 
 public class ProcessStatusDto{
     String status;
-    Long standardCnt;
+    Long totalCnt;
     Long nomalCnt;
     Long abnomalCnt;
     String content;
@@ -22,12 +22,12 @@ public class ProcessStatusDto{
         this.status = status;
     }
 
-    public Long getStandardCnt() {
-        return standardCnt;
+    public Long getTotalCnt() {
+        return totalCnt;
     }
 
-    public void setStandardCnt(Long standardCnt) {
-        this.standardCnt = standardCnt;
+    public void setTotalCnt(Long totalCnt) {
+        this.totalCnt = totalCnt;
     }
 
     public Long getNomalCnt() {
@@ -58,13 +58,11 @@ public class ProcessStatusDto{
     public String toString() {
         final StringBuilder sb = new StringBuilder("ProcessStatusDto{");
         sb.append("status='").append(status).append('\'');
-        sb.append(", standardCnt=").append(standardCnt);
+        sb.append(", totalCnt=").append(totalCnt);
         sb.append(", nomalCnt=").append(nomalCnt);
         sb.append(", abnomalCnt=").append(abnomalCnt);
         sb.append(", content='").append(content).append('\'');
         sb.append('}');
         return sb.toString();
     }
-
-
 }
