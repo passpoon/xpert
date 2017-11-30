@@ -82,7 +82,7 @@ public class AppInfo implements Serializable {
         this.mgAppGroups = mgAppGroups;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "app_info_measurement_map",
             joinColumns = @JoinColumn(name = "app_info_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "measurement_id", referencedColumnName="id"))

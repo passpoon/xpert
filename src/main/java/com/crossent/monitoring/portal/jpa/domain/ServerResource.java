@@ -94,7 +94,7 @@ public class ServerResource  implements Serializable {
     public void setServerType(ServerType serverType) { this.serverType = serverType; }
 
     //common
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_server",
             joinColumns = @JoinColumn(name = "server_resource_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))

@@ -138,7 +138,7 @@ public class AppResource implements Serializable {
     }
 
     //common
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_app",
             joinColumns = @JoinColumn(name = "app_resource_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "mon_group_id", referencedColumnName="id"))

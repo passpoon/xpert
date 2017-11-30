@@ -120,7 +120,7 @@ public class MgAppGroup implements Serializable {
     public void setMgAppGroupCriticalValues(Collection<MgAppGroupCriticalValue> mgAppGroupCriticalValues) { this.mgAppGroupCriticalValues = mgAppGroupCriticalValues; }
 
     //추가
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "mg_app_group_app",
             joinColumns = {@JoinColumn(name = "app_group_id", referencedColumnName = "id")},
             inverseJoinColumns ={ @JoinColumn(name = "mon_group_id", referencedColumnName = "mon_group_id"), @JoinColumn(name = "app_resource_id", referencedColumnName = "app_resource_id")})

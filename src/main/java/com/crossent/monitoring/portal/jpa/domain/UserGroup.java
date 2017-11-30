@@ -45,7 +45,7 @@ public class UserGroup implements Serializable {
         this.description = description;
     }
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "user_group_map",
             joinColumns = @JoinColumn(name = "user_group_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName="id"))

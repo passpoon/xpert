@@ -16,7 +16,6 @@ public class ServerTypeCriticalValue implements Serializable {
     private Double critical;
     private Double warning;
 
-    @JsonIgnore
     private Metric metrics;
 
     @Id

@@ -59,7 +59,7 @@ public class Manual implements Serializable {
     }
 
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "meta_manual_map",
             joinColumns = @JoinColumn(name = "manual_id", referencedColumnName="id"),
             inverseJoinColumns = @JoinColumn(name = "meta_id", referencedColumnName="id"))
