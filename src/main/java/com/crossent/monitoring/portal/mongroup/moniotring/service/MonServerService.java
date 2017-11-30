@@ -222,8 +222,8 @@ public class MonServerService {
                 procStatus = StatusEnum.Error;
 
                 processStatusDto.setTotalCnt(0L);
-                processStatusDto.setNomalCnt(0L);
-                processStatusDto.setAbnomalCnt(0L);
+                processStatusDto.setNormalCnt(0L);
+                processStatusDto.setAbnormalCnt(0L);
 
                 procContent.append(MessageUtil.getMessage("failProcessInfo", hostName));
 
@@ -236,8 +236,8 @@ public class MonServerService {
                     procStatus = StatusEnum.Error;
                 }
                 processStatusDto.setTotalCnt(totalCnt);
-                processStatusDto.setNomalCnt(normalCnt);
-                processStatusDto.setAbnomalCnt(abnormalCnt);
+                processStatusDto.setNormalCnt(normalCnt);
+                processStatusDto.setAbnormalCnt(abnormalCnt);
 
                 for(String keys : Constants.PROC_STAT_KEYS){
                     procContent.append(keys + " : " + processInfoForServer.get(keys)+"\n");

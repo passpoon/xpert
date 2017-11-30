@@ -5,8 +5,8 @@ import com.crossent.monitoring.portal.common.constants.StatusEnum;
 public class ProcessStatusDto{
     String status;
     Long totalCnt;
-    Long nomalCnt;
-    Long abnomalCnt;
+    Long normalCnt;
+    Long abnormalCnt;
     String content;
 
 
@@ -30,20 +30,20 @@ public class ProcessStatusDto{
         this.totalCnt = totalCnt;
     }
 
-    public Long getNomalCnt() {
-        return nomalCnt;
+    public Long getNormalCnt() {
+        return normalCnt;
     }
 
-    public void setNomalCnt(Long nomalCnt) {
-        this.nomalCnt = nomalCnt;
+    public void setNormalCnt(Long normalCnt) {
+        this.normalCnt = normalCnt;
     }
 
-    public Long getAbnomalCnt() {
-        return abnomalCnt;
+    public Long getAbnormalCnt() {
+        return abnormalCnt;
     }
 
-    public void setAbnomalCnt(Long abnomalCnt) {
-        this.abnomalCnt = abnomalCnt;
+    public void setAbnormalCnt(Long abnormalCnt) {
+        this.abnormalCnt = abnormalCnt;
     }
 
     public String getContent() {
@@ -59,8 +59,8 @@ public class ProcessStatusDto{
         final StringBuilder sb = new StringBuilder("ProcessStatusDto{");
         sb.append("status='").append(status).append('\'');
         sb.append(", totalCnt=").append(totalCnt);
-        sb.append(", nomalCnt=").append(nomalCnt);
-        sb.append(", abnomalCnt=").append(abnomalCnt);
+        sb.append(", normalCnt=").append(normalCnt);
+        sb.append(", abnormalCnt=").append(abnormalCnt);
         sb.append(", content='").append(content).append('\'');
         sb.append('}');
         return sb.toString();
