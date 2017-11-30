@@ -19,12 +19,6 @@ public class TestControllerTest extends AbstractMockTest{
     private static Logger logger = LoggerFactory.getLogger(TestControllerTest.class);
 
     @Test
-    public void testProperty() throws Throwable {
-        get("/test/property");
-    }
-
-
-    @Test
     public void testInfluxDb() throws Throwable {
         logger.debug("system : {}" , System.getProperties());
         get("/test/influxdb");
@@ -34,6 +28,11 @@ public class TestControllerTest extends AbstractMockTest{
     @Test
     public void testElasticsearch() throws Throwable {
         get("/test/elasticsearch");
+    }
+
+    @Test
+    public void testProperties() throws Throwable{
+        get("/test/properties");
     }
 
 

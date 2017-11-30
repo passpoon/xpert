@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class MessageUtil {
 
-
+    private static String propertyPrefix = "monitoring.portal.common.error.";
     private static MessageSource messageSource;
 
     public MessageUtil(){
@@ -20,11 +20,11 @@ public class MessageUtil {
     }
 
     public static String getMessage(String code){
-        return messageSource.getMessage(code, null, null, null);
+        return messageSource.getMessage(propertyPrefix + code, null, null, null);
     }
 
     public static String getMessage(String code, String... params){
-        return messageSource.getMessage(code, params, null, null);
+        return messageSource.getMessage(propertyPrefix + code, params, null, null);
     }
 
 

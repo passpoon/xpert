@@ -2,6 +2,7 @@ package com.crossent.monitoring.portal.sample.service;
 
 
 import com.crossent.monitoring.portal.common.lib.elasticsearch.ElasticsearchTemplate;
+import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
@@ -33,8 +34,11 @@ public class TestService {
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
 
+    @Autowired
+    private ApplicationProperties applicationProperties;
+
     public void testInfluxdb(){
-        Query query = new Query("select * from cpu where time > now() - 5m; select * from mem where time > now() - 5m", influxDBTemplate.getDatabase());
+        Query query = new Query("select * from cpu where time > now() - 5m", influxDBTemplate.getDatabase());
 
         QueryResult qr = influxDBTemplate.query(query);
         List<Result> results = qr.getResults();
@@ -74,6 +78,20 @@ public class TestService {
 
 
 
+    public void testProperties(){
+
+        logger.debug("applicationProperties : {} ", applicationProperties);
+
+//        logger.debug("cpu :{}", applicationProperties.getInfluxQueryFilters().get("cpu"));
+//        logger.debug("cpu,get :{}", applicationProperties.getInfluxQueryFilters().get("cpu").get("cpu"));
+
+
+
+    }
+
+
+
 
 
 }
+

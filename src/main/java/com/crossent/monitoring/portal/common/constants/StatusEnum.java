@@ -1,9 +1,10 @@
 package com.crossent.monitoring.portal.common.constants;
 
 import com.crossent.monitoring.portal.common.exception.BusinessException;
+import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 
 public enum StatusEnum {
-    Nomal(0), Warning(1), Critical(2);
+    NA(-1), Nomal(0), Warning(1), Critical(2), Error(3), ;
 
     int status;
     private StatusEnum(int status){
@@ -14,7 +15,7 @@ public enum StatusEnum {
         return status;
     }
 
-    public StatusEnum getMax(StatusEnum c){
+    public StatusEnum max(StatusEnum c){
         if(this.getVal() >= c.getVal()){
             return this;
         }else{
@@ -24,24 +25,29 @@ public enum StatusEnum {
 
     public String getString(){
         switch (status){
+            case -1:
+                return MessageUtil.getMessage("statusEnumNa");
             case 0:
-                return "정상";
+                return MessageUtil.getMessage("statusEnumNormal");
 
             case 1:
-                return "경고";
+                return MessageUtil.getMessage("statusEnumWarning");
 
             case 2:
-                return "심각";
+                return MessageUtil.getMessage("statusEnumCritical");
+
+            case 3:
+                return MessageUtil.getMessage("statusEnumError");
 
             default:
-                throw new BusinessException("정의되지 않은 코드");
+                throw new BusinessException(MessageUtil.getMessage("unDefCode", ""+status));
         }
     }
 
     @Override
     public String toString() {
         return "StatusEnum{" +
-                "status=" + status +
+                "status=" + getString() +
                 '}';
     }
 }

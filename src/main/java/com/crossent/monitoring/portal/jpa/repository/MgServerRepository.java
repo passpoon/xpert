@@ -13,12 +13,16 @@ import java.util.List;
 
 public interface MgServerRepository extends JpaRepository<MgServer, MgServerPK> {
 
+    public Page<MgServer> findAllByMonGroupIdAndMonitoringYn(Pageable pageable, Integer monGroupId, String monitoringYn);
+
     public Page<MgServer> findAllByMonGroupId(Pageable pageable, Integer monGroupId);
 
     public MgServer findByMonGroupIdAndServerResourceId(Integer monGroupId, Integer serverResourceId);
 
-    public Page<MgServer> findAllByMonGroupIdAndServerResource_NameLike(Integer monGroupId, Pageable pageable, String serverResourceName);
-    public Page<MgServer> findAllByMonGroupIdAndServerResource_HostNameLike(Integer monGroupId, Pageable pageable, String hostName);
+    public Page<MgServer> findAllByMonGroupIdAndMonitoringYnAndServerResource_NameLike(Pageable pageable, Integer monGroupId, String monitoringYn,String serverResourceName);
+    public Page<MgServer> findAllByMonGroupIdAndServerResource_NameLike(Pageable pageable, Integer monGroupId, String serverResourceName);
+    public Page<MgServer> findAllByMonGroupIdAndMonitoringYnAndServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String hostName);
+    public Page<MgServer> findAllByMonGroupIdAndServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String hostName);
 
     public void deleteByMonGroupIdAndServerResourceIdIn(Integer monGroupId, Integer[] serverResourceIds);
     public void deleteByMonGroupIdAndServerResourceId(Integer monGroupId, Integer serverResourceId);
@@ -29,5 +33,5 @@ public interface MgServerRepository extends JpaRepository<MgServer, MgServerPK> 
     //public MgServer findById(Integer id); 해당 도메인에 찾고자 하는 것이 없을경우 에러
     //public void deleteByIdIn(Integer[] ids);
 
-    public List<MgServer> findByMonGroupId(Integer monGroupId);
+    public List<MgServer> findAllByMonGroupId(Integer monGroupId);
 }
