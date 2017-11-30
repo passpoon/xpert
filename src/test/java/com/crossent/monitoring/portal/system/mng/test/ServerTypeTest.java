@@ -173,8 +173,8 @@ public class ServerTypeTest extends AbstractMockTest{
     @Test
     public void getServerTypeMeasurementMetrics() throws Exception {
 
-        Integer serverTypeId = 2;
-        Integer measurementId = 1;
+        Integer serverTypeId = 26;
+        Integer measurementId = 2;
 
         get("/system/management/server-types/"+serverTypeId+"/measurements/"+measurementId+"/metrics");
     }
