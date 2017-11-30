@@ -7,6 +7,7 @@ import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.MgServer;
 import com.crossent.monitoring.portal.jpa.domain.ServerResource;
+import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerDetailStatusDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
 import org.slf4j.Logger;
@@ -30,7 +31,7 @@ public class MonServerController extends BaseController {
 
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses", method = RequestMethod.GET)
-    public PagingResVo<ServerStatusesResDto> getServerStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+    public PagingResVo<ServerStatusesResDto> pagingServerStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
 
         if(logger.isDebugEnabled()){
@@ -48,6 +49,29 @@ public class MonServerController extends BaseController {
 
         return serverStatuses;
     }
+
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}", method = RequestMethod.GET)
+    public ServerDetailStatusDto getServerDetailStatus(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @ModelAttribute("search") SearchReqVo search) {
+
+        if(logger.isDebugEnabled()){
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("search : {}", search);
+        }
+
+        ServerDetailStatusDto serverDetailStatus = serverService.getServerDetailStatus(monitoringGroupId, serverResourceId, search);
+
+
+//        if(logger.isDebugEnabled()){
+//            logger.debug("serverStatuses : {}", serverStatuses);
+//        }
+
+        return serverDetailStatus;
+    }
+
+
 
 
 

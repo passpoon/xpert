@@ -8,7 +8,7 @@ public class ServerStatusesResDto {
     String serverResourceName;
     String hostName;
 
-    List<String> titles;
+    //List<String> titles;
 
     List<MeasurementStatusDto> measurementStatuses;
 
@@ -45,22 +45,22 @@ public class ServerStatusesResDto {
     }
 
 
-    public List<String> getTitles() {
-        return titles;
-    }
-
-    public void setTitles(List<String> titles) {
-        this.titles = titles;
-    }
-
-    public void addTile(String title){
-        if(this.titles == null){
-            titles = new ArrayList<String>();
-
-        }
-
-        titles.add(title);
-    }
+//    public List<String> getTitles() {
+//        return titles;
+//    }
+//
+//    public void setTitles(List<String> titles) {
+//        this.titles = titles;
+//    }
+//
+//    public void addTile(String title){
+//        if(this.titles == null){
+//            titles = new ArrayList<String>();
+//
+//        }
+//
+//        titles.add(title);
+//    }
 
     public List<MeasurementStatusDto> getMeasurementStatuses() {
         return measurementStatuses;
@@ -93,7 +93,7 @@ public class ServerStatusesResDto {
         sb.append("serverResourceId=").append(serverResourceId);
         sb.append(", serverResourceName='").append(serverResourceName).append('\'');
         sb.append(", hostName='").append(hostName).append('\'');
-        sb.append(", titles=").append(titles);
+//        sb.append(", titles=").append(titles);
         sb.append(", measurementStatuses=").append(measurementStatuses);
         sb.append(", processStatus=").append(processStatus);
         sb.append('}');

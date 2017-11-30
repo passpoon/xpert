@@ -12,6 +12,10 @@ public class Constants {
     public static final String FUNC_TYPE_VOLUME_HIGH="0000500004";
     public static final String FUNC_TYPE_VOLUME_LOW="0000500005";
 
+    public static final String METRIC_TYPE_STRING="0000100001";
+    public static final String METRIC_TYPE_INT="0000100002";
+    public static final String METRIC_TYPE_DOUBLE="0000100003";
+
 
     public static String PROC_STAT_KEY_NORMAL="normal";
     public static String PROC_STAT_KEY_ABNORMAL="abnormal";

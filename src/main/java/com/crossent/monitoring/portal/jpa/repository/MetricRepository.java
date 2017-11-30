@@ -4,6 +4,7 @@ import com.crossent.monitoring.portal.jpa.domain.Metric;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 
 public interface MetricRepository extends CrudRepository<Metric, Integer> {
@@ -17,4 +18,6 @@ public interface MetricRepository extends CrudRepository<Metric, Integer> {
     public void deleteByMeasurementIdAndId(Integer measurementId, Integer metricId);
 
 //    public Collection<Metric> findAllByTypeCode(String code);
+
+    public Collection<Metric> findAllByMeasurementIdAndMetricTypeCodeIn(Integer measurementId, List<String> typeCodes);
 }

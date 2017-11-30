@@ -4,23 +4,15 @@ import com.crossent.monitoring.portal.common.constants.Constants;
 import com.crossent.monitoring.portal.common.constants.StatusEnum;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
+import com.crossent.monitoring.portal.common.lib.util.StringUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
-import com.crossent.monitoring.portal.jpa.domain.CriticalValueInterface;
-import com.crossent.monitoring.portal.jpa.domain.MgServer;
-import com.crossent.monitoring.portal.jpa.domain.MgServerCriticalValue;
-import com.crossent.monitoring.portal.jpa.domain.MgServerTitleMap;
-import com.crossent.monitoring.portal.jpa.repository.MeasurementRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerCriticalValueRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerTitleMapRepository;
+import com.crossent.monitoring.portal.jpa.domain.*;
+import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.dao.MonServerDao;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.CriticalValueMapDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.MeasurementStatusDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ProcessStatusDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
+import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
 import jdk.net.SocketFlow;
 import org.influxdb.dto.Point;
@@ -31,11 +23,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MonServerService {
@@ -53,14 +43,19 @@ public class MonServerService {
     @Autowired
     MgServerCriticalValueRepository mgServerCriticalValueRepository;
 
-    @Autowired
-    private InfluxDBTemplate<Point> influxDBTemplate;
+
 
     @Autowired
     private ApplicationProperties applicationProperties;
 
     @Autowired
     private MonServerDao monServerDao;
+
+    @Autowired
+    private ServerResourceRepository serverResourceRepository;
+
+    @Autowired
+    private MetricRepository metricRepository;
 
     public PagingResVo<ServerStatusesResDto> getServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
 
@@ -108,6 +103,16 @@ public class MonServerService {
             logger.debug("mgServers : {}", mgServers);
         }
 
+        logger.debug("mgServer {} ::", mgServers);
+        Collection<MgServerTitleMap> mgServerTitleMaps = mgServerTitleMapRepository.findAllByMonGroupId(monitoringGroupId);
+
+        //title셋팅
+        for(MgServerTitleMap titleMap : mgServerTitleMaps){
+
+            pageServerStatusesResDtoPagingResVo.addTile(titleMap.getMeasurements().getName());
+
+        }
+
         //모니터링 대상서버 목록
         for (MgServer mgServer : mgServers) {
             String hostName = mgServer.getServerResource().getHostName();
@@ -119,7 +124,7 @@ public class MonServerService {
 
 
             logger.debug("mgServer {} ::", mgServers);
-            Collection<MgServerTitleMap> mgServerTitleMaps = mgServerTitleMapRepository.findAllByMonGroupId(monitoringGroupId);
+
 
 
             for (MgServerTitleMap map : mgServerTitleMaps) {
@@ -129,7 +134,7 @@ public class MonServerService {
                 String mName = map.getMeasurements().getName();
 
                 //title입력
-                serverStatusesResDto.addTile(mName);
+                //serverStatusesResDto.addTile(mName);
 
                 Collection<MgServerCriticalValue> criticalValues = mgServerCriticalValueRepository
                                                                            .findAllByMonGroupIdAndServerResourceIdAndMetric_MeasurementId(monitoringGroupId,
@@ -262,13 +267,59 @@ public class MonServerService {
         return pageServerStatusesResDtoPagingResVo;
     }
 
-    /*public Collection<Measurement> getServerStatuses(Integer monitoringGroupId) {
+    public ServerDetailStatusDto getServerDetailStatus(Integer monitoringGroupId, Integer serverResourceId, SearchReqVo search) {
 
-        MgServerTitleMap byMonGroupId = mgServerTitleMapRepository.findByMonGroupId(monitoringGroupId);
+        ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
 
-        Collection<Measurement> byId = measurementRepository.findById(byMonGroupId.getMeasurementId());
-        logger.debug("byId : : {}", byId);
-        return byId;
-    }*/
+        if(serverResource == null){
 
+            throw new BusinessException(MessageUtil.getMessage("noSearchServer", serverResourceId+""));
+        }
+
+        String rangeType = search.getRangeType();
+
+        if(StringUtil.isEmpty(rangeType)){
+            rangeType = "5m";
+        }
+        ServerType serverType = serverResource.getServerType();
+
+        Collection<Measurement> measurements = serverType.getMeasurements();
+
+        ServerDetailStatusDto serverDetailStatusDto = new ServerDetailStatusDto();
+
+        serverDetailStatusDto.setServerResourceId(serverResourceId);
+        serverDetailStatusDto.setServerName(serverResource.getName());
+        serverDetailStatusDto.setHostName(serverResource.getHostName());
+        serverDetailStatusDto.setIp(serverResource.getIp());
+
+        for(Measurement measurement : measurements){
+            MeasurementDetail measurementDetail = new MeasurementDetail();
+
+            Integer measurementId = measurement.getId();
+            String measurementName = measurement.getName();
+            List<String> typeCodes = new ArrayList<String>();
+            typeCodes.add(Constants.METRIC_TYPE_INT);
+            typeCodes.add(Constants.METRIC_TYPE_DOUBLE);
+            Collection<Metric> metrics = metricRepository.findAllByMeasurementIdAndMetricTypeCodeIn(measurementId, typeCodes);
+
+
+
+            measurementDetail.setMeasurementId(measurementId);
+            measurementDetail.setMeasurementName(measurementName);
+
+            for(Metric metric : metrics) {
+                measurementDetail.addTitle(metric.getName());
+            }
+
+
+            List<Map<String, String>> listMetrics = monServerDao.listMetrics(serverResource.getHostName(), measurementName, rangeType, metrics);
+
+            logger.debug("listMetrics : {}", listMetrics);
+            measurementDetail.setRows(listMetrics);
+            serverDetailStatusDto.addMeasurement(measurementDetail);
+
+        }
+
+        return serverDetailStatusDto;
+    }
 }
