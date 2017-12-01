@@ -1,6 +1,7 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.dto;
 
 import com.crossent.monitoring.portal.common.constants.Constants;
+import com.crossent.monitoring.portal.common.constants.MetricFuncType;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 import com.crossent.monitoring.portal.jpa.domain.CriticalValueInterface;
@@ -41,16 +42,16 @@ public class CriticalValueMapDto {
         Metric metric = cv.getMetric();
 
         String funcTypeCode = metric.getFuncTypeCode();
+        MetricFuncType funcType = MetricFuncType.forCode(funcTypeCode);
 
-        switch (funcTypeCode) {
-            case Constants.FUNC_TYPE_AVERAGE_HIGH:
-            case Constants.FUNC_TYPE_IO_USAGE:
-            case Constants.FUNC_TYPE_VOLUME_HIGH: {
+        switch (funcType) {
+            case AVERAGE_HIGH:
+            case IO_USAGE:
+            case VOLUME_HIGH: {
                 return val >= cv.getWarning();
             }
-
-            case Constants.FUNC_TYPE_AVERAGE_LOW:
-            case Constants.FUNC_TYPE_VOLUME_LOW: {
+            case AVERAGE_LOW:
+            case VOLUME_LOW: {
                 return val <= cv.getWarning();
             }
             default:
@@ -65,16 +66,16 @@ public class CriticalValueMapDto {
         Metric metric = cv.getMetric();
 
         String funcTypeCode = metric.getFuncTypeCode();
-
-        switch (funcTypeCode) {
-            case Constants.FUNC_TYPE_AVERAGE_HIGH:
-            case Constants.FUNC_TYPE_IO_USAGE:
-            case Constants.FUNC_TYPE_VOLUME_HIGH: {
+        MetricFuncType funcType = MetricFuncType.forCode(funcTypeCode);
+        switch (funcType) {
+            case AVERAGE_HIGH:
+            case IO_USAGE:
+            case VOLUME_HIGH: {
                 return val >= cv.getCritical();
             }
 
-            case Constants.FUNC_TYPE_AVERAGE_LOW:
-            case Constants.FUNC_TYPE_VOLUME_LOW: {
+            case AVERAGE_LOW:
+            case VOLUME_LOW: {
                 return val <= cv.getCritical();
             }
             default:

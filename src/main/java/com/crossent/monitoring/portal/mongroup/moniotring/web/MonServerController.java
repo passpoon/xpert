@@ -4,9 +4,7 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
-import com.crossent.monitoring.portal.jpa.domain.Measurement;
-import com.crossent.monitoring.portal.jpa.domain.MgServer;
-import com.crossent.monitoring.portal.jpa.domain.ServerResource;
+import com.crossent.monitoring.portal.mongroup.moniotring.dto.EventResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerDetailStatusDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
@@ -15,10 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-
-import java.beans.Transient;
-import java.util.Collection;
-import java.util.List;
 
 @RestController
 public class MonServerController extends BaseController {
@@ -31,7 +25,7 @@ public class MonServerController extends BaseController {
 
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses", method = RequestMethod.GET)
-    public PagingResVo<ServerStatusesResDto> pagingServerStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+    public PagingResVo<ServerStatusesResDto> pageServerStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
 
         if(logger.isDebugEnabled()){
@@ -40,7 +34,7 @@ public class MonServerController extends BaseController {
             logger.debug("search : {}", search);
         }
 
-        PagingResVo<ServerStatusesResDto> serverStatuses = serverService.getServerStatuses(monitoringGroupId, paging, search);
+        PagingResVo<ServerStatusesResDto> serverStatuses = serverService.pageServerStatuses(monitoringGroupId, paging, search);
 
 
         if(logger.isDebugEnabled()){
@@ -69,6 +63,21 @@ public class MonServerController extends BaseController {
 //        }
 
         return serverDetailStatus;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}/events", method = RequestMethod.GET)
+    public PagingResVo<EventResDto> pageEvent(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @ModelAttribute("paging") PagingReqVo pagingReqVo, @ModelAttribute("search") SearchReqVo search){
+
+        logger.debug("monitoringGroupId : {}", monitoringGroupId);
+        logger.debug("serverResourceId : {}", serverResourceId);
+        logger.debug("pagingReqVo : {}", pagingReqVo);
+        logger.debug("search : {}", search);
+
+
+        PagingResVo<EventResDto> resDtoPagingResVo = serverService.pageEvent(monitoringGroupId, serverResourceId, pagingReqVo, search);
+        logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
+        return resDtoPagingResVo;
     }
 
 

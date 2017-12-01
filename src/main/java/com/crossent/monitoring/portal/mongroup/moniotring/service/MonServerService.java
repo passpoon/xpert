@@ -1,8 +1,9 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.service;
 
-import com.crossent.monitoring.portal.common.constants.Constants;
-import com.crossent.monitoring.portal.common.constants.StatusEnum;
+import com.crossent.monitoring.portal.common.constants.*;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
+import com.crossent.monitoring.portal.common.lib.util.DateUtil;
+import com.crossent.monitoring.portal.common.lib.util.MapUtil;
 import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 import com.crossent.monitoring.portal.common.lib.util.StringUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
@@ -14,16 +15,10 @@ import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.dao.MonServerDao;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
-import jdk.net.SocketFlow;
-import org.influxdb.dto.Point;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.*;
 
@@ -57,7 +52,10 @@ public class MonServerService {
     @Autowired
     private MetricRepository metricRepository;
 
-    public PagingResVo<ServerStatusesResDto> getServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
+    @Autowired
+    private EventHistoryRepository eventHistoryRepository;
+
+    public PagingResVo<ServerStatusesResDto> pageServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
 
         String key = null;
         String keyword = null;
@@ -298,8 +296,8 @@ public class MonServerService {
             Integer measurementId = measurement.getId();
             String measurementName = measurement.getName();
             List<String> typeCodes = new ArrayList<String>();
-            typeCodes.add(Constants.METRIC_TYPE_INT);
-            typeCodes.add(Constants.METRIC_TYPE_DOUBLE);
+            typeCodes.add(MetricType.INT.getCode());
+            typeCodes.add(MetricType.DOUBLE.getCode());
             Collection<Metric> metrics = metricRepository.findAllByMeasurementIdAndMetricTypeCodeIn(measurementId, typeCodes);
 
 
@@ -321,5 +319,113 @@ public class MonServerService {
         }
 
         return serverDetailStatusDto;
+    }
+
+
+    public PagingResVo<EventResDto> pageEvent(Integer monGroupId, Integer serverResourceId, PagingReqVo pagingReqVo, SearchReqVo search){
+//        String key = null;
+//        String keyword = null;
+        PagingResVo<EventResDto> eventResPage = null;
+
+        Map<String, String> keywords = search.getKeywords();
+
+
+        List<String> serverResourceTypes = new ArrayList<>();
+        List<String> stateCodes = new ArrayList<>();
+        Page<EventHistory> eventHistoryPage = null;
+
+
+        if (keywords != null) {
+            List<String> listKey = MapUtil.listKeys(keywords);
+            for (String key: listKey) {
+                key = key.toUpperCase();
+                String keyword = keywords.get(key);
+                    switch (key) {
+                        case "RESOURCE-TYPE":
+                            switch(keyword){
+                                case "SERVER":
+                                    serverResourceTypes.add(ResourceType.SERVER.getCode());
+                                case "LOG":
+                                    serverResourceTypes.add(ResourceType.LOG.getCode());
+                            }
+
+                        case "STATE":
+                            switch(keyword){
+                                case "NORMAL":
+                                    stateCodes.add(ServerState.NORMAL.getCode());
+                                case "WARNING":
+                                    stateCodes.add(ServerState.WARNING.getCode());
+                                case "CRITICAL":
+                                    stateCodes.add(ServerState.CRITICAL.getCode());
+                                    break;
+                                case "START":
+                                    stateCodes.add(LogState.START.getCode());
+                                    break;
+                                case "STOP":
+                                    stateCodes.add(LogState.STOP.getCode());
+                                    break;
+                                case "DEBUG":
+                                    stateCodes.add(LogState.DEBUG.getCode());
+                                case "INFO":
+                                    stateCodes.add(LogState.INFO.getCode());
+                                case "WARN":
+                                    stateCodes.add(LogState.WARN.getCode());
+                                case "ERROR":
+                                    stateCodes.add(LogState.ERROR.getCode());
+                                    break;
+                            }
+                    }
+
+            }
+
+        }
+
+        if(serverResourceTypes.size() == 0){
+            serverResourceTypes.add(ResourceType.SERVER.getCode());
+            serverResourceTypes.add(ResourceType.LOG.getCode());
+        }
+
+        if(stateCodes.size() == 0){
+            stateCodes.add(ServerState.NORMAL.getCode());
+                stateCodes.add(ServerState.WARNING.getCode());
+                stateCodes.add(ServerState.CRITICAL.getCode());
+                stateCodes.add(LogState.START.getCode());
+                stateCodes.add(LogState.STOP.getCode());
+                stateCodes.add(LogState.DEBUG.getCode());
+                stateCodes.add(LogState.INFO.getCode());
+                stateCodes.add(LogState.WARN.getCode());
+                stateCodes.add(LogState.ERROR.getCode());
+        }
+
+        eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceId, serverResourceTypes, stateCodes);
+
+        eventResPage = new PagingResVo<EventResDto>(eventHistoryPage, false);
+
+        List<EventHistory> content = eventHistoryPage.getContent();
+
+        for(EventHistory eventHistory : content){
+            EventResDto eventResDto = new EventResDto();
+            eventResDto.setHostName(eventHistory.getHostname());
+            eventResDto.setContents(eventHistory.getContents());
+            eventResDto.setId(eventHistory.getId());
+            eventResDto.setIp(eventHistory.getIp());
+            eventResDto.setMonGroupId(eventHistory.getMonGroupId());
+            eventResDto.setProgram(eventHistory.getProgram());
+            eventResDto.setRegiDttm(convertDateFormat(eventHistory.getRegistDttm()));
+            eventResDto.setUpdateDttm(convertDateFormat(eventHistory.getUpdateDttm()));
+            eventResDto.setResourceType(eventHistory.getResourceType());
+            eventResDto.setResourceUuid(eventHistory.getResourceUuid());
+            eventResDto.setState(eventHistory.getStateCode().getState());
+
+            eventResPage.addListItem(eventResDto);
+        }
+
+        return eventResPage;
+    }
+
+
+    private String convertDateFormat(String date){
+        return DateUtil.dateToString(DateUtil.stringToDate(date, DateUtil.DATE_HMS_PATTERN), DateUtil.DATE_TIME_PATTERN);
+
     }
 }

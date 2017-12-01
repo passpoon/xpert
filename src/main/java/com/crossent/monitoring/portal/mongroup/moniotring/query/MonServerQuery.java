@@ -1,6 +1,7 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.query;
 
 import com.crossent.monitoring.portal.common.constants.Constants;
+import com.crossent.monitoring.portal.common.constants.MetricFuncType;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
@@ -104,14 +105,15 @@ public class MonServerQuery {
 
 
     private static String metricToFunction(String metricName, String funcTypeCode){
-        switch (funcTypeCode) {
-            case (Constants.FUNC_TYPE_AVERAGE_HIGH):
-            case (Constants.FUNC_TYPE_AVERAGE_LOW):
+        MetricFuncType funcType = MetricFuncType.forCode(funcTypeCode);
+        switch (funcType) {
+            case AVERAGE_HIGH:
+            case AVERAGE_LOW:
                 return String.format("MEAN(%s) as %s ", metricName, metricName);
-            case (Constants.FUNC_TYPE_IO_USAGE):
+            case IO_USAGE:
                 return String.format("LAST(%s) - FIRST(%s) as %s ", metricName, metricName, metricName);
-            case (Constants.FUNC_TYPE_VOLUME_HIGH):
-            case (Constants.FUNC_TYPE_VOLUME_LOW):
+            case VOLUME_HIGH:
+            case VOLUME_LOW:
                 return String.format("LAST(%s) as %s ", metricName, metricName);
             default:
                 throw new BusinessException(MessageUtil.getMessage("unDefCode", funcTypeCode));
