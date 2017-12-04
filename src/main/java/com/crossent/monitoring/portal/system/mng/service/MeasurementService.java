@@ -136,6 +136,7 @@ public class MeasurementService {
         //metric.setMeasurement(measurement);
         metricDomain.setMeasurementId(measurementId);
         metricDomain.setMetricTypeCode(metric.getMetricTypeCode());
+        metricDomain.setFuncTypeCode(metric.getFuncTypeCode());
         metricRepository.save(metricDomain);
     }
 

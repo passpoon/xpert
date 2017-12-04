@@ -107,7 +107,7 @@ public class MeasurementTest extends AbstractMockTest{
     @Test
     public void getMeasurementMetrics() throws Exception {
 
-        Integer measurementId = 2;
+        Integer measurementId = 1;
 
         get("/system/management/measurements/"+measurementId+"/metrics");
     }
@@ -115,12 +115,13 @@ public class MeasurementTest extends AbstractMockTest{
     @Test
     public void insertMeasurementMetric() throws Exception {
 
-        Integer measurementId = 49;
+        Integer measurementId = 1;
 
         Metric metric = new Metric();
         metric.setName("m6");
         metric.setDescription("11월6일 테스트");
         metric.setMetricTypeCode("0000100001");
+        metric.setFuncTypeCode("0000500002");
 
         post("/system/management/measurements/"+measurementId+"/metrics", metric);
     }
