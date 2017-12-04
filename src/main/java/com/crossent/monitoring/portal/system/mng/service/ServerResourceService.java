@@ -90,6 +90,7 @@ public class ServerResourceService {
         out.setHostName(resource.getHostName());
         out.setIp(resource.getIp());
         out.setServerTypeId(resource.getServerTypeId());
+        out.setUuid(resource.getUuid());
         out.setDescription(resource.getDescription());
 
         return out;

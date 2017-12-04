@@ -82,6 +82,7 @@ public class AppResourceService {
         out.setName(resource.getName());
         out.setAppInfo(resource.getAppInfo());
         out.setServerResource(resource.getServerResource());
+        out.setUuid(resource.getUuid());
         out.setDescription(resource.getDescription());
 
         return out;

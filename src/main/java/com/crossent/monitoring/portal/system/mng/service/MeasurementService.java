@@ -5,8 +5,11 @@ import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
+import com.crossent.monitoring.portal.jpa.domain.StateCode;
+import com.crossent.monitoring.portal.jpa.domain.TypeCode;
 import com.crossent.monitoring.portal.jpa.repository.MeasurementRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetricRepository;
+import com.crossent.monitoring.portal.jpa.repository.StateCodeRepository;
 import com.crossent.monitoring.portal.jpa.repository.TypeCodeRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -133,6 +136,7 @@ public class MeasurementService {
         //metric.setMeasurement(measurement);
         metricDomain.setMeasurementId(measurementId);
         metricDomain.setMetricTypeCode(metric.getMetricTypeCode());
+        metricDomain.setFuncTypeCode(metric.getFuncTypeCode());
         metricRepository.save(metricDomain);
     }
 
@@ -146,11 +150,17 @@ public class MeasurementService {
         metricRepository.deleteByMeasurementIdAndId(measurementId, metricId);
     }
 
+    public Collection<TypeCode> getTypeCodes() {
 
+        String code = "00001%";
 
+        return typeCodeRepository.findAllByCodeLike(code);
+    }
 
+    public Collection<TypeCode> getFunTypeCodes() {
 
+        String code = "00005%";
 
-
-
+        return typeCodeRepository.findAllByCodeLike(code);
+    }
 }

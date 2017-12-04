@@ -17,7 +17,7 @@ public class AppResourceTest extends AbstractMockTest {
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        searchReqVo.addKeyword("name", "app");
+        /*searchReqVo.addKeyword("name", "app");*/
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));

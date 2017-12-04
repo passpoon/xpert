@@ -26,7 +26,7 @@ public class ServerTypeTest extends AbstractMockTest{
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        /*searchReqVo.addKeyword("name", "sm");*/
+        searchReqVo.addKeyword("id", "26");
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
