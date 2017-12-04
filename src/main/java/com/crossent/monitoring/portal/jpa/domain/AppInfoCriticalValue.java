@@ -15,7 +15,6 @@ public class AppInfoCriticalValue implements Serializable {
     private Double critical;
     private Double warning;
 
-    @JsonIgnore
     private Metric metrics;
 
     @Id

@@ -6,6 +6,8 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
+import com.crossent.monitoring.portal.jpa.domain.StateCode;
+import com.crossent.monitoring.portal.jpa.domain.TypeCode;
 import com.crossent.monitoring.portal.system.mng.service.MeasurementService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -92,6 +94,19 @@ public class MeasurementController  extends BaseController {
         measurementService.deleteMeasurementMetric(measurementId, metricId);
     }
 
+    @RequestMapping(value = "/system/management/measurement/type-codes", method = RequestMethod.GET)
+    public Collection<TypeCode> getTypeCodes() {
 
+        Collection<TypeCode> typeCodes = measurementService.getTypeCodes();
 
+        return typeCodes;
+    }
+
+    @RequestMapping(value = "/system/management/measurement/fun-type-codes", method = RequestMethod.GET)
+    public Collection<TypeCode> getFunTypeCodes() {
+
+        Collection<TypeCode> typeCodes = measurementService.getFunTypeCodes();
+
+        return typeCodes;
+    }
 }

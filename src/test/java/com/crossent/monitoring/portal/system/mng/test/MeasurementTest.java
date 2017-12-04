@@ -107,7 +107,7 @@ public class MeasurementTest extends AbstractMockTest{
     @Test
     public void getMeasurementMetrics() throws Exception {
 
-        Integer measurementId = 49;
+        Integer measurementId = 2;
 
         get("/system/management/measurements/"+measurementId+"/metrics");
     }
@@ -141,5 +141,17 @@ public class MeasurementTest extends AbstractMockTest{
         Integer metricId = 203;
 
         delete("/system/management/measurements/"+measurementId+"/metrics/"+metricId+"");
+    }
+
+    @Test
+    public void getTypeCodes() throws Exception {
+
+        get("/system/management/measurement/type-codes");
+    }
+
+    @Test
+    public void getFunTypeCodes() throws Exception {
+
+        get("/system/management/measurement/fun-type-codes");
     }
 }

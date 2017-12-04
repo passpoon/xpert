@@ -19,6 +19,8 @@ public class Metric implements Serializable {
 
     private Measurement measurement;
     private TypeCode typeCode;
+    private TypeCode typeCodeForFunction;
+
 
     @Id
     @Column(name = "id", nullable = false)
@@ -96,6 +98,12 @@ public class Metric implements Serializable {
     public void setTypeCode(TypeCode typeCode) {
         this.typeCode = typeCode;
     }
+
+    @ManyToOne
+    @JoinColumn(name = "func_type_code", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
+    public TypeCode getTypeCodeForFunction() { return typeCodeForFunction; }
+
+    public void setTypeCodeForFunction(TypeCode typeCodeForFunction) { this.typeCodeForFunction = typeCodeForFunction; }
 
     @Override
     public String toString() {

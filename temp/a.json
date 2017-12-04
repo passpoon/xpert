@@ -1,115 +1,212 @@
 [
   {
-    "monGroupId": 2,
-    "serverResourceId": 1,
-    "dashboardYn": "Y",
-    "monitoringYn": "Y",
-    "monGroup": {
+    "id": 2,
+    "measurementId": 2,
+    "name": "usage_guest",
+    "metricTypeCode": "0000100003",
+    "description": "Linux 커널의 제어하에 게스트 운영 체제 가상 CPU를 실행하는 데 소요되는 CPU 사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
       "id": 2,
-      "name": "PaaS",
-      "description": "PaaS관련 VM 및 어플리케이션 모니터링"
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
     },
-    "serverResource": {
-      "id": 1,
-      "name": "agent1",
-      "hostName": "monagtd01",
-      "ip": "10.10.20.11",
-      "description": "server resource Test",
-      "uuid": "8D0D7A5C-3AD0-4DE6-8E96-41E5C1C5002A",
-      "serverTypeId": 8
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
     }
   },
   {
-    "monGroupId": 2,
-    "serverResourceId": 2,
-    "dashboardYn": "Y",
-    "monitoringYn": "Y",
-    "monGroup": {
+    "id": 3,
+    "measurementId": 2,
+    "name": "usage_guest_nice",
+    "metricTypeCode": "0000100003",
+    "description": "nice geust를 실행하는데 소요되는  CPU 사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
       "id": 2,
-      "name": "PaaS",
-      "description": "PaaS관련 VM 및 어플리케이션 모니터링"
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
     },
-    "serverResource": {
-      "id": 2,
-      "name": "agent2",
-      "hostName": "monagtd02",
-      "ip": "10.10.20.9",
-      "description": "server resource test",
-      "uuid": "0FC6CDE7-DB11-412E-A7AB-9714E209B031",
-      "serverTypeId": 2
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
     }
   },
   {
-    "monGroupId": 2,
-    "serverResourceId": 3,
-    "dashboardYn": null,
-    "monitoringYn": null,
-    "monGroup": {
+    "id": 4,
+    "measurementId": 2,
+    "name": "usage_idle",
+    "metricTypeCode": "0000100003",
+    "description": "유휴한 CPU 시간 백분율",
+    "funcTypeCode": "0000500002",
+    "measurement": {
       "id": 2,
-      "name": "PaaS",
-      "description": "PaaS관련 VM 및 어플리케이션 모니터링"
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
     },
-    "serverResource": {
-      "id": 3,
-      "name": "moncollectd01",
-      "hostName": "collect1",
-      "ip": "10.10.20.14",
-      "description": "server resource test",
-      "uuid": null,
-      "serverTypeId": 2
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500002",
+      "type": "average low"
     }
   },
   {
-    "monGroupId": 2,
-    "serverResourceId": 4,
-    "dashboardYn": null,
-    "monitoringYn": null,
-    "monGroup": {
+    "id": 5,
+    "measurementId": 2,
+    "name": "usage_iowait",
+    "metricTypeCode": "0000100003",
+    "description": "I/O처리때문에 기다리는 CPU시간 백분율",
+    "funcTypeCode": "0000500001",
+    "measurement": {
       "id": 2,
-      "name": "PaaS",
-      "description": "PaaS관련 VM 및 어플리케이션 모니터링"
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
     },
-    "serverResource": {
-      "id": 4,
-      "name": "moncollectd02",
-      "hostName": "collect2",
-      "ip": "10.10.20.16",
-      "description": "server resource test",
-      "uuid": null,
-      "serverTypeId": 2
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
+    }
+  },
+  {
+    "id": 6,
+    "measurementId": 2,
+    "name": "usage_irq",
+    "metricTypeCode": "0000100003",
+    "description": "인터럽트를 서비스하기 위한 사용된 CPU사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
+      "id": 2,
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
+    },
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
+    }
+  },
+  {
+    "id": 7,
+    "measurementId": 2,
+    "name": "usage_nice",
+    "metricTypeCode": "0000100003",
+    "description": "nice 우선순위와 함께 사용자 레벨에서 수행된 CPU사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
+      "id": 2,
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
+    },
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
+    }
+  },
+  {
+    "id": 8,
+    "measurementId": 2,
+    "name": "usage_softirq",
+    "metricTypeCode": "0000100003",
+    "description": "인터럽트에서 처리시간이 오래 걸리는 문제로 미뤄놓은 서비스를 수행하는 CPU사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
+      "id": 2,
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
+    },
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
+    }
+  },
+  {
+    "id": 9,
+    "measurementId": 2,
+    "name": "usage_steal",
+    "metricTypeCode": "0000100003",
+    "description": "가상화 된 환경에서 다른 운영 체제를 실행하는 데 소요되는 CPU사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
+      "id": 2,
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
+    },
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
+    }
+  },
+  {
+    "id": 10,
+    "measurementId": 2,
+    "name": "usage_system",
+    "metricTypeCode": "0000100003",
+    "description": "시스템 커널에서 사용한 CPU사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
+      "id": 2,
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
+    },
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
+    }
+  },
+  {
+    "id": 11,
+    "measurementId": 2,
+    "name": "usage_user",
+    "metricTypeCode": "0000100003",
+    "description": "사용자 레벨(Appliccation)에서 사용한 CPU사용률",
+    "funcTypeCode": "0000500001",
+    "measurement": {
+      "id": 2,
+      "name": "cpu",
+      "description": "CPU에 대한 메트릭"
+    },
+    "typeCode": {
+      "code": "0000100003",
+      "type": "float"
+    },
+    "typeCodeForFunction": {
+      "code": "0000500001",
+      "type": "average high"
     }
   }
 ]
-
-{
-  "number": 0,
-  "size": 10,
-  "totalPages": 1,
-  "numberOfElements": 2,
-  "totalElements": 2,
-  "hasNextPage": false,
-  "list": [
-    {
-      "id": 2,
-      "name": "서버그룹2",
-      "description": "서버그룹 PaaS 서버타입8",
-      "dashboardYn": "Y",
-      "monitoringYn": "Y",
-      "monGroupId": 2,
-      "serverTypeId": 8,
-      "serverTypeName": "test1"
-    },
-    {
-      "id": 4,
-      "name": "서버그룹4",
-      "description": "서버그룹 PaaS 타입12",
-      "dashboardYn": null,
-      "monitoringYn": null,
-      "monGroupId": 2,
-      "serverTypeId": 12,
-      "serverTypeName": "bbb"
-    }
-  ],
-  "lastPage": true,
-  "firstPage": true
-}
