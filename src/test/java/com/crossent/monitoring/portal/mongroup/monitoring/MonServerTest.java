@@ -25,8 +25,51 @@ public class MonServerTest extends AbstractMockTest {
         params.add("search", JsonUtil.ObjectToJson(searchReqVo));
 
 
-        Integer monitoringGroupId = 2;
+        Integer monitoringGroupId = 1;
 
         get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server/server-statuses", params);
+    }
+
+
+    @Test
+    public void getServerDetailStatus() throws Exception {
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+        //searchReqVo.addKeyword(null, null);
+        searchReqVo.setRangeType("20m");
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
+       // params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId = 19;
+
+        ///monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server/server-statuses/"+serverResourceId, params);
+    }
+
+
+    @Test
+    public void pageEvent() throws Exception{
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(10);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server/server-statuses/"+serverResourceId+"/events", params);
+
     }
 }

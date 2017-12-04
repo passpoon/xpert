@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Table(name = "event_history", schema = "mondb")
 public class EventHistory implements Serializable {
     private Long id;
+    private Integer monGroupId;
     private String resourceType;
     private Integer resourceId;
     private String hostname;
@@ -17,6 +18,7 @@ public class EventHistory implements Serializable {
     private String registDttm;
     private String updateDttm;
     private MonGroup monGroup;
+    private String stateCodeCode;
     private StateCode stateCode;
     private String resourceUuid;
 
@@ -122,7 +124,7 @@ public class EventHistory implements Serializable {
 
 
     @ManyToOne
-    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "mon_group_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
     public MonGroup getMonGroup() {
         return monGroup;
     }
@@ -132,7 +134,7 @@ public class EventHistory implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "state_code", referencedColumnName = "code", nullable = false)
+    @JoinColumn(name = "state_code", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
     public StateCode getStateCode() {
         return stateCode;
     }
@@ -146,6 +148,26 @@ public class EventHistory implements Serializable {
     public String getResourceUuid() { return resourceUuid; }
 
     public void setResourceUuid(String resourceUuid) { this.resourceUuid = resourceUuid; }
+
+
+    @Column(name = "mon_group_id", nullable = false, length = 10)
+    public Integer getMonGroupId() {
+        return monGroupId;
+    }
+
+    public void setMonGroupId(Integer monGroupId) {
+        this.monGroupId = monGroupId;
+    }
+
+    @Column(name = "state_code", nullable = false, length = 10)
+    public String getStateCodeCode() {
+        return stateCodeCode;
+    }
+
+
+    public void setStateCodeCode(String stateCodeCode) {
+        this.stateCodeCode = stateCodeCode;
+    }
 
     @Override
     public String toString() {

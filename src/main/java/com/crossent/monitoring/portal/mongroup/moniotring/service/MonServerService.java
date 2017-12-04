@@ -1,41 +1,26 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.service;
 
-import com.crossent.monitoring.portal.common.constants.Constants;
-import com.crossent.monitoring.portal.common.constants.StatusEnum;
+import com.crossent.monitoring.portal.common.constants.*;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
+import com.crossent.monitoring.portal.common.lib.util.DateUtil;
+import com.crossent.monitoring.portal.common.lib.util.MapUtil;
 import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
+import com.crossent.monitoring.portal.common.lib.util.StringUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
-import com.crossent.monitoring.portal.jpa.domain.CriticalValueInterface;
-import com.crossent.monitoring.portal.jpa.domain.MgServer;
-import com.crossent.monitoring.portal.jpa.domain.MgServerCriticalValue;
-import com.crossent.monitoring.portal.jpa.domain.MgServerTitleMap;
-import com.crossent.monitoring.portal.jpa.repository.MeasurementRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerCriticalValueRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerTitleMapRepository;
+import com.crossent.monitoring.portal.jpa.domain.*;
+import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.dao.MonServerDao;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.CriticalValueMapDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.MeasurementStatusDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ProcessStatusDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
+import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
-import jdk.net.SocketFlow;
-import org.influxdb.dto.Point;
-import org.influxdb.dto.Query;
-import org.influxdb.dto.QueryResult;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MonServerService {
@@ -53,8 +38,7 @@ public class MonServerService {
     @Autowired
     MgServerCriticalValueRepository mgServerCriticalValueRepository;
 
-    @Autowired
-    private InfluxDBTemplate<Point> influxDBTemplate;
+
 
     @Autowired
     private ApplicationProperties applicationProperties;
@@ -62,7 +46,16 @@ public class MonServerService {
     @Autowired
     private MonServerDao monServerDao;
 
-    public PagingResVo<ServerStatusesResDto> getServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
+    @Autowired
+    private ServerResourceRepository serverResourceRepository;
+
+    @Autowired
+    private MetricRepository metricRepository;
+
+    @Autowired
+    private EventHistoryRepository eventHistoryRepository;
+
+    public PagingResVo<ServerStatusesResDto> pageServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
 
         String key = null;
         String keyword = null;
@@ -108,6 +101,16 @@ public class MonServerService {
             logger.debug("mgServers : {}", mgServers);
         }
 
+        logger.debug("mgServer {} ::", mgServers);
+        Collection<MgServerTitleMap> mgServerTitleMaps = mgServerTitleMapRepository.findAllByMonGroupId(monitoringGroupId);
+
+        //title셋팅
+        for(MgServerTitleMap titleMap : mgServerTitleMaps){
+
+            pageServerStatusesResDtoPagingResVo.addTile(titleMap.getMeasurements().getName());
+
+        }
+
         //모니터링 대상서버 목록
         for (MgServer mgServer : mgServers) {
             String hostName = mgServer.getServerResource().getHostName();
@@ -119,7 +122,7 @@ public class MonServerService {
 
 
             logger.debug("mgServer {} ::", mgServers);
-            Collection<MgServerTitleMap> mgServerTitleMaps = mgServerTitleMapRepository.findAllByMonGroupId(monitoringGroupId);
+
 
 
             for (MgServerTitleMap map : mgServerTitleMaps) {
@@ -129,7 +132,7 @@ public class MonServerService {
                 String mName = map.getMeasurements().getName();
 
                 //title입력
-                serverStatusesResDto.addTile(mName);
+                //serverStatusesResDto.addTile(mName);
 
                 Collection<MgServerCriticalValue> criticalValues = mgServerCriticalValueRepository
                                                                            .findAllByMonGroupIdAndServerResourceIdAndMetric_MeasurementId(monitoringGroupId,
@@ -262,13 +265,167 @@ public class MonServerService {
         return pageServerStatusesResDtoPagingResVo;
     }
 
-    /*public Collection<Measurement> getServerStatuses(Integer monitoringGroupId) {
+    public ServerDetailStatusDto getServerDetailStatus(Integer monitoringGroupId, Integer serverResourceId, SearchReqVo search) {
 
-        MgServerTitleMap byMonGroupId = mgServerTitleMapRepository.findByMonGroupId(monitoringGroupId);
+        ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
 
-        Collection<Measurement> byId = measurementRepository.findById(byMonGroupId.getMeasurementId());
-        logger.debug("byId : : {}", byId);
-        return byId;
-    }*/
+        if(serverResource == null){
 
+            throw new BusinessException(MessageUtil.getMessage("noSearchServer", serverResourceId+""));
+        }
+
+        String rangeType = search.getRangeType();
+
+        if(StringUtil.isEmpty(rangeType)){
+            rangeType = "5m";
+        }
+        ServerType serverType = serverResource.getServerType();
+
+        Collection<Measurement> measurements = serverType.getMeasurements();
+
+        ServerDetailStatusDto serverDetailStatusDto = new ServerDetailStatusDto();
+
+        serverDetailStatusDto.setServerResourceId(serverResourceId);
+        serverDetailStatusDto.setServerName(serverResource.getName());
+        serverDetailStatusDto.setHostName(serverResource.getHostName());
+        serverDetailStatusDto.setIp(serverResource.getIp());
+
+        for(Measurement measurement : measurements){
+            MeasurementDetail measurementDetail = new MeasurementDetail();
+
+            Integer measurementId = measurement.getId();
+            String measurementName = measurement.getName();
+            List<String> typeCodes = new ArrayList<String>();
+            typeCodes.add(MetricType.INT.getCode());
+            typeCodes.add(MetricType.DOUBLE.getCode());
+            Collection<Metric> metrics = metricRepository.findAllByMeasurementIdAndMetricTypeCodeIn(measurementId, typeCodes);
+
+
+
+            measurementDetail.setMeasurementId(measurementId);
+            measurementDetail.setMeasurementName(measurementName);
+
+            for(Metric metric : metrics) {
+                measurementDetail.addTitle(metric.getName());
+            }
+
+
+            List<Map<String, String>> listMetrics = monServerDao.listMetrics(serverResource.getHostName(), measurementName, rangeType, metrics);
+
+            logger.debug("listMetrics : {}", listMetrics);
+            measurementDetail.setRows(listMetrics);
+            serverDetailStatusDto.addMeasurement(measurementDetail);
+
+        }
+
+        return serverDetailStatusDto;
+    }
+
+
+    public PagingResVo<EventResDto> pageEvent(Integer monGroupId, Integer serverResourceId, PagingReqVo pagingReqVo, SearchReqVo search){
+//        String key = null;
+//        String keyword = null;
+        PagingResVo<EventResDto> eventResPage = null;
+
+        Map<String, String> keywords = search.getKeywords();
+
+
+        List<String> serverResourceTypes = new ArrayList<>();
+        List<String> stateCodes = new ArrayList<>();
+        Page<EventHistory> eventHistoryPage = null;
+
+
+        if (keywords != null) {
+            List<String> listKey = MapUtil.listKeys(keywords);
+            for (String key: listKey) {
+                key = key.toUpperCase();
+                String keyword = keywords.get(key);
+                    switch (key) {
+                        case "RESOURCE-TYPE":
+                            switch(keyword){
+                                case "SERVER":
+                                    serverResourceTypes.add(ResourceType.SERVER.getCode());
+                                case "LOG":
+                                    serverResourceTypes.add(ResourceType.LOG.getCode());
+                            }
+
+                        case "STATE":
+                            switch(keyword){
+                                case "NORMAL":
+                                    stateCodes.add(ServerState.NORMAL.getCode());
+                                case "WARNING":
+                                    stateCodes.add(ServerState.WARNING.getCode());
+                                case "CRITICAL":
+                                    stateCodes.add(ServerState.CRITICAL.getCode());
+                                    break;
+                                case "START":
+                                    stateCodes.add(LogState.START.getCode());
+                                    break;
+                                case "STOP":
+                                    stateCodes.add(LogState.STOP.getCode());
+                                    break;
+                                case "DEBUG":
+                                    stateCodes.add(LogState.DEBUG.getCode());
+                                case "INFO":
+                                    stateCodes.add(LogState.INFO.getCode());
+                                case "WARN":
+                                    stateCodes.add(LogState.WARN.getCode());
+                                case "ERROR":
+                                    stateCodes.add(LogState.ERROR.getCode());
+                                    break;
+                            }
+                    }
+
+            }
+
+        }
+
+        if(serverResourceTypes.size() == 0){
+            serverResourceTypes.add(ResourceType.SERVER.getCode());
+            serverResourceTypes.add(ResourceType.LOG.getCode());
+        }
+
+        if(stateCodes.size() == 0){
+            stateCodes.add(ServerState.NORMAL.getCode());
+                stateCodes.add(ServerState.WARNING.getCode());
+                stateCodes.add(ServerState.CRITICAL.getCode());
+                stateCodes.add(LogState.START.getCode());
+                stateCodes.add(LogState.STOP.getCode());
+                stateCodes.add(LogState.DEBUG.getCode());
+                stateCodes.add(LogState.INFO.getCode());
+                stateCodes.add(LogState.WARN.getCode());
+                stateCodes.add(LogState.ERROR.getCode());
+        }
+
+        eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceId, serverResourceTypes, stateCodes);
+
+        eventResPage = new PagingResVo<EventResDto>(eventHistoryPage, false);
+
+        List<EventHistory> content = eventHistoryPage.getContent();
+
+        for(EventHistory eventHistory : content){
+            EventResDto eventResDto = new EventResDto();
+            eventResDto.setHostName(eventHistory.getHostname());
+            eventResDto.setContents(eventHistory.getContents());
+            eventResDto.setId(eventHistory.getId());
+            eventResDto.setIp(eventHistory.getIp());
+            eventResDto.setMonGroupId(eventHistory.getMonGroupId());
+            eventResDto.setProgram(eventHistory.getProgram());
+            eventResDto.setRegiDttm(convertDateFormat(eventHistory.getRegistDttm()));
+            eventResDto.setUpdateDttm(convertDateFormat(eventHistory.getUpdateDttm()));
+            eventResDto.setResourceType(eventHistory.getResourceType());
+            eventResDto.setResourceUuid(eventHistory.getResourceUuid());
+            eventResDto.setState(eventHistory.getStateCode().getState());
+
+            eventResPage.addListItem(eventResDto);
+        }
+
+        return eventResPage;
+    }
+
+
+    private String convertDateFormat(String date){
+        return DateUtil.dateToString(DateUtil.stringToDate(date, DateUtil.DATE_HMS_PATTERN), DateUtil.DATE_TIME_PATTERN);
+
+    }
 }

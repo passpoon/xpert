@@ -95,7 +95,8 @@ public class DateUtil {
 	
 	public static final String TIME_MINSEC_PATTERN_COLONE = "mm:ss";
 
-	public static final String TIME_UTC_TIMESTAMP_PATTERN = "yyyy-MM-dd'T'hh:mm:ss.SSSZ";
+	public static final String TIME_UTC_TIMESTAMP_PATTERN_MILLISECOND = "yyyy-MM-dd'T'hh:mm:ss.SSSZ";
+	public static final String TIME_UTC_TIMESTAMP_PATTERN_SECOND = "yyyy-MM-dd'T'hh:mm:ssZ";
 		
 	/**
 	 * last day of each month for a common year (other than a leap year)
@@ -3052,11 +3053,31 @@ public class DateUtil {
 
 		timestamp = timestamp.replaceFirst("Z", "-0000");
 
-		SimpleDateFormat sdf = new SimpleDateFormat(TIME_UTC_TIMESTAMP_PATTERN);
+		String format =TIME_UTC_TIMESTAMP_PATTERN_MILLISECOND;
+		if(timestamp.length() == 24){
+			format = TIME_UTC_TIMESTAMP_PATTERN_SECOND;
+		}
+
+		SimpleDateFormat sdf = new SimpleDateFormat(format);
+
+
 
 
 
 		return sdf.parse(timestamp);
+
+
+
+	}
+
+	public static String utcTimestampToString(String timestamp, String pattern) throws Exception{
+
+
+		Date dt = utcTimestampToDate(timestamp);
+
+
+		return  dateToString(dt, pattern);
+
 
 
 

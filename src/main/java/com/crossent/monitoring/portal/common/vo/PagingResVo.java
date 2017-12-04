@@ -50,6 +50,9 @@ public class PagingResVo<T> {
     boolean hasNextPage;
 
 
+    List<String> titles;
+
+
     List<T> list;
 
 
@@ -182,6 +185,24 @@ public class PagingResVo<T> {
         list.add(item);
     }
 
+    public List<String> getTitles() {
+        return titles;
+    }
+
+    public void setTitles(List<String> titles) {
+        this.titles = titles;
+    }
+
+    public void addTile(String title){
+        if(titles == null){
+            titles = new ArrayList<String>();
+
+        }
+        titles.add(title);
+
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("PagingResVo{");
@@ -193,6 +214,7 @@ public class PagingResVo<T> {
         sb.append(", isFirstPage=").append(isFirstPage);
         sb.append(", isLastPage=").append(isLastPage);
         sb.append(", hasNextPage=").append(hasNextPage);
+        sb.append(", titles=").append(titles);
         sb.append(", list=").append(list);
         sb.append('}');
         return sb.toString();

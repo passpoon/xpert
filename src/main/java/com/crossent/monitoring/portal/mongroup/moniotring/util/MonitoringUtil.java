@@ -30,60 +30,7 @@ public class MonitoringUtil {
         return list;
     }
 
-    public static String makeInfluxCriticalQuery(String measurementName, String hostName, CriticalValueMapDto criticalValueMap){
 
-        StringBuilder queryBuffer = new StringBuilder("SELECT ");
-        int idx = 0;
-        List<String> metricNames = criticalValueMap.getMetricNames();
-        for (String metricName : metricNames) {
-            if(idx > 0){
-                queryBuffer.append(",");
-            }
-
-            String funcTypeCode = criticalValueMap.getFuncTypeCode(metricName);
-            //logger.debug("metric FunTypeCode ::{} ", metric.getFuncTypeCode());
-            switch (funcTypeCode) {
-                case (Constants.FUNC_TYPE_AVERAGE_HIGH):
-                case (Constants.FUNC_TYPE_AVERAGE_LOW):
-                    queryBuffer.append(String.format("MEAN(%s) as %s ", metricName, metricName));
-                    break;
-                case (Constants.FUNC_TYPE_IO_USAGE):
-                    queryBuffer.append(String.format("LAST(%s) - FIRST(%s) as %s ", metricName, metricName, metricName));
-                    break;
-                case (Constants.FUNC_TYPE_VOLUME_HIGH):
-                case (Constants.FUNC_TYPE_VOLUME_LOW):
-                    queryBuffer.append(String.format("LAST(%s) as %s ", metricName, metricName));
-                    break;
-                default:
-                    throw new BusinessException(MessageUtil.getMessage("unDefCode", funcTypeCode));
-            }
-            idx++;
-        }
-        queryBuffer.append(String.format("FROM %s ", measurementName));
-
-        String groupingTerm = ApplicationProperties.influxQeryGroupTerm;
-
-        queryBuffer.append(String.format("WHERE time > NOW() - %s ", groupingTerm));
-        queryBuffer.append(String.format("AND host='%s' ",hostName));
-
-        //Map<String, String> filterMap  = influxQueryFilters.get(mName);
-        Map<String, String> filter = ApplicationProperties.influxQueryFilters.get(measurementName);
-
-        if( filter != null){
-            for( Map.Entry<String, String> entrySet : filter.entrySet()){
-                queryBuffer.append(String.format("AND %s='%s' ",entrySet.getKey(), entrySet.getValue()));
-            }
-        }
-
-        queryBuffer.append("ORDER BY time desc;");
-        return queryBuffer.toString();
-    }
-
-
-    public static String makeInfluxProcessQueryForServer(String hostName){
-
-        return String.format("select total, (sleeping + running + paging + stopped) as normal, (blocked + dead + zombies + unknown) as abnormal, sleeping, running, paging, stopped, blocked, dead, zombies,unknown from  %s where time > now() - %s and host = '%s' order by time desc limit 1", ApplicationProperties.influxMeasurementProcess, ApplicationProperties.influxQeryGroupTerm, hostName);
-    }
 
 
     public static Double toDouble(Object val){

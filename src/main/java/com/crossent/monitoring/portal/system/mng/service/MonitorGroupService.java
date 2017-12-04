@@ -1,6 +1,7 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
 import com.crossent.monitoring.portal.common.constants.Constants;
+import com.crossent.monitoring.portal.common.constants.MgGroupUserType;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -280,7 +281,7 @@ public class MonitorGroupService {
     // 관리자
     public Collection<MgUserDto> getMonGroupManagers(Integer monitoringGroupId) {
 
-        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, Constants.MG_GROUP_MANAGER);
+        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, MgGroupUserType.MANAGER.getCode());
 
         Collection<MgUserDto> mgUserDtos = new ArrayList<MgUserDto>();
 
@@ -302,7 +303,7 @@ public class MonitorGroupService {
             MgUser mgUser = new MgUser();
             mgUser.setMonGroupId(monitoringGroupId);
             mgUser.setUserId(userId);
-            mgUser.setTypeCodeCode(Constants.MG_GROUP_MANAGER);
+            mgUser.setTypeCodeCode(MgGroupUserType.MANAGER.getCode());
 
             MgUser groupMap = mgUserRepository.save(mgUser);
         }
@@ -321,7 +322,7 @@ public class MonitorGroupService {
     // 운영자
     public Collection<MgUserDto> getMonGroupOperators(Integer monitoringGroupId) {
 
-        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, Constants.MG_GROUP_OPERRATOR);
+        Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, MgGroupUserType.OPERRATOR.getCode());
 
         Collection<MgUserDto> mgUserDtos = new ArrayList<MgUserDto>();
 
@@ -341,7 +342,7 @@ public class MonitorGroupService {
             MgUser mgUser = new MgUser();
             mgUser.setMonGroupId(monitoringGroupId);
             mgUser.setUserId(userId);
-            mgUser.setTypeCodeCode(Constants.MG_GROUP_OPERRATOR);
+            mgUser.setTypeCodeCode(MgGroupUserType.OPERRATOR.getCode());
 
             MgUser groupMap = mgUserRepository.save(mgUser);
         }

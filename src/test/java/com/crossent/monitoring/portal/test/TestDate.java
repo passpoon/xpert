@@ -10,7 +10,7 @@ public class TestDate {
 
     public static void main(String[] args) throws Exception {
         //                              2017-11-29T05:41:40.000Z
-        Date date = utcTimestampToDate("2017-11-28T02:51:20.000Z");
+        Date date = utcTimestampToDate("2017-11-29T20:48:00.000Z");
 
         System.out.println(date);
 
