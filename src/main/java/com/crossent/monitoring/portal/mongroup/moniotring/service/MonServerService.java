@@ -2,25 +2,32 @@ package com.crossent.monitoring.portal.mongroup.moniotring.service;
 
 import com.crossent.monitoring.portal.common.constants.*;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
+import com.crossent.monitoring.portal.common.lib.elasticsearch.ElasticsearchTemplate;
 import com.crossent.monitoring.portal.common.lib.util.DateUtil;
-import com.crossent.monitoring.portal.common.lib.util.MapUtil;
 import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 import com.crossent.monitoring.portal.common.lib.util.StringUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
-import com.crossent.monitoring.portal.common.vo.PagingReqVo;
-import com.crossent.monitoring.portal.common.vo.PagingResVo;
-import com.crossent.monitoring.portal.common.vo.SearchReqVo;
+import com.crossent.monitoring.portal.common.vo.*;
 import com.crossent.monitoring.portal.jpa.domain.*;
 import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.dao.MonServerDao;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.elasticsearch.index.query.QueryBuilders;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.sort.SortOrder;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.crossent.monitoring.portal.common.lib.util.DateUtil.DATE_HMS_PATTERN;
+import static com.crossent.monitoring.portal.common.lib.util.DateUtil.TIMESTAMP_T_PATTERN;
 
 @Service
 public class MonServerService {
@@ -54,6 +61,14 @@ public class MonServerService {
 
     @Autowired
     private EventHistoryRepository eventHistoryRepository;
+
+    @Autowired
+    private TypeCodeRepository typeCodeRepository;
+
+    @Autowired
+    private ElasticsearchTemplate elasticsearchTemplate;
+
+
 
     public PagingResVo<ServerStatusesResDto> pageServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
 
@@ -150,7 +165,7 @@ public class MonServerService {
                 if(criticalValues != null && criticalValues.size() != 0){
                     List<CriticalValueInterface> metriIfs = MonitoringUtil.criticalCollectionToInterface(criticalValues);
 
-                    CriticalValueMapDto cvMapDto = new CriticalValueMapDto(metriIfs);
+                    CriticalValueMapVo cvMapDto = new CriticalValueMapVo(metriIfs);
 
                     logger.debug("cvMapDto : {}", cvMapDto);
 
@@ -322,62 +337,59 @@ public class MonServerService {
     }
 
 
-    public PagingResVo<EventResDto> pageEvent(Integer monGroupId, Integer serverResourceId, PagingReqVo pagingReqVo, SearchReqVo search){
-//        String key = null;
-//        String keyword = null;
+    public PagingResVo<EventResDto> pageServerEvent(Integer monGroupId, Integer serverResourceId, PagingReqVo pagingReqVo, SearchReqVo search){
+
         PagingResVo<EventResDto> eventResPage = null;
-
-        Map<String, String> keywords = search.getKeywords();
-
 
         List<String> serverResourceTypes = new ArrayList<>();
         List<String> stateCodes = new ArrayList<>();
+
         Page<EventHistory> eventHistoryPage = null;
 
+        SearchVo searchVo = new SearchVo(search);
 
-        if (keywords != null) {
-            List<String> listKey = MapUtil.listKeys(keywords);
-            for (String key: listKey) {
-                key = key.toUpperCase();
-                String keyword = keywords.get(key);
-                    switch (key) {
-                        case "RESOURCE-TYPE":
-                            switch(keyword){
-                                case "SERVER":
-                                    serverResourceTypes.add(ResourceType.SERVER.getCode());
-                                case "LOG":
-                                    serverResourceTypes.add(ResourceType.LOG.getCode());
-                            }
+        if (searchVo.isHaveKeyworkd()) {
+            List<String> keys = searchVo.getKeys();
+            for (String key : keys) {
+                String keyword = searchVo.getKeyword(key);
+                switch (key) {
+                    case "RESOURCE-TYPE":
+                        switch (keyword) {
+                            case "SERVER":
+                                serverResourceTypes.add(ResourceType.SERVER.getCode());
+                            case "LOG":
+                                serverResourceTypes.add(ResourceType.LOG.getCode());
+                        }
 
-                        case "STATE":
-                            switch(keyword){
-                                case "NORMAL":
-                                    stateCodes.add(ServerState.NORMAL.getCode());
-                                case "WARNING":
-                                    stateCodes.add(ServerState.WARNING.getCode());
-                                case "CRITICAL":
-                                    stateCodes.add(ServerState.CRITICAL.getCode());
-                                    break;
-                                case "START":
-                                    stateCodes.add(LogState.START.getCode());
-                                    break;
-                                case "STOP":
-                                    stateCodes.add(LogState.STOP.getCode());
-                                    break;
-                                case "DEBUG":
-                                    stateCodes.add(LogState.DEBUG.getCode());
-                                case "INFO":
-                                    stateCodes.add(LogState.INFO.getCode());
-                                case "WARN":
-                                    stateCodes.add(LogState.WARN.getCode());
-                                case "ERROR":
-                                    stateCodes.add(LogState.ERROR.getCode());
-                                    break;
-                            }
-                    }
+                    case "STATE":
+                        switch (keyword) {
+                            case "NORMAL":
+                                stateCodes.add(ServerState.NORMAL.getCode());
+                            case "WARNING":
+                                stateCodes.add(ServerState.WARNING.getCode());
+                            case "CRITICAL":
+                                stateCodes.add(ServerState.CRITICAL.getCode());
+                                break;
+                            case "START":
+                                stateCodes.add(LogState.START.getCode());
+                                break;
+                            case "STOP":
+                                stateCodes.add(LogState.STOP.getCode());
+                                break;
+                            case "DEBUG":
+                                stateCodes.add(LogState.DEBUG.getCode());
+                            case "INFO":
+                                stateCodes.add(LogState.INFO.getCode());
+                            case "WARN":
+                                stateCodes.add(LogState.WARN.getCode());
+                            case "ERROR":
+                                stateCodes.add(LogState.ERROR.getCode());
+                                break;
+                        }
+                }
+
 
             }
-
         }
 
         if(serverResourceTypes.size() == 0){
@@ -397,7 +409,23 @@ public class MonServerService {
                 stateCodes.add(LogState.ERROR.getCode());
         }
 
-        eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceId, serverResourceTypes, stateCodes);
+
+
+
+
+
+
+        if(searchVo.isHaveRange()){
+            String startDttm = searchVo.getStartDttm();
+            String endDttm = searchVo.getEndDttm();
+
+            //findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanAndUpdateDttmLessThanOrderByUpdateDttmDescIdDesc
+
+            eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanEqualAndUpdateDttmLessThanEqualOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceId, serverResourceTypes, stateCodes, startDttm, endDttm);
+
+        }else {
+            eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceId, serverResourceTypes, stateCodes);
+        }
 
         eventResPage = new PagingResVo<EventResDto>(eventHistoryPage, false);
 
@@ -411,9 +439,13 @@ public class MonServerService {
             eventResDto.setIp(eventHistory.getIp());
             eventResDto.setMonGroupId(eventHistory.getMonGroupId());
             eventResDto.setProgram(eventHistory.getProgram());
-            eventResDto.setRegiDttm(convertDateFormat(eventHistory.getRegistDttm()));
-            eventResDto.setUpdateDttm(convertDateFormat(eventHistory.getUpdateDttm()));
-            eventResDto.setResourceType(eventHistory.getResourceType());
+            eventResDto.setRegiDttm(DateUtil.convertDateFormat(eventHistory.getRegistDttm(), DATE_HMS_PATTERN, DateUtil.DATE_TIME_PATTERN));
+            eventResDto.setUpdateDttm(DateUtil.convertDateFormat(eventHistory.getUpdateDttm(), DATE_HMS_PATTERN, DateUtil.DATE_TIME_PATTERN));
+
+            //typeCodeRepo
+
+            eventResDto.setResourceType(eventHistory.getResourceTypeCode().getType().toUpperCase());
+
             eventResDto.setResourceUuid(eventHistory.getResourceUuid());
             eventResDto.setState(eventHistory.getStateCode().getState());
 
@@ -424,8 +456,65 @@ public class MonServerService {
     }
 
 
-    private String convertDateFormat(String date){
-        return DateUtil.dateToString(DateUtil.stringToDate(date, DateUtil.DATE_HMS_PATTERN), DateUtil.DATE_TIME_PATTERN);
 
+
+    public PagingResVo<LogResDto> pageServerLog(Integer serverResourceId, PagingReqVo page, SearchReqVo search){
+
+        ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
+        if(serverResource == null){
+            throw new BusinessException(MessageUtil.getMessage("noSearchServer", serverResource+""));
+        }
+
+        String hostName = serverResource.getHostName();
+        String timeZone = ApplicationProperties.elasticsearchDateTimezone;
+        //String nApplicationProperties.
+        String dateForamte = ApplicationProperties.elasticsearchDateFormat;
+        String index = ApplicationProperties.elasticsearchIndexLog;
+        String type = ApplicationProperties.elasticsearchTypeLog;
+
+
+        SearchVo searchVo = new SearchVo(search);
+        QueryBuilder query = null;
+        QueryBuilder postFilter = null;
+
+        if(searchVo.isHaveRange()){
+            String from  = DateUtil.convertDateFormat(searchVo.getStartDttm(), DATE_HMS_PATTERN, TIMESTAMP_T_PATTERN);
+            String to = DateUtil.convertDateFormat(searchVo.getEndDttm(), DATE_HMS_PATTERN, TIMESTAMP_T_PATTERN);
+            query = QueryBuilders.rangeQuery("@timestamp").from(from).to(to).timeZone(timeZone).format(dateForamte);
+        }
+
+        if(searchVo.isHaveKeyworkd()){
+            List<String> keys = searchVo.getKeys();
+            QueryBuilder searchQuery= QueryBuilders.matchQuery(keys.get(0), searchVo.getKeyword(keys.get(0)));
+
+            if(query == null){
+                query = searchQuery;
+            }else{
+                postFilter = searchQuery;
+            }
+        }
+
+        if(query == null){
+            //query = QueryBuilders.
+        }
+
+        SearchResponse searchResponse = null;
+
+        searchResponse = elasticsearchTemplate.query(index, type, query, postFilter, "@timestamp", SortOrder.DESC, page.getPage(), page.getPageSize());
+
+
+        //searchResponse.
+
+        //Set<String> result = new HashSet<String>();
+
+        SearchHits hits = searchResponse.getHits();
+        Long total = hits.totalHits;
+
+        //logger.debug("hit : {}", hits);
+
+        for (SearchHit hit : searchResponse.getHits()) {
+
+        }
+        return null;
     }
 }

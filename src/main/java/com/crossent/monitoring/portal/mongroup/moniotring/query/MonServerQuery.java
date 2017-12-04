@@ -1,12 +1,11 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.query;
 
-import com.crossent.monitoring.portal.common.constants.Constants;
 import com.crossent.monitoring.portal.common.constants.MetricFuncType;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.CriticalValueMapDto;
+import com.crossent.monitoring.portal.common.vo.CriticalValueMapVo;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,7 +13,7 @@ import java.util.Map;
 
 public class MonServerQuery {
 
-    public static String makeInfluxCriticalQuery(String measurementName, String hostName, CriticalValueMapDto criticalValueMap){
+    public static String makeInfluxCriticalQuery(String measurementName, String hostName, CriticalValueMapVo criticalValueMap){
 
         StringBuilder queryBuffer = new StringBuilder("SELECT ");
         int idx = 0;

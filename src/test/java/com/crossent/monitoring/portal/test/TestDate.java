@@ -3,6 +3,7 @@ package com.crossent.monitoring.portal.test;
 import com.crossent.monitoring.portal.common.lib.util.DateUtil;
 
 import java.util.Date;
+import java.util.Locale;
 
 import static com.crossent.monitoring.portal.common.lib.util.DateUtil.*;
 
@@ -21,5 +22,22 @@ public class TestDate {
         Date d = new Date(t);
 
         System.out.println(d);
+
+
+        //public static
+        //2017-10-31T00:00:00
+
+
+        String nd1 = "20171202201531";
+
+        java.util.Date  ud  =DateUtil.stringToDate(nd1, DateUtil.DATE_HMS_PATTERN);
+
+//        String nd2 = DateUtil.dateToString(ud, TIMESTAMP_T_PATTERN,Locale.KOREA);
+        String nd2 = DateUtil.dateToString(ud, TIMESTAMP_T_PATTERN);
+        System.out.println(nd2);
+
+
+        System.out.println(DateUtil.convertDateFormat(nd1, DATE_HMS_PATTERN, TIMESTAMP_T_PATTERN));
+
     }
 }

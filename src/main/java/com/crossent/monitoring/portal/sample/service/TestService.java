@@ -7,6 +7,7 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
 import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHits;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;
@@ -64,13 +65,24 @@ public class TestService {
 
         RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery("@timestamp").from("2017-10-31T00:00:00").to("2017-10-31T23:00:00").timeZone("Asia/Seoul").format("strict_date_optional_time");
 
-        SearchResponse searchResponse = elasticsearchTemplate.query("log-*", "filebeat-log", rangeQueryBuilder);
+        SearchResponse searchResponse = elasticsearchTemplate.query("log-*", "filebeat-log", rangeQueryBuilder, 0, 10);
+
+
+        //elasticsearchTemplate.
 
         //Set<String> result = new HashSet<String>();
 
+        SearchHits hits = searchResponse.getHits();
+
+        //logger.debug("hit : {}", hits);
+
         for (SearchHit hit : searchResponse.getHits()) {
+            //logger.debug("hit :{}", hit);
+
+            logger.debug("getId :{}", hit.getId());
+            logger.debug("getFields :{}", hit.getFields());
             logger.debug("getIndex :{}", hit.getIndex());
-            logger.debug("toString :{}", hit.getSource());
+            logger.debug("source :{}", hit.getSource());
             logger.debug("getId :{} : {} : {}", hit.getId(), hit.getSource().get("@timestamp"), hit.getSource().get("message"));
 
         }

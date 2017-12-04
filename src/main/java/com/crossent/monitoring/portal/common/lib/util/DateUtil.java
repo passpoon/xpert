@@ -66,6 +66,8 @@ public class DateUtil {
 
 	/** Time stamp pattern */
 	public static final String TIMESTAMP_PATTERN = "yyyy-MM-dd HH:mm:ss.SSS";
+	public static final String TIMESTAMP_T_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSS";
+
 	
 	/** Timestamp millisecond pattern */
 	public static final String TIMESTAMP_MILLIS_PATTERN = "yyyyMMddHHmmssSSS";
@@ -97,6 +99,8 @@ public class DateUtil {
 
 	public static final String TIME_UTC_TIMESTAMP_PATTERN_MILLISECOND = "yyyy-MM-dd'T'hh:mm:ss.SSSZ";
 	public static final String TIME_UTC_TIMESTAMP_PATTERN_SECOND = "yyyy-MM-dd'T'hh:mm:ssZ";
+
+
 		
 	/**
 	 * last day of each month for a common year (other than a leap year)
@@ -649,6 +653,16 @@ public class DateUtil {
 		DateTime subtracted = dt.withFieldAdded(DurationFieldType.days(), (int)days);
 		return fmt.print(subtracted);
 	}
+
+	public static String addDaysForDateHms(String date, long days){
+
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_HMS_PATTERN).withChronology(DEFAULT_CHRONOLOGY);
+		DateTime dt = parseDateTimeInternal(date, fmt);
+		DateTime subtracted = dt.withFieldAdded(DurationFieldType.days(), (int)days);
+
+		return fmt.print(subtracted);
+
+	}
 	
 	/**
      * 입력받은 일자에 대해서 해당 일만큼 더한 일자 반환. 마이너스 일자는 입력받은 일자보다 이전의 일자로 계산해서 반환.
@@ -683,6 +697,7 @@ public class DateUtil {
 		}else{
 			fmt = DateTimeFormat.forPattern(DATE_PATTERN_DEFAULT).withChronology(DEFAULT_CHRONOLOGY);
 		}
+
 		
 		return fmt;
 	}
@@ -709,6 +724,18 @@ public class DateUtil {
 		
 		DateTimeFormatter fmt = createDateFormatterByInputStringLength(date);
 		
+		DateTime dt = parseDateTimeInternal(date, fmt);
+		DateTime subtracted = dt.withFieldAdded(DurationFieldType.months(), (int)months);
+		return fmt.print(subtracted);
+	}
+
+	public static String addMonthsForDateHms(String date, long months) {
+		if (months == 0) {
+			return date;
+		}
+
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_HMS_PATTERN).withChronology(DEFAULT_CHRONOLOGY);
+
 		DateTime dt = parseDateTimeInternal(date, fmt);
 		DateTime subtracted = dt.withFieldAdded(DurationFieldType.months(), (int)months);
 		return fmt.print(subtracted);
@@ -756,6 +783,19 @@ public class DateUtil {
 		
 		DateTimeFormatter fmt = createDateFormatterByInputStringLength(date);		
 		
+		DateTime dt = parseDateTimeInternal(date, fmt);
+		DateTime subtracted = dt.withFieldAdded(DurationFieldType.years(), (int)years);
+		return fmt.print(subtracted);
+	}
+
+	public static String addYearsForDateHms(String date, long years) {
+		if (years == 0) {
+			return date;
+		}
+
+		DateTimeFormatter fmt = DateTimeFormat.forPattern(DATE_HMS_PATTERN).withChronology(DEFAULT_CHRONOLOGY);
+
+
 		DateTime dt = parseDateTimeInternal(date, fmt);
 		DateTime subtracted = dt.withFieldAdded(DurationFieldType.years(), (int)years);
 		return fmt.print(subtracted);

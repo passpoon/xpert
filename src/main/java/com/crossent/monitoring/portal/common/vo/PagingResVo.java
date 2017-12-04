@@ -64,7 +64,7 @@ public class PagingResVo<T> {
     public PagingResVo(Page page, boolean listCopyYn) {
         this.number = page.getNumber();
         this.size = page.getSize();
-        this.totalPages = page.getTotalPages();
+        this.totalPages= page.getTotalPages();
         this.numberOfElements = page.getNumberOfElements();
         this.totalElements = page.getTotalElements();
         this.isFirstPage = page.isFirst();
@@ -74,6 +74,42 @@ public class PagingResVo<T> {
         if(listCopyYn) {
 
             this.list = page.getContent();
+        }
+    }
+
+    public PagingResVo(int number, int size, int totalElements){
+        this.number = number;
+        this.size = size;
+        this.totalElements = totalElements;
+
+        int devi = totalElements/number;
+        int remain = totalElements/size;
+
+        if(remain == 0){
+            totalPages = devi;
+        }else{
+            totalPages = devi + 1;
+        }
+
+
+        if(number < 0){
+            isFirstPage = true;
+        }else{
+            isFirstPage = false;
+        }
+
+        if(number ==  totalPages){
+            isLastPage = true;
+        }else{
+            isLastPage = false;
+        }
+
+        if(isLastPage && remain != 0){
+            numberOfElements = remain;
+
+        }else{
+            numberOfElements = size;
+
         }
     }
 

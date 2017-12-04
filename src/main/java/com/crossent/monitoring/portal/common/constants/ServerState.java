@@ -1,7 +1,7 @@
 package com.crossent.monitoring.portal.common.constants;
 
 public enum  ServerState {
-    NORMAL("0000100001"), WARNING("0000100002"), CRITICAL("0000100003");
+    NORMAL("0000100001"), WARNING("0000100002"), CRITICAL("0000100003"), ERROR("0000100004");
 
     String code;
 
@@ -21,6 +21,9 @@ public enum  ServerState {
                 return ServerState.WARNING;
             case "0000100003":
                 return ServerState.CRITICAL;
+            case "0000100004":
+                return ServerState.ERROR;
+
             default:
                 return null;
         }

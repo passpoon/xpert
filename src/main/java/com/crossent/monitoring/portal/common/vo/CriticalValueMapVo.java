@@ -1,4 +1,4 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.dto;
+package com.crossent.monitoring.portal.common.vo;
 
 import com.crossent.monitoring.portal.common.constants.Constants;
 import com.crossent.monitoring.portal.common.constants.MetricFuncType;
@@ -9,12 +9,12 @@ import com.crossent.monitoring.portal.jpa.domain.Metric;
 
 import java.util.*;
 
-public class CriticalValueMapDto {
+public class CriticalValueMapVo {
 
 
     private Map<String, CriticalValueInterface> criticalValueInterfaceMap;
 
-    public CriticalValueMapDto(List<CriticalValueInterface> criticalValueInterfaces) {
+    public CriticalValueMapVo(List<CriticalValueInterface> criticalValueInterfaces) {
         criticalValueInterfaceMap = new HashMap<String, CriticalValueInterface>();
 
         for (CriticalValueInterface cvInterface : criticalValueInterfaces) {
@@ -109,7 +109,7 @@ public class CriticalValueMapDto {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CriticalValueMapDto{");
+        final StringBuilder sb = new StringBuilder("CriticalValueMapVo{");
         sb.append("criticalValueInterfaceMap=").append(criticalValueInterfaceMap);
         sb.append('}');
         return sb.toString();

@@ -9,12 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 public interface ElasticsearchOperations {
 
 
-
     public SearchResponse query(String[] indices,
                                 String[] types,
                                 SearchType searchType,
                                 QueryBuilder query,
                                 QueryBuilder postFilter,
                                 String sortField,
-                                SortOrder sortOrder);
+                                SortOrder sortOrder, Integer from, Integer size);
 }

@@ -9,6 +9,7 @@ public class EventHistory implements Serializable {
     private Long id;
     private Integer monGroupId;
     private String resourceType;
+    private TypeCode resourceTypeCode;
     private Integer resourceId;
     private String hostname;
     private String ip;
@@ -167,6 +168,17 @@ public class EventHistory implements Serializable {
 
     public void setStateCodeCode(String stateCodeCode) {
         this.stateCodeCode = stateCodeCode;
+    }
+
+
+    @ManyToOne
+    @JoinColumn(name = "resource_type", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
+    public TypeCode getResourceTypeCode() {
+        return resourceTypeCode;
+    }
+
+    public void setResourceTypeCode(TypeCode resourceTypeCode) {
+        this.resourceTypeCode = resourceTypeCode;
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.crossent.monitoring.portal.mongroup.moniotring.dao;
 import com.crossent.monitoring.portal.common.lib.util.DateUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.CriticalValueMapDto;
+import com.crossent.monitoring.portal.common.vo.CriticalValueMapVo;
 import com.crossent.monitoring.portal.mongroup.moniotring.query.MonServerQuery;
 import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
 import org.influxdb.dto.Point;
@@ -25,7 +25,7 @@ public class MonServerDao {
     @Autowired
     private InfluxDBTemplate<Point> influxDBTemplate;
 
-    public Map<String, Object> selectReferenceValue(String measurementName, String hostName, CriticalValueMapDto criticalValueMap){
+    public Map<String, Object> selectReferenceValue(String measurementName, String hostName, CriticalValueMapVo criticalValueMap){
 
         Map<String, Object> resMap = resMap =  new HashMap<String, Object>();
 

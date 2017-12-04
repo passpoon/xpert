@@ -20,6 +20,11 @@ public class ApplicationProperties {
 
 
 
+    public static String elasticsearchDateTimezone;
+    public static String elasticsearchDateFormat;
+    public static String elasticsearchIndexLog;
+    public static String elasticsearchTypeLog;
+
     public Map<String, Map<String, String>> getInfluxQueryFilters() {
         return influxQueryFilters;
     }
@@ -49,5 +54,42 @@ public class ApplicationProperties {
         ApplicationProperties.influxMeasurementProcess = influxMeasurementProcess;
     }
 
+
+    public String getElasticsearchDateTimezone() {
+        return elasticsearchDateTimezone;
+    }
+
+
+    @Value("${elasticsearch.date.timezone}")
+    public void setElasticsearchDateTimezone(String elasticsearchDateTimezone) {
+        this.elasticsearchDateTimezone = elasticsearchDateTimezone;
+    }
+
+    public String getElasticsearchDateFormat() {
+        return elasticsearchDateFormat;
+    }
+
+    @Value("${elasticsearch.date.format}")
+    public void setElasticsearchDateFormat(String elasticsearchDateFormat) {
+        this.elasticsearchDateFormat = elasticsearchDateFormat;
+    }
+
+    public String getElasticsearchIndexLog() {
+        return elasticsearchIndexLog;
+    }
+
+    @Value("${elasticsearch.index.log}")
+    public void setElasticsearchIndexLog(String elasticsearchIndexLog) {
+        this.elasticsearchIndexLog = elasticsearchIndexLog;
+    }
+
+    public String getElasticsearchTypeLog() {
+        return elasticsearchTypeLog;
+    }
+
+    @Value("${elasticsearch.type.log}")
+    public void setElasticsearchTypeLog(String elasticsearchTypeLog) {
+        this.elasticsearchTypeLog = elasticsearchTypeLog;
+    }
 
 }

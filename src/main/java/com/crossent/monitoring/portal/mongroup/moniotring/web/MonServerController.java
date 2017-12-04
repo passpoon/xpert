@@ -75,7 +75,7 @@ public class MonServerController extends BaseController {
         logger.debug("search : {}", search);
 
 
-        PagingResVo<EventResDto> resDtoPagingResVo = serverService.pageEvent(monitoringGroupId, serverResourceId, pagingReqVo, search);
+        PagingResVo<EventResDto> resDtoPagingResVo = serverService.pageServerEvent(monitoringGroupId, serverResourceId, pagingReqVo, search);
         logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
         return resDtoPagingResVo;
     }
