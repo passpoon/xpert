@@ -62,8 +62,7 @@ public class MonServerService {
     @Autowired
     private EventHistoryRepository eventHistoryRepository;
 
-    @Autowired
-    private TypeCodeRepository typeCodeRepository;
+
 
     @Autowired
     private ElasticsearchTemplate elasticsearchTemplate;
