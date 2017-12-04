@@ -5,6 +5,7 @@ import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.EventResDto;
+import com.crossent.monitoring.portal.mongroup.moniotring.dto.LogResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerDetailStatusDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
@@ -76,6 +77,21 @@ public class MonServerController extends BaseController {
 
 
         PagingResVo<EventResDto> resDtoPagingResVo = serverService.pageServerEvent(monitoringGroupId, serverResourceId, pagingReqVo, search);
+        logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
+        return resDtoPagingResVo;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}/logs", method = RequestMethod.GET)
+    public PagingResVo<LogResDto> pageLog(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @ModelAttribute("paging") PagingReqVo pagingReqVo, @ModelAttribute("search") SearchReqVo search){
+
+        logger.debug("monitoringGroupId : {}", monitoringGroupId);
+        logger.debug("serverResourceId : {}", serverResourceId);
+        logger.debug("pagingReqVo : {}", pagingReqVo);
+        logger.debug("search : {}", search);
+
+
+        PagingResVo<LogResDto> resDtoPagingResVo = serverService.pageServerLog(serverResourceId, pagingReqVo, search);
         logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
         return resDtoPagingResVo;
     }

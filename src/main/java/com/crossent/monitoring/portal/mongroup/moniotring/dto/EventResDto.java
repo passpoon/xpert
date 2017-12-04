@@ -110,7 +110,7 @@ public class EventResDto {
         sb.append("id=").append(id);
         sb.append(", monGroupId=").append(monGroupId);
         sb.append(", resourceType='").append(resourceType).append('\'');
-        sb.append(", hostName='").append(hostName).append('\'');
+        sb.append(", host='").append(hostName).append('\'');
         sb.append(", ip='").append(ip).append('\'');
         sb.append(", resourceUuid='").append(resourceUuid).append('\'');
         sb.append(", program='").append(program).append('\'');

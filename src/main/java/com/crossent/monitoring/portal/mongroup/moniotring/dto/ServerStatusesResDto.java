@@ -92,7 +92,7 @@ public class ServerStatusesResDto {
         final StringBuilder sb = new StringBuilder("ServerStatusesResDto{");
         sb.append("serverResourceId=").append(serverResourceId);
         sb.append(", serverResourceName='").append(serverResourceName).append('\'');
-        sb.append(", hostName='").append(hostName).append('\'');
+        sb.append(", host='").append(hostName).append('\'');
 //        sb.append(", titles=").append(titles);
         sb.append(", measurementStatuses=").append(measurementStatuses);
         sb.append(", processStatus=").append(processStatus);

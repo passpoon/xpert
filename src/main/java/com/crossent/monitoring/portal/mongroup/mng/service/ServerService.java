@@ -68,7 +68,7 @@ public class ServerService {
                     mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_NameLike(pagingReqVo.toPagingRequest(), monitoringGroupId,  keyword);
                 }
                 break;
-                case "hostName": {
+                case "host": {
                     mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_HostNameLike(pagingReqVo.toPagingRequest(), monitoringGroupId,  keyword);
                 }
                 break;

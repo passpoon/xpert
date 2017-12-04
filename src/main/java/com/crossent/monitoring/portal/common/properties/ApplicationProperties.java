@@ -25,6 +25,10 @@ public class ApplicationProperties {
     public static String elasticsearchIndexLog;
     public static String elasticsearchTypeLog;
 
+    //log.default.term
+    public static Long logDefaultTerm;
+
+
     public Map<String, Map<String, String>> getInfluxQueryFilters() {
         return influxQueryFilters;
     }
@@ -92,4 +96,13 @@ public class ApplicationProperties {
         this.elasticsearchTypeLog = elasticsearchTypeLog;
     }
 
+
+    public Long getLogDefaultTerm() {
+        return logDefaultTerm;
+    }
+
+    @Value("${log.default.term}")
+    public void setLogDefaultTerm(Long logDefaultTerm) {
+        ApplicationProperties.logDefaultTerm = logDefaultTerm;
+    }
 }

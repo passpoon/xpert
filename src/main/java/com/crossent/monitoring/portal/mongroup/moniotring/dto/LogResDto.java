@@ -2,10 +2,12 @@ package com.crossent.monitoring.portal.mongroup.moniotring.dto;
 
 public class LogResDto {
     public String id;
-    public String hostName;
+    public String index;
+    public String host;
     public String program;
     public String source;
     public String message;
+    public String time;
 
 
     public String getId() {
@@ -16,12 +18,20 @@ public class LogResDto {
         this.id = id;
     }
 
-    public String getHostName() {
-        return hostName;
+    public String getIndex() {
+        return index;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
+    public void setIndex(String index) {
+        this.index = index;
+    }
+
+    public String getHost() {
+        return host;
+    }
+
+    public void setHost(String host) {
+        this.host = host;
     }
 
     public String getProgram() {
@@ -48,16 +58,12 @@ public class LogResDto {
         this.message = message;
     }
 
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("LogResDto{");
-        sb.append("id='").append(id).append('\'');
-        sb.append(", hostName='").append(hostName).append('\'');
-        sb.append(", program='").append(program).append('\'');
-        sb.append(", source='").append(source).append('\'');
-        sb.append(", message='").append(message).append('\'');
-        sb.append('}');
-        return sb.toString();
+    public String getTime() {
+        return time;
     }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
 }

@@ -114,7 +114,7 @@ public class ServerResource  implements Serializable {
         final StringBuilder sb = new StringBuilder("ServerResource{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", hostName='").append(hostName).append('\'');
+        sb.append(", host='").append(hostName).append('\'');
         sb.append(", ip='").append(ip).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", serverTypeId='").append(serverTypeId).append('\'');

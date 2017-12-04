@@ -94,4 +94,26 @@ public class MonServerTest extends AbstractMockTest {
         get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server/server-statuses/"+serverResourceId+"/events", params);
 
     }
+
+    @Test
+    public void pageLog() throws Exception{
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(1);
+        pagingReqVo.setPageSize(10);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+//        searchReqVo.setRangeType("manual");
+//        searchReqVo.setRangeStart("20171202011000");
+//        searchReqVo.setRangeEnd("20171202022000");
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server/server-statuses/"+serverResourceId+"/logs", params);
+    }
 }

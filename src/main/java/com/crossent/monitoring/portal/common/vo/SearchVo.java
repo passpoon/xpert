@@ -8,7 +8,7 @@ import java.util.*;
 
 public class SearchVo {
 
-    private static final String DATE_FORMAT =DateUtil.DATE_HMS_PATTERN;
+    public static final String DATE_FORMAT =DateUtil.DATE_HMS_PATTERN;
 
 
 
@@ -229,6 +229,10 @@ public class SearchVo {
         return startDttm;
     }
 
+    public String getStartDttm(String format) {
+        return DateUtil.convertDateFormat(startDttm, DATE_FORMAT, format);
+    }
+
     public void setStartDttm(String startDttm) {
         this.startDttm = startDttm;
     }
@@ -237,7 +241,13 @@ public class SearchVo {
         return endDttm;
     }
 
+    public String getEndDttm(String format) {
+        return DateUtil.convertDateFormat(endDttm, DATE_FORMAT, format);
+
+    }
+
     public void setEndDttm(String endDttm) {
+
         this.endDttm = endDttm;
     }
 

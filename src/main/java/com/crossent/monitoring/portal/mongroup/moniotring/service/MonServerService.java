@@ -14,6 +14,7 @@ import com.crossent.monitoring.portal.mongroup.moniotring.dao.MonServerDao;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
@@ -93,7 +94,7 @@ public class MonServerService {
         } else {
 
             switch (key) {
-                case "hostName": {
+                case "host": {
                     pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndServerResource_HostNameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
                 }
                 break;
@@ -473,31 +474,60 @@ public class MonServerService {
 
 
         SearchVo searchVo = new SearchVo(search);
-        QueryBuilder query = null;
+        BoolQueryBuilder query = QueryBuilders.boolQuery();
+        QueryBuilder hostMatch = QueryBuilders.matchQuery("host", hostName);
+
+        query.must(hostMatch);
+
+
+        QueryBuilder rangeQuery = null;
         QueryBuilder postFilter = null;
+        String from  = null;
+        String to = null;
+
+
 
         if(searchVo.isHaveRange()){
-            String from  = DateUtil.convertDateFormat(searchVo.getStartDttm(), DATE_HMS_PATTERN, TIMESTAMP_T_PATTERN);
-            String to = DateUtil.convertDateFormat(searchVo.getEndDttm(), DATE_HMS_PATTERN, TIMESTAMP_T_PATTERN);
-            query = QueryBuilders.rangeQuery("@timestamp").from(from).to(to).timeZone(timeZone).format(dateForamte);
+//            from  = DateUtil.convertDateFormat(searchVo.getStartDttm(), SearchVo.DATE_FORMAT, TIMESTAMP_T_PATTERN);
+            from  = searchVo.getStartDttm(TIMESTAMP_T_PATTERN);
+            to = searchVo.getEndDttm(TIMESTAMP_T_PATTERN);
+            rangeQuery = QueryBuilders.rangeQuery("@timestamp").from(from).to(to).timeZone(timeZone).format(dateForamte);
+        }else{
+
+            from  = DateUtil.dateToString(new Date(System.currentTimeMillis() - (ApplicationProperties.logDefaultTerm*60*60*1000)), TIMESTAMP_T_PATTERN);
+           // to = DateUtil.convertDateFormat(searchVo.getEndDttm(), DATE_HMS_PATTERN, TIMESTAMP_T_PATTERN);
+            rangeQuery = QueryBuilders.rangeQuery("@timestamp").from(from).to(to).timeZone(timeZone).format(dateForamte);
+
         }
+
+        query.must(rangeQuery);
+
+
+
+
 
         if(searchVo.isHaveKeyworkd()){
             List<String> keys = searchVo.getKeys();
-            QueryBuilder searchQuery= QueryBuilders.matchQuery(keys.get(0), searchVo.getKeyword(keys.get(0)));
+            for(String key : keys){
+                query.must(QueryBuilders.matchQuery(keys.get(0), searchVo.getKeyword(keys.get(0))));
 
-            if(query == null){
-                query = searchQuery;
-            }else{
-                postFilter = searchQuery;
             }
+
         }
 
-        if(query == null){
-            //query = QueryBuilders.
-        }
+
+
+
 
         SearchResponse searchResponse = null;
+
+        if(logger.isDebugEnabled()) {
+            logger.debug("index : {}", index);
+            logger.debug("type : {}", type);
+            logger.debug("query : {}", query);
+            logger.debug("postFilter : {}", postFilter);
+            logger.debug("index : {}", index);
+        }
 
         searchResponse = elasticsearchTemplate.query(index, type, query, postFilter, "@timestamp", SortOrder.DESC, page.getPage(), page.getPageSize());
 
@@ -509,11 +539,36 @@ public class MonServerService {
         SearchHits hits = searchResponse.getHits();
         Long total = hits.totalHits;
 
-        //logger.debug("hit : {}", hits);
+        PagingResVo<LogResDto> pagingResVo = new PagingResVo<LogResDto>(page.getPage(), page.getPageSize(), total.intValue());
 
         for (SearchHit hit : searchResponse.getHits()) {
+            LogResDto logResDto = new LogResDto();
+            logResDto.setId(hit.getId());
+            logResDto.setIndex(hit.getIndex());
+            Map<String, Object> source = hit.getSource();
+            //String host = (String)source.get("host");
 
+            logResDto.setHost(StringUtil.nullToString((String)source.get("host")));
+            logResDto.setMessage(StringUtil.nullToString((String)source.get("message").toString()));
+            logResDto.setProgram(StringUtil.nullToString((String)source.get("program").toString()));
+            logResDto.setSource(StringUtil.nullToString((String)source.get("source").toString()));
+
+            try {
+                String time = DateUtil.utcTimestampToString(source.get("@timestamp").toString(), DateUtil.DATE_TIME_PATTERN);
+                logResDto.setTime(time);
+            }catch(Exception ex){
+
+            }
+            pagingResVo.addListItem(logResDto);
         }
-        return null;
+
+
+        if(logger.isDebugEnabled()) {
+            logger.debug("pagingResVo : {}", pagingResVo);
+        }
+
+
+        return pagingResVo;
     }
 }
+

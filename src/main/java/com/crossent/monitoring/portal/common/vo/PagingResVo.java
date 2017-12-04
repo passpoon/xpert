@@ -82,8 +82,8 @@ public class PagingResVo<T> {
         this.size = size;
         this.totalElements = totalElements;
 
-        int devi = totalElements/number;
-        int remain = totalElements/size;
+        int devi = size==0?0:totalElements/size;
+        int remain = size==0?0:totalElements%size;
 
         if(remain == 0){
             totalPages = devi;
@@ -92,13 +92,13 @@ public class PagingResVo<T> {
         }
 
 
-        if(number < 0){
+        if(number == 0){
             isFirstPage = true;
         }else{
             isFirstPage = false;
         }
 
-        if(number ==  totalPages){
+        if((number+1) ==  totalPages){
             isLastPage = true;
         }else{
             isLastPage = false;
@@ -110,6 +110,12 @@ public class PagingResVo<T> {
         }else{
             numberOfElements = size;
 
+        }
+
+        if(isLastPage){
+            hasNextPage = false;
+        }else{
+            hasNextPage = true;
         }
     }
 

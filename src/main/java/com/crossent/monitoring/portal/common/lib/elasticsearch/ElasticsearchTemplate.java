@@ -58,6 +58,8 @@ public class ElasticsearchTemplate implements ElasticsearchOperations {
 
 
 
+
+
         SearchResponse response  = searchRequestBuilder.get();
 
         return response;

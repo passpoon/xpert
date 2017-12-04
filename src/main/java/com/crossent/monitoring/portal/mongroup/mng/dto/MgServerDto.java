@@ -62,7 +62,7 @@ public class MgServerDto implements Serializable {
         sb.append("monGroupId=").append(monGroupId);
         sb.append(", serverResourceId=").append(serverResourceId);
         sb.append(", serverName='").append(serverName).append('\'');
-        sb.append(", hostName='").append(hostName).append('\'');
+        sb.append(", host='").append(hostName).append('\'');
         sb.append(", dashboardYn='").append(dashboardYn).append('\'');
         sb.append(", monitoringYn='").append(monitoringYn).append('\'');
         sb.append('}');

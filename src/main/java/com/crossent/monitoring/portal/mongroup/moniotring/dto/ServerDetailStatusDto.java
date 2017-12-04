@@ -63,7 +63,7 @@ public class ServerDetailStatusDto {
         final StringBuilder sb = new StringBuilder("ServerDetailStatusDto{");
         sb.append("serverResourceId=").append(serverResourceId);
         sb.append(", serverName='").append(serverName).append('\'');
-        sb.append(", hostName='").append(hostName).append('\'');
+        sb.append(", host='").append(hostName).append('\'');
         sb.append(", ip='").append(ip).append('\'');
         sb.append(", measurements=").append(measurements);
         sb.append('}');
