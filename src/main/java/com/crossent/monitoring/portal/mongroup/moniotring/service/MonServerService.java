@@ -89,18 +89,23 @@ public class MonServerService {
 
 
         Page<MgServer> pageMgServer = null;
+
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if (key == null) {
             pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
         } else {
 
             switch (key) {
-                case "host": {
+                case "hostName": {
                     pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndServerResource_HostNameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
                 }
                 break;
                 case "serverName": {
                     pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndServerResource_NameLike(paging.toPagingRequest(),  monitoringGroupId,"Y" , keyword);
                 }
+                break;
                 default:
                     throw new BusinessException(MessageUtil.getMessage("unDefSearchKey", key));
 
@@ -411,7 +416,7 @@ public class MonServerService {
 
 
 
-
+        logger.debug("stateCodes : {}", stateCodes);
 
 
 
