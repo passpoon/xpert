@@ -157,6 +157,7 @@ public class MonServerGroupService {
                         String serverResourceName = serverResource.getName();
                         Integer serverResourceId = serverResource.getId();
                         String serverResourceUuid = serverResource.getUuid();
+                        contentBuffer.append("\n@" + serverResourceName + "(" + hostName + ")\n");
 
                         Map<String, Object> referenceValueMap = monServerDao.selectReferenceValue(measurementName, hostName, cvMapDto);
                         if(referenceValueMap != null){
@@ -201,164 +202,77 @@ public class MonServerGroupService {
                     contentBuffer.append(MessageUtil.getMessage("unDefCriticalVal")+"\n"); //정의된 임계치가 없습니다.
                 }
 
+                MeasurementStatusDto mentStatusDto = new MeasurementStatusDto();
+                mentStatusDto.setMeasurementId(measurementId);
+                mentStatusDto.setContent(contentBuffer.toString());
+                mentStatusDto.setStatus(status.getString());
+                mentStatusDto.setMeasurementName(measurementName);
+
+                serverGroupStatusesResDto.addMeasurementStatus(mentStatusDto);
+
 
             }
 
+
+
+            //process정보 조회
+            StatusEnum procStatus = StatusEnum.Nomal;
+            StringBuilder procContent = new StringBuilder();
+
+            ProcessStatusDto processStatusDto  = new ProcessStatusDto();
+            processStatusDto.setTotalCnt(0L);
+            processStatusDto.setNormalCnt(0L);
+            processStatusDto.setAbnormalCnt(0L);
+
+            for(MgServer mgServer : mgServers) {
+                String hostName = mgServer.getServerResource().getHostName();
+                String serverResourceName = mgServer.getServerResource().getName();
+
+                procContent.append("\n@" + serverResourceName + "(" + hostName + ")\n");
+
+                Map<String, Object> processInfoForServer = monServerDao.selectProcessInfoForServer(hostName);
+
+                if (processInfoForServer == null) {
+                    procStatus = StatusEnum.Error;
+                    procContent.append(MessageUtil.getMessage("failProcessInfo", hostName));
+
+                } else {
+                    Long normalCnt = Math.round(MonitoringUtil.toDouble(processInfoForServer.get(Constants.PROC_STAT_KEY_NORMAL)));
+                    Long abnormalCnt = Math.round(MonitoringUtil.toDouble(processInfoForServer.get(Constants.PROC_STAT_KEY_ABNORMAL)));
+                    Long totalCnt = Math.round(MonitoringUtil.toDouble(processInfoForServer.get(Constants.PROC_STAT_KEY_TOTAL)));
+
+
+
+                    procContent.append(MessageUtil.getMessage("processStatusTotal", totalCnt+"") + "/n");
+                    procContent.append(MessageUtil.getMessage("processStatusNormal", normalCnt+"") + "/n");
+                    procContent.append(MessageUtil.getMessage("processStatusAbnormal", normalCnt+"") + "/n");
+
+                    if (abnormalCnt > 0) {
+                        procStatus = StatusEnum.Error;
+                    }
+                    processStatusDto.setTotalCnt(processStatusDto.getTotalCnt() + totalCnt);
+                    processStatusDto.setNormalCnt(processStatusDto.getNormalCnt() + normalCnt);
+                    processStatusDto.setAbnormalCnt(processStatusDto.getAbnormalCnt() + abnormalCnt);
+
+
+                    for (String keys : Constants.PROC_STAT_KEYS) {
+                        procContent.append(keys + " : " + processInfoForServer.get(keys) + "\n");
+                    }
+
+
+                }
+            }
+
+            processStatusDto.setStatus(procStatus.getString());
+            processStatusDto.setContent(procContent.toString());
+
+            serverGroupStatusesResDto.setProcessStatus(processStatusDto);
+
             pageServerGroupStatusesResDto.addListItem(serverGroupStatusesResDto);
+
         }
 
-//        //모니터링 대상서버 목록
-//        for (MgServer mgServer : mgServers) {
-//            String hostName = mgServer.getServerResource().getHostName();
-//            ServerStatusesResDto serverStatusesResDto = new ServerStatusesResDto();
-//            serverStatusesResDto.setServerResourceId(mgServer.getServerResourceId());
-//            serverStatusesResDto.setServerResourceName(mgServer.getServerResource().getName());
-//            serverStatusesResDto.setHostName(hostName);
-//
-//
-//
-//            logger.debug("mgServer {} ::", mgServers);
-//
-//
-//
-//            for (MgServerTitleMap map : mgServerTitleMaps) {
-//
-//                StringBuilder contentBuffer = new StringBuilder();
-//                Integer mId = map.getMeasurementId();
-//                String mName = map.getMeasurements().getName();
-//
-//                //title입력
-//                //serverStatusesResDto.addTile(mName);
-//
-//                Collection<MgServerCriticalValue> criticalValues = mgServerCriticalValueRepository
-//                                                                           .findAllByMonGroupIdAndServerResourceIdAndMetric_MeasurementId(monitoringGroupId,
-//                                                                                   mgServer.getServerResourceId(), mId);
-//
-//
-//                if(logger.isDebugEnabled()){
-//                    logger.debug("criticalValues size : {}", criticalValues.size());
-//                    logger.debug("criticalValues  : {}", criticalValues);
-//                }
-//
-//
-//                StatusEnum status = StatusEnum.NA;
-//
-//                if(criticalValues != null && criticalValues.size() != 0){
-//                    List<CriticalValueInterface> metriIfs = MonitoringUtil.criticalCollectionToInterface(criticalValues);
-//
-//                    CriticalValueMapVo cvMapDto = new CriticalValueMapVo(metriIfs);
-//
-//                    logger.debug("cvMapDto : {}", cvMapDto);
-//
-//
-//                    Map<String, Object> referenceValueMap = monServerDao.selectReferenceValue(mName, hostName, cvMapDto);
-//
-//                    if(referenceValueMap != null){
-//
-//
-//
-//
-//                        logger.debug("referenceValueMap : {}", referenceValueMap);
-//                        List<String> metricNames = cvMapDto.getMetricNames();
-//                        for(String metricName : metricNames) {
-//
-//                            Object val = referenceValueMap.get(metricName);
-//
-//                            if (val == null) {
-//                                contentBuffer.append(MessageUtil.getMessage("statusNoRcvData", metricName) + "\n");
-//                                status = status.max(StatusEnum.Error);
-//                            } else {
-//                                Double dVal = MonitoringUtil.toDouble(val);
-//                                Double criticalVal = cvMapDto.getCriticalVal(metricName);
-//                                Double warningVal = cvMapDto.getWarningVal(metricName);
-//
-//
-//                                if (cvMapDto.isCritical(metricName, dVal)) {
-//                                    status = status.max(StatusEnum.Critical);
-//                                    contentBuffer.append(MessageUtil.getMessage("statusCritical", metricName, MonitoringUtil.round2ToString(dVal), MonitoringUtil.round2ToString(criticalVal)) + "\n");
-//                                } else if (cvMapDto.isWarning(metricName, dVal)) {
-//                                    status = status.max(StatusEnum.Warning);
-//                                    contentBuffer.append(MessageUtil.getMessage("statusWarning", metricName, MonitoringUtil.round2ToString(dVal), MonitoringUtil.round2ToString(warningVal)) + "\n");
-//                                } else {
-//                                    status = status.max(StatusEnum.Nomal);
-//                                    contentBuffer.append(MessageUtil.getMessage("statusNormal", metricName, MonitoringUtil.round2ToString(dVal)) + "\n");
-//                                }
-//                            }
-//                        }
-//                    }else{
-//                        status = StatusEnum.Error;
-//                        contentBuffer.append(MessageUtil.getMessage("failMetricInfo", mName));
-//
-//                    }
-//                }else{
-//                    //status = StatusEnum.NA;
-//                    contentBuffer.append(MessageUtil.getMessage("unDefCriticalVal")+"\n"); //정의된 임계치가 없습니다.
-//                }
-//
-//                MeasurementStatusDto mentStatusDto = new MeasurementStatusDto();
-//                mentStatusDto.setMeasurementId(mId);
-//                mentStatusDto.setContent(contentBuffer.toString());
-//                mentStatusDto.setStatus(status.getString());
-//                mentStatusDto.setMeasurementName(mName);
-//
-//                serverStatusesResDto.addMeasurementStatus(mentStatusDto);
-//
-//
-//
-//            }
-//
-//
-//
-//
-//            //process정보 조회
-//            StatusEnum procStatus = StatusEnum.Nomal;
-//            StringBuilder procContent = new StringBuilder();
-//            ProcessStatusDto processStatusDto  = new ProcessStatusDto();
-//
-//            Map<String, Object> processInfoForServer = monServerDao.selectProcessInfoForServer(hostName);
-//
-//            if(processInfoForServer == null){
-//                procStatus = StatusEnum.Error;
-//
-//                processStatusDto.setTotalCnt(0L);
-//                processStatusDto.setNormalCnt(0L);
-//                processStatusDto.setAbnormalCnt(0L);
-//
-//                procContent.append(MessageUtil.getMessage("failProcessInfo", hostName));
-//
-//            }else{
-//                Long normalCnt = Math.round(MonitoringUtil.toDouble(processInfoForServer.get(Constants.PROC_STAT_KEY_NORMAL)));
-//                Long abnormalCnt = Math.round(MonitoringUtil.toDouble(processInfoForServer.get(Constants.PROC_STAT_KEY_ABNORMAL)));
-//                Long totalCnt = Math.round(MonitoringUtil.toDouble(processInfoForServer.get(Constants.PROC_STAT_KEY_TOTAL)));
-//
-//                if(abnormalCnt > 0){
-//                    procStatus = StatusEnum.Error;
-//                }
-//                processStatusDto.setTotalCnt(totalCnt);
-//                processStatusDto.setNormalCnt(normalCnt);
-//                processStatusDto.setAbnormalCnt(abnormalCnt);
-//
-//                for(String keys : Constants.PROC_STAT_KEYS){
-//                    procContent.append(keys + " : " + processInfoForServer.get(keys)+"\n");
-//                }
-//
-//
-//            }
-//
-//            processStatusDto.setStatus(procStatus.getString());
-//            processStatusDto.setContent(procContent.toString());
-//
-//            serverStatusesResDto.setProcessStatus(processStatusDto);
-//
-//            pageServerStatusesResDtoPagingResVo.addListItem(serverStatusesResDto);
-//
-//
-//
-//
-//        }
-//
-//
-//        return pageServerStatusesResDtoPagingResVo;
-        return null;
+        return pageServerGroupStatusesResDto;
+        //return null;
     }
 }

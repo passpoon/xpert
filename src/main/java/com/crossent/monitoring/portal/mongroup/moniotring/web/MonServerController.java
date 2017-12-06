@@ -26,7 +26,7 @@ public class MonServerController extends BaseController {
 
         //path, query, body, header
 
-    @ApiOperation(value = "모니터링 그룹 서버상태 모니터링")
+    @ApiOperation(value = "모니터링그룹의 서버상태 상태 조회")
     @ApiImplicitParams({
                                @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
                                @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
