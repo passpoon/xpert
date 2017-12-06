@@ -25,9 +25,10 @@ public class MonServerController extends BaseController {
     MonServerService serverService;
 
         //path, query, body, header
+
     @ApiOperation(value = "모니터링 그룹 서버상태 모니터링")
     @ApiImplicitParams({
-                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "string", paramType = "path"),
+                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
                                @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
                                @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
     })
@@ -51,7 +52,6 @@ public class MonServerController extends BaseController {
 
         return serverStatuses;
     }
-
 
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}", method = RequestMethod.GET)
