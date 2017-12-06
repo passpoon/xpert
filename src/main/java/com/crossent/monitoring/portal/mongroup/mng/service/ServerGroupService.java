@@ -42,27 +42,6 @@ public class ServerGroupService {
 
     public PagingResVo<MgServerGroupDto> pagingServerGroup(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
-        Page<MgServerGroup> allByMonGroupId = mgServerGroupRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
-
-        PagingResVo<MgServerGroupDto> resPage = new PagingResVo<MgServerGroupDto>(allByMonGroupId, false);
-
-        List<MgServerGroup> content = allByMonGroupId.getContent();
-        List<MgServerGroupDto> mgServerGroupDtos = new ArrayList<MgServerGroupDto>();
-        for(MgServerGroup mgServerGroup : content){
-            MgServerGroupDto mgServerGroupDto = new MgServerGroupDto();
-            mgServerGroupDto.setId(mgServerGroup.getId());
-            mgServerGroupDto.setMonGroupId(mgServerGroup.getMonGroup().getId());
-            mgServerGroupDto.setName(mgServerGroup.getName());
-            mgServerGroupDto.setServerTypeId(mgServerGroup.getServerType().getId());
-            mgServerGroupDto.setServerTypeName(mgServerGroup.getServerType().getName());
-            mgServerGroupDto.setDescription(mgServerGroup.getDescription());
-            mgServerGroupDto.setMonitoringYn(mgServerGroup.getMonitoringYn());
-            mgServerGroupDto.setDashboardYn(mgServerGroup.getDashboardYn());
-
-            mgServerGroupDtos.add(mgServerGroupDto);
-        }
-        resPage.setList(mgServerGroupDtos);
-
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
         String keyword = null;
@@ -77,7 +56,7 @@ public class ServerGroupService {
         Page<MgServerGroup> mgServerGroups = null;
         if (key == null) {
             //TODO 전체조회
-            mgServerGroups = mgServerGroupRepository.findAll(pagingReqVo.toPagingRequest());
+            mgServerGroups = mgServerGroupRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
         } else {
             switch (key) {
                 case "name": {
@@ -89,6 +68,24 @@ public class ServerGroupService {
                 }
                 break;
             }
+        }
+
+        PagingResVo<MgServerGroupDto> resPage = new PagingResVo<MgServerGroupDto>(mgServerGroups, false);
+
+        List<MgServerGroup> content = mgServerGroups.getContent();
+
+        for(MgServerGroup mgServerGroup : content){
+            MgServerGroupDto mgServerGroupDto = new MgServerGroupDto();
+            mgServerGroupDto.setId(mgServerGroup.getId());
+            mgServerGroupDto.setMonGroupId(mgServerGroup.getMonGroup().getId());
+            mgServerGroupDto.setName(mgServerGroup.getName());
+            mgServerGroupDto.setServerTypeId(mgServerGroup.getServerType().getId());
+            mgServerGroupDto.setServerTypeName(mgServerGroup.getServerType().getName());
+            mgServerGroupDto.setDescription(mgServerGroup.getDescription());
+            mgServerGroupDto.setMonitoringYn(mgServerGroup.getMonitoringYn());
+            mgServerGroupDto.setDashboardYn(mgServerGroup.getDashboardYn());
+
+            resPage.addListItem(mgServerGroupDto);
         }
 
         return resPage;

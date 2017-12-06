@@ -36,27 +36,6 @@ public class ApplicationGroupService {
 
     public PagingResVo<MgAppGroupDto> pagingAppGroup(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
-        Page<MgAppGroup> allByMonGroupId = mgAppGroupRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
-
-        PagingResVo<MgAppGroupDto> resPage = new PagingResVo<MgAppGroupDto>(allByMonGroupId, false);
-
-        List<MgAppGroup> content = allByMonGroupId.getContent();
-        List<MgAppGroupDto> mgAppGroupDtos = new ArrayList<MgAppGroupDto>();
-        for(MgAppGroup mgAppGroup : content){
-            MgAppGroupDto mgAppGroupDto = new MgAppGroupDto();
-            mgAppGroupDto.setMonGroupId(mgAppGroup.getMonGroup().getId());
-            mgAppGroupDto.setId(mgAppGroup.getId());
-            mgAppGroupDto.setName(mgAppGroup.getName());
-            mgAppGroupDto.setAppInfoId(mgAppGroup.getAppInfo().getId());
-            mgAppGroupDto.setAppInfoName(mgAppGroup.getAppInfo().getName());
-            mgAppGroupDto.setDescription(mgAppGroup.getDescription());
-            mgAppGroupDto.setMonitoringYn(mgAppGroup.getMonitoringYn());
-            mgAppGroupDto.setDashboardYn(mgAppGroup.getDashboardYn());
-
-            mgAppGroupDtos.add(mgAppGroupDto);
-        }
-        resPage.setList(mgAppGroupDtos);
-
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
         String keyword = null;
@@ -71,7 +50,7 @@ public class ApplicationGroupService {
         Page<MgAppGroup> mgAppGroups = null;
         if (key == null) {
             //TODO 전체조회
-            mgAppGroups = mgAppGroupRepository.findAll(pagingReqVo.toPagingRequest());
+            mgAppGroups = mgAppGroupRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
         } else {
             switch (key) {
                 case "name": {
@@ -83,6 +62,24 @@ public class ApplicationGroupService {
                 }
                 break;
             }
+        }
+
+        PagingResVo<MgAppGroupDto> resPage = new PagingResVo<MgAppGroupDto>(mgAppGroups, false);
+
+        List<MgAppGroup> content = mgAppGroups.getContent();
+
+        for(MgAppGroup mgAppGroup : content){
+            MgAppGroupDto mgAppGroupDto = new MgAppGroupDto();
+            mgAppGroupDto.setMonGroupId(mgAppGroup.getMonGroup().getId());
+            mgAppGroupDto.setId(mgAppGroup.getId());
+            mgAppGroupDto.setName(mgAppGroup.getName());
+            mgAppGroupDto.setAppInfoId(mgAppGroup.getAppInfo().getId());
+            mgAppGroupDto.setAppInfoName(mgAppGroup.getAppInfo().getName());
+            mgAppGroupDto.setDescription(mgAppGroup.getDescription());
+            mgAppGroupDto.setMonitoringYn(mgAppGroup.getMonitoringYn());
+            mgAppGroupDto.setDashboardYn(mgAppGroup.getDashboardYn());
+
+            resPage.addListItem(mgAppGroupDto);
         }
 
         return resPage;

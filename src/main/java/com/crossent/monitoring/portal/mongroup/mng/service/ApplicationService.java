@@ -25,25 +25,6 @@ public class ApplicationService {
 
     public PagingResVo<MgAppDto> pagingApp(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
-        Page<MgApp> allMonGroupId = mgAppRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
-
-        PagingResVo<MgAppDto> resPage = new PagingResVo<MgAppDto>(allMonGroupId, false);
-
-        List<MgApp> content = allMonGroupId.getContent();
-        List<MgAppDto> mgAppDtos = new ArrayList<MgAppDto>();
-        for(MgApp mgApp : content){
-            MgAppDto mgAppDto = new MgAppDto();
-            mgAppDto.setMonGroupId(mgApp.getMonGroupId());
-            mgAppDto.setAppResourceId(mgApp.getAppResourceId());
-            mgAppDto.setApplicationName(mgApp.getAppResource().getName());
-            mgAppDto.setHostName(mgApp.getAppResource().getServerResource().getHostName());
-            mgAppDto.setMonitoringYn(mgApp.getMonitoringYn());
-            mgAppDto.setDashboardYn(mgApp.getDashboardYn());
-
-            mgAppDtos.add(mgAppDto);
-        }
-        resPage.setList(mgAppDtos);
-
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
         String keyword = null;
@@ -58,7 +39,7 @@ public class ApplicationService {
         Page<MgApp> mgApps = null;
         if (key == null) {
             //TODO 전체조회
-            mgApps = mgAppRepository.findAll(pagingReqVo.toPagingRequest());
+            mgApps = mgAppRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
         } else {
             switch (key) {
                 case "applicationName": {
@@ -66,6 +47,22 @@ public class ApplicationService {
                 }
                 break;
             }
+        }
+
+        PagingResVo<MgAppDto> resPage = new PagingResVo<MgAppDto>(mgApps, false);
+
+        List<MgApp> content = mgApps.getContent();
+
+        for(MgApp mgApp : content){
+            MgAppDto mgAppDto = new MgAppDto();
+            mgAppDto.setMonGroupId(mgApp.getMonGroupId());
+            mgAppDto.setAppResourceId(mgApp.getAppResourceId());
+            mgAppDto.setApplicationName(mgApp.getAppResource().getName());
+            mgAppDto.setHostName(mgApp.getAppResource().getServerResource().getHostName());
+            mgAppDto.setMonitoringYn(mgApp.getMonitoringYn());
+            mgAppDto.setDashboardYn(mgApp.getDashboardYn());
+
+            resPage.addListItem(mgAppDto);
         }
 
         return resPage;

@@ -15,7 +15,7 @@ public class MgServerDto implements Serializable {
     private Integer serverResourceId;
     private String dashboardYn;
     private String monitoringYn;
-    private String serverName;
+    private String serverResourceName;
     private String hostName;
 
     public Integer getMonGroupId() {
@@ -48,9 +48,9 @@ public class MgServerDto implements Serializable {
 
     public void setMonitoringYn(String monitoringYn) { this.monitoringYn = monitoringYn; }
 
-    public String getServerName() { return serverName; }
+    public String getServerResourceName() { return serverResourceName; }
 
-    public void setServerName(String serverName) { this.serverName = serverName; }
+    public void setServerResourceName(String serverName) { this.serverResourceName = serverName; }
 
     public String getHostName() { return hostName; }
 
@@ -61,7 +61,7 @@ public class MgServerDto implements Serializable {
         final StringBuilder sb = new StringBuilder("MgServer{");
         sb.append("monGroupId=").append(monGroupId);
         sb.append(", serverResourceId=").append(serverResourceId);
-        sb.append(", serverName='").append(serverName).append('\'');
+        sb.append(", serverResourceName='").append(serverResourceName).append('\'');
         sb.append(", host='").append(hostName).append('\'');
         sb.append(", dashboardYn='").append(dashboardYn).append('\'');
         sb.append(", monitoringYn='").append(monitoringYn).append('\'');
