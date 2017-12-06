@@ -9,6 +9,7 @@ import com.crossent.monitoring.portal.mongroup.moniotring.dto.LogResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerDetailStatusDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
+import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,16 @@ public class MonServerController extends BaseController {
     @Autowired
     MonServerService serverService;
 
-
+        //path, query, body, header
+    @ApiOperation(value = "모니터링 그룹 서버상태 모니터링")
+    @ApiImplicitParams({
+                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "string", paramType = "path"),
+                               @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
+                               @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
+    })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses", method = RequestMethod.GET)
-    public PagingResVo<ServerStatusesResDto> pageServerStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+    public PagingResVo<ServerStatusesResDto> pageServerStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ApiParam(hidden = true )@ModelAttribute("search") SearchReqVo search) {
 
 
         if(logger.isDebugEnabled()){

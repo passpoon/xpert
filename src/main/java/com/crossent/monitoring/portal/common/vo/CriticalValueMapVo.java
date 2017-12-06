@@ -55,7 +55,7 @@ public class CriticalValueMapVo {
                 return val <= cv.getWarning();
             }
             default:
-                throw new BusinessException(MessageUtil.getMessage("unDefMetricFuncCode", funcTypeCode));
+                throw new BusinessException("unDefMetricFuncCode", funcTypeCode);
         }
 
     }
@@ -79,7 +79,7 @@ public class CriticalValueMapVo {
                 return val <= cv.getCritical();
             }
             default:
-                throw new BusinessException(MessageUtil.getMessage("unDefMetricFuncCode", funcTypeCode));
+                throw new BusinessException("unDefMetricFuncCode", funcTypeCode);
         }
     }
 

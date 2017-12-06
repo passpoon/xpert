@@ -1,16 +1,22 @@
 package com.crossent.monitoring.portal.common.vo;
 
+import io.swagger.annotations.ApiModelProperty;
+
 import java.util.HashMap;
 import java.util.Map;
 
 public class SearchReqVo {
 
+    @ApiModelProperty(hidden = true)
     private Map<String, String> keywords;
 
+    @ApiModelProperty(hidden = true)
     private String rangeType;
 
+    @ApiModelProperty(hidden = true)
     private String rangeStart;
 
+    @ApiModelProperty(hidden = true)
     private String rangeEnd;
 
     public SearchReqVo() {

@@ -107,7 +107,7 @@ public class MonServerService {
                 }
                 break;
                 default:
-                    throw new BusinessException(MessageUtil.getMessage("unDefSearchKey", key));
+                    throw new BusinessException("unDefSearchKey", key);
 
             }
         }
@@ -291,7 +291,7 @@ public class MonServerService {
 
         if(serverResource == null){
 
-            throw new BusinessException(MessageUtil.getMessage("noSearchServer", serverResourceId+""));
+            throw new BusinessException("noSearchServer", serverResourceId+"");
         }
 
         String rangeType = search.getRangeType();
@@ -467,7 +467,7 @@ public class MonServerService {
 
         ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
         if(serverResource == null){
-            throw new BusinessException(MessageUtil.getMessage("noSearchServer", serverResource+""));
+            throw new BusinessException("noSearchServer", serverResource+"");
         }
 
         String hostName = serverResource.getHostName();

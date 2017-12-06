@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.common.vo;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
@@ -7,11 +8,13 @@ public class PagingReqVo {
     /**
      * 현제 페이지
      */
+    @ApiModelProperty(hidden = true)
     int page;
 
     /**
      * 페이지 크기
      */
+    @ApiModelProperty(hidden = true)
     int pageSize;
 
     public PagingReqVo() {

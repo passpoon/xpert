@@ -40,7 +40,7 @@ public enum StatusEnum {
                 return MessageUtil.getMessage("statusEnumError");
 
             default:
-                throw new BusinessException(MessageUtil.getMessage("unDefCode", ""+status));
+                throw new BusinessException("unDefCode", ""+status);
         }
     }
 

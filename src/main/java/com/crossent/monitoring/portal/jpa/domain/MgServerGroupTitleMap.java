@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class MgServerGroupTitleMap implements Serializable {
     private Integer monGroupId;
     private Integer measurementId;
+    private Measurement measurement;
 
 
     @Id
@@ -22,6 +23,16 @@ public class MgServerGroupTitleMap implements Serializable {
     public Integer getMeasurementId() { return measurementId; }
 
     public void setMeasurementId(Integer measurementId) { this.measurementId = measurementId; }
+
+    @ManyToOne
+    @JoinColumn(name = "measurement_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public Measurement getMeasurement() {
+        return measurement;
+    }
+
+    public void setMeasurement(Measurement measurement) {
+        this.measurement = measurement;
+    }
 
     @Override
     public String toString() {

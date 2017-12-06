@@ -115,7 +115,7 @@ public class MonServerQuery {
             case VOLUME_LOW:
                 return String.format("LAST(%s) as %s ", metricName, metricName);
             default:
-                throw new BusinessException(MessageUtil.getMessage("unDefCode", funcTypeCode));
+                throw new BusinessException("unDefCode", funcTypeCode);
         }
 
     }
