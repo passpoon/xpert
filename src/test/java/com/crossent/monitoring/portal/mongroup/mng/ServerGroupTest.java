@@ -14,14 +14,14 @@ public class ServerGroupTest extends AbstractMockTest {
 
     @Test
     public void pageServerGroup() throws Exception {
-        Integer monitoringGroupId = 2;
+        Integer monitoringGroupId = 1;
 
         PagingReqVo pagingReqVo = new PagingReqVo();
         pagingReqVo.setPage(0);
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        /*searchReqVo.addKeyword("name", "서버");*/
+        searchReqVo.addKeyword("name", "api");
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
@@ -71,7 +71,7 @@ public class ServerGroupTest extends AbstractMockTest {
         Integer monitoringGroupId = 1;
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("serverGroupIds", "13");
+        params.add("serverGroupIds", "24");
 
         delete("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups", params);
     }
@@ -79,7 +79,7 @@ public class ServerGroupTest extends AbstractMockTest {
     @Test
     public void getServerGroupMetrics() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer serverGroupId = 1;
+        Integer serverGroupId = 19;
 
         get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics");
     }
@@ -100,7 +100,7 @@ public class ServerGroupTest extends AbstractMockTest {
     @Test
     public void getServerGroupServerResource() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer serverGroupId = 1;
+        Integer serverGroupId = 19;
 
         get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/servers");
     }

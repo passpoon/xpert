@@ -14,14 +14,14 @@ public class ServerTest extends AbstractMockTest {
 
     @Test
     public void pageServer() throws Exception {
-        Integer monitoringGroupId = 2;
+        Integer monitoringGroupId = 1;
 
         PagingReqVo pagingReqVo = new PagingReqVo();
         pagingReqVo.setPage(0);
         pagingReqVo.setPageSize(10);
 
         SearchReqVo searchReqVo = new SearchReqVo();
-        /*searchReqVo.addKeyword("serverResourceName", "mon");*/
+        searchReqVo.addKeyword("serverResourceName", "agent1");
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));

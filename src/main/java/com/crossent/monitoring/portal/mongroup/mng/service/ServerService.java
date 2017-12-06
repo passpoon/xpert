@@ -28,25 +28,6 @@ public class ServerService {
 
     public PagingResVo<MgServerDto> pagingServer(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
-        Page<MgServer> allMonGroupId = mgServerRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId); // Dto 새로 생성, repository에 monGroupId로 조회
-
-        PagingResVo<MgServerDto> resPage = new PagingResVo<MgServerDto>(allMonGroupId, false);
-
-        List<MgServer> content = allMonGroupId.getContent();
-        List<MgServerDto> mgServerDtos = new ArrayList<MgServerDto>();
-        for(MgServer mgServer : content){
-            MgServerDto mgServerDto = new MgServerDto();
-            mgServerDto.setMonGroupId(mgServer.getMonGroupId());
-            mgServerDto.setServerResourceId(mgServer.getServerResourceId());
-            mgServerDto.setServerName(mgServer.getServerResource().getName());
-            mgServerDto.setHostName(mgServer.getServerResource().getHostName());
-            mgServerDto.setMonitoringYn(mgServer.getMonitoringYn());
-            mgServerDto.setDashboardYn(mgServer.getDashboardYn());
-
-            mgServerDtos.add(mgServerDto);
-        }
-        resPage.setList(mgServerDtos);
-
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
         String keyword = null;
@@ -60,19 +41,35 @@ public class ServerService {
         }
         Page<MgServer> mgServers = null;
         if (key == null) {
-            //TODO 전체조회
-            mgServers = mgServerRepository.findAll(pagingReqVo.toPagingRequest());
+            //mgServers = mgServerRepository.findAll(pagingReqVo.toPagingRequest());
+            mgServers = mgServerRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId); // Dto 새로 생성, repository에 monGroupId로 조회
         } else {
             switch (key) {
                 case "serverResourceName": {
                     mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_NameLike(pagingReqVo.toPagingRequest(), monitoringGroupId,  keyword);
                 }
                 break;
-                case "host": {
+                case "hostName": {
                     mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_HostNameLike(pagingReqVo.toPagingRequest(), monitoringGroupId,  keyword);
                 }
                 break;
             }
+        }
+
+        PagingResVo<MgServerDto> resPage = new PagingResVo<MgServerDto>(mgServers, false);
+
+        List<MgServer> content = mgServers.getContent();
+
+        for(MgServer mgServer : content){
+            MgServerDto mgServerDto = new MgServerDto();
+            mgServerDto.setMonGroupId(mgServer.getMonGroupId());
+            mgServerDto.setServerResourceId(mgServer.getServerResourceId());
+            mgServerDto.setServerResourceName(mgServer.getServerResource().getName());
+            mgServerDto.setHostName(mgServer.getServerResource().getHostName());
+            mgServerDto.setMonitoringYn(mgServer.getMonitoringYn());
+            mgServerDto.setDashboardYn(mgServer.getDashboardYn());
+
+            resPage.addListItem(mgServerDto);
         }
 
         return resPage;
