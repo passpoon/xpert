@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.Collection;
+
 
 public interface MgServerGroupServerRepository extends CrudRepository<MgServerGroupServer, MgServerGroupServerPK> {
 
@@ -14,6 +16,8 @@ public interface MgServerGroupServerRepository extends CrudRepository<MgServerGr
     public void deleteByMonGroupIdAndServerGroupIdAndServerResourceId(Integer monGroupId, Integer serverGroupId, Integer serverResourceId);
 
     public Page<MgServerGroupServer> findAllByMonGroupIdAndServerGroupId(Pageable pageable, Integer monGroupId, Integer serverGroupId);
+
+    public Collection<MgServerGroupServer> findAllByMonGroupIdAndServerGroupId(Integer monGroupId, Integer serverGroupId);
 
 
 }

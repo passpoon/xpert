@@ -54,5 +54,51 @@ public class MonServerGroupTest extends AbstractMockTest {
     }
 
 
+    @Test
+    public void pageEvent() throws Exception {
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(10);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+        //searchReqVo.addKeyword(null, null);
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server-group/server-group-statuses/"+serverGroupId+"/events", params);
+    }
+
+
+    @Test
+    public void pageLog() throws Exception {
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(10);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+        //searchReqVo.addKeyword(null, null);
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server-group/server-group-statuses/"+serverGroupId+"/logs", params);
+    }
+
+
 
 }

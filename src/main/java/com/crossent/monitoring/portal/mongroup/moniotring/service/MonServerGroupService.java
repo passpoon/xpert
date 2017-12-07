@@ -1,6 +1,7 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.service;
 
 import com.crossent.monitoring.portal.common.constants.Constants;
+import com.crossent.monitoring.portal.common.constants.ResourceType;
 import com.crossent.monitoring.portal.common.constants.StatusEnum;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.lib.elasticsearch.ElasticsearchTemplate;
@@ -13,10 +14,7 @@ import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.*;
 import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.dao.MonServerDao;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.MeasurementStatusDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ProcessStatusDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerGroupStatusesResDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
+import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
 import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -312,4 +310,40 @@ public class MonServerGroupService {
 
         return pageServerStatusesResDtoPagingResVo;
     }
+
+
+    public PagingResVo<EventResDto> pageEvent(Integer monitoringGroupId, Integer serverGroupId, PagingReqVo paging, SearchReqVo search){
+        Collection<MgServerGroupServer> mgServerGroupServers = mgServerGroupServerRepository.findAllByMonGroupIdAndServerGroupId(monitoringGroupId, serverGroupId);
+
+        List<Integer> resourceIds = new ArrayList<Integer>();
+
+        for(MgServerGroupServer mgServerGroupServer : mgServerGroupServers){
+            resourceIds.add(mgServerGroupServer.getServerResourceId());
+        }
+
+        PagingResVo<EventResDto> pagingResVo = monCommonService.pageEvent(monitoringGroupId, ResourceType.SERVER_GROUP, resourceIds, paging, search);
+
+        return pagingResVo;
+    }
+
+
+    public PagingResVo<LogResDto> pageLog(Integer monitoringGroupId, Integer serverGroupId, PagingReqVo paging, SearchReqVo search){
+        Collection<MgServerGroupServer> mgServerGroupServers = mgServerGroupServerRepository.findAllByMonGroupIdAndServerGroupId(monitoringGroupId, serverGroupId);
+
+        List<Integer> resourceIds = new ArrayList<Integer>();
+
+        for(MgServerGroupServer mgServerGroupServer : mgServerGroupServers){
+            resourceIds.add(mgServerGroupServer.getServerResourceId());
+        }
+
+        PagingResVo<LogResDto> pagingResVo = monCommonService.pageServerLog(resourceIds, paging, search);
+
+        return pagingResVo;
+    }
+
+
+
+
+
+
 }

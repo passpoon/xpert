@@ -1,10 +1,12 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.web;
 
+import com.crossent.monitoring.portal.common.constants.ResourceType;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
+import com.crossent.monitoring.portal.mongroup.moniotring.service.MonCommonService;
 import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerGroupService;
 import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -23,6 +25,8 @@ public class MonServerGroupController extends BaseController {
 
     @Autowired
     MonServerGroupService monServerGroupService;
+
+
 
         //path, query, body, header
 
@@ -79,6 +83,36 @@ public class MonServerGroupController extends BaseController {
         }
 
         return serverGroupStatuses;
+    }
+
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server-group/server-group-statuses/{serverGroupId}/events", method = RequestMethod.GET)
+    public PagingResVo<EventResDto> pageEvent(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @ModelAttribute("paging") PagingReqVo pagingReqVo, @ModelAttribute("search") SearchReqVo search){
+
+        logger.debug("monitoringGroupId : {}", monitoringGroupId);
+        logger.debug("serverGroupId : {}", serverGroupId);
+        logger.debug("pagingReqVo : {}", pagingReqVo);
+        logger.debug("search : {}", search);
+
+
+        PagingResVo<EventResDto> resDtoPagingResVo = monServerGroupService.pageEvent(monitoringGroupId, serverGroupId, pagingReqVo, search);
+        logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
+        return resDtoPagingResVo;
+    }
+
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server-group/server-group-statuses/{serverGroupId}/logs", method = RequestMethod.GET)
+    public PagingResVo<LogResDto> pageLog(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @ModelAttribute("paging") PagingReqVo pagingReqVo, @ModelAttribute("search") SearchReqVo search){
+
+        logger.debug("monitoringGroupId : {}", monitoringGroupId);
+        logger.debug("serverGroupId : {}", serverGroupId);
+        logger.debug("pagingReqVo : {}", pagingReqVo);
+        logger.debug("search : {}", search);
+
+        PagingResVo<LogResDto> resDtoPagingResVo = monServerGroupService.pageLog(monitoringGroupId, serverGroupId, pagingReqVo, search);
+        logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
+        return resDtoPagingResVo;
     }
 
 
