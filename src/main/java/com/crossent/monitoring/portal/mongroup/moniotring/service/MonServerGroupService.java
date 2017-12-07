@@ -24,10 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MonServerGroupService {
@@ -58,19 +55,19 @@ public class MonServerGroupService {
     @Autowired
     private MonServerDao monServerDao;
 
-    @Autowired
-    private ServerResourceRepository serverResourceRepository;
 
     @Autowired
-    private MetricRepository metricRepository;
+    private MgServerTitleMapRepository mgServerTitleMapRepository;
 
     @Autowired
-    private EventHistoryRepository eventHistoryRepository;
+    private MonCommonService monCommonService;
+
 
 
 
     @Autowired
-    private ElasticsearchTemplate elasticsearchTemplate;
+    private MgServerGroupServerRepository mgServerGroupServerRepository;
+
 
     public PagingResVo<ServerGroupStatusesResDto> pageServerGroupStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
 
@@ -274,5 +271,45 @@ public class MonServerGroupService {
 
         return pageServerGroupStatusesResDto;
         //return null;
+    }
+
+
+    public PagingResVo<ServerStatusesResDto> pageServerGroupServerStatuses(Integer monitoringGroupId, Integer serverGroupId, PagingReqVo paging) {
+        String key = null;
+        String keyword = null;
+        Map<String, Map<String, String>> influxQueryFilters = applicationProperties.getInfluxQueryFilters();
+
+
+        Page<MgServerGroupServer> pageMgServerGroupServers = mgServerGroupServerRepository.findAllByMonGroupIdAndServerGroupId(paging.toPagingRequest(), monitoringGroupId, serverGroupId);
+
+
+        PagingResVo<ServerStatusesResDto> pageServerStatusesResDtoPagingResVo = new PagingResVo<ServerStatusesResDto>(pageMgServerGroupServers, false);
+
+        List<MgServerGroupServer> serverGroupServers = pageMgServerGroupServers.getContent();
+
+
+
+        List<ServerResource> serverResources = new ArrayList<ServerResource>();
+
+        for(MgServerGroupServer mgServerGroupServer : serverGroupServers){
+            serverResources.add(mgServerGroupServer.getServerResource());
+        }
+
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("mgServers : {}", mgServers);
+//        }
+
+        //logger.debug("mgServer {} ::", mgServers);
+        Collection<MgServerTitleMap> mgServerTitleMaps = mgServerTitleMapRepository.findAllByMonGroupId(monitoringGroupId);
+
+        //title셋팅
+        for(MgServerTitleMap titleMap : mgServerTitleMaps){
+            pageServerStatusesResDtoPagingResVo.addTile(titleMap.getMeasurements().getName());
+        }
+
+        List<ServerStatusesResDto> serverStatusesResDtos = monCommonService.pageServerStatuses(monitoringGroupId, mgServerTitleMaps, serverResources);
+        pageServerStatusesResDtoPagingResVo.setList(serverStatusesResDtos);
+
+        return pageServerStatusesResDtoPagingResVo;
     }
 }

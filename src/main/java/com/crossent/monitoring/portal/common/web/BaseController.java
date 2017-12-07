@@ -25,7 +25,7 @@ abstract public class BaseController {
             try {
                 pagingReqVo = ObjectMapperFactory.newInstance().readValue(paging, PagingReqVo.class);
             } catch (IOException e) {
-                throw new MessageConversionException(MessageUtil.getMessage("monitoring.portal.common.error.pagingParameterError", paging), e);
+                throw new MessageConversionException(MessageUtil.getMessage("pagingParameterError", paging), e);
             }
         }
         return pagingReqVo;
@@ -39,7 +39,7 @@ abstract public class BaseController {
             try {
                 searchReqVo = ObjectMapperFactory.newInstance().readValue(search, SearchReqVo.class);
             } catch (IOException e) {
-                throw new MessageConversionException(MessageUtil.getMessage("monitoring.portal.common.error.searchParameterError", search), e);
+                throw new MessageConversionException(MessageUtil.getMessage("searchParameterError", search), e);
             }
         }
 

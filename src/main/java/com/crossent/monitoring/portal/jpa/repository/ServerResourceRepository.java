@@ -8,11 +8,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
+import java.util.List;
 
 
 public interface ServerResourceRepository extends JpaRepository<ServerResource, Integer> {
 
     public ServerResource findById(Integer id);
+    public Collection<ServerResource> findAllByIdIn(List<Integer> ids);
 
     public Page<ServerResource> findByNameLike(Pageable pageable, String name);
     public Page<ServerResource> findByHostNameLike(Pageable pageable, String hostName);

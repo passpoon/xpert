@@ -36,7 +36,7 @@ public class MonServerTest extends AbstractMockTest {
 
         SearchReqVo searchReqVo = new SearchReqVo();
         //searchReqVo.addKeyword(null, null);
-        searchReqVo.setRangeType("20m");
+        searchReqVo.setRangeType("30m");
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
 
@@ -57,7 +57,7 @@ public class MonServerTest extends AbstractMockTest {
 
         PagingReqVo pagingReqVo = new PagingReqVo();
         pagingReqVo.setPage(0);
-        pagingReqVo.setPageSize(10);
+        pagingReqVo.setPageSize(100);
 
         SearchReqVo searchReqVo = new SearchReqVo();
 
@@ -78,9 +78,9 @@ public class MonServerTest extends AbstractMockTest {
 //        searchReqVo.addKeyword("STATE", "ERROR");
 
         //searchReqVo.setRangeType("1h");
-        searchReqVo.setRangeType("manual");
-        searchReqVo.setRangeStart("20171202011000");
-        searchReqVo.setRangeEnd("20171202022000");
+        searchReqVo.setRangeType("1M");
+//        searchReqVo.setRangeStart("20171202011000");
+//        searchReqVo.setRangeEnd("20171202022000");
 
 
 

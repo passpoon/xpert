@@ -27,7 +27,30 @@ public class MonServerGroupTest extends AbstractMockTest {
 
         Integer monitoringGroupId = 1;
 
-        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server-group/server-statuses", params);
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server-group/server-group-statuses", params);
+    }
+
+
+    @Test
+    public void pageServerGroupServerStatuses() throws Exception {
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(10);
+
+        //SearchReqVo searchReqVo = new SearchReqVo();
+        //searchReqVo.addKeyword(null, null);
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        //params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server-group/server-group-statuses/"+serverGroupId+"/server-statuses", params);
     }
 
 

@@ -90,20 +90,20 @@ public class SearchVo {
                 break;
                 case DAY:{
                     rangeTerm = Long.parseLong(strRangeType.substring(0, strRangeType.length() -1));
-                    startDttm = DateUtil.addDaysForDateHms(DateUtil.getCurrentDate(DATE_FORMAT), rangeTerm);
+                    startDttm = DateUtil.addDaysForDateHms(DateUtil.getCurrentDate(DATE_FORMAT), -rangeTerm);
                     endDttm = DateUtil.getCurrentDate(DATE_FORMAT);
 
                 }
                 break;
                 case MONTH:{
                     rangeTerm = Long.parseLong(strRangeType.substring(0, strRangeType.length() -1));
-                    startDttm = DateUtil.addMonthsForDateHms(DateUtil.getCurrentDate(DATE_FORMAT), rangeTerm);
+                    startDttm = DateUtil.addMonthsForDateHms(DateUtil.getCurrentDate(DATE_FORMAT), -rangeTerm);
                     endDttm = DateUtil.getCurrentDate(DATE_FORMAT);
                 }
                 break;
                 case YEAR:{
                     rangeTerm = Long.parseLong(strRangeType.substring(0, strRangeType.length() -1));
-                    startDttm = DateUtil.addYearsForDateHms(DateUtil.getCurrentDate(DATE_FORMAT), rangeTerm);
+                    startDttm = DateUtil.addYearsForDateHms(DateUtil.getCurrentDate(DATE_FORMAT), -rangeTerm);
                     endDttm = DateUtil.getCurrentDate(DATE_FORMAT);
                 }
                 break;

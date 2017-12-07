@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.web;
 
+import com.crossent.monitoring.portal.common.constants.ResourceType;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -8,6 +9,7 @@ import com.crossent.monitoring.portal.mongroup.moniotring.dto.EventResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.LogResDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerDetailStatusDto;
 import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
+import com.crossent.monitoring.portal.mongroup.moniotring.service.MonCommonService;
 import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
@@ -22,7 +24,10 @@ public class MonServerController extends BaseController {
     private static Logger logger = LoggerFactory.getLogger(MonServerController.class);
 
     @Autowired
-    MonServerService serverService;
+    MonServerService monServerService;
+
+    @Autowired
+    MonCommonService monCommonService;
 
         //path, query, body, header
 
@@ -43,7 +48,7 @@ public class MonServerController extends BaseController {
             logger.debug("search : {}", search);
         }
 
-        PagingResVo<ServerStatusesResDto> serverStatuses = serverService.pageServerStatuses(monitoringGroupId, paging, search);
+        PagingResVo<ServerStatusesResDto> serverStatuses = monServerService.pageServerStatuses(monitoringGroupId, paging, search);
 
 
         if(logger.isDebugEnabled()){
@@ -63,7 +68,7 @@ public class MonServerController extends BaseController {
             logger.debug("search : {}", search);
         }
 
-        ServerDetailStatusDto serverDetailStatus = serverService.getServerDetailStatus(monitoringGroupId, serverResourceId, search);
+        ServerDetailStatusDto serverDetailStatus = monCommonService.getServerDetailStatus(serverResourceId, search);
 
 
 //        if(logger.isDebugEnabled()){
@@ -83,7 +88,7 @@ public class MonServerController extends BaseController {
         logger.debug("search : {}", search);
 
 
-        PagingResVo<EventResDto> resDtoPagingResVo = serverService.pageServerEvent(monitoringGroupId, serverResourceId, pagingReqVo, search);
+        PagingResVo<EventResDto> resDtoPagingResVo = monCommonService.pageEvent(monitoringGroupId, ResourceType.SERVER, serverResourceId, pagingReqVo, search);
         logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
         return resDtoPagingResVo;
     }
@@ -97,18 +102,8 @@ public class MonServerController extends BaseController {
         logger.debug("pagingReqVo : {}", pagingReqVo);
         logger.debug("search : {}", search);
 
-
-        PagingResVo<LogResDto> resDtoPagingResVo = serverService.pageServerLog(serverResourceId, pagingReqVo, search);
+        PagingResVo<LogResDto> resDtoPagingResVo = monCommonService.pageServerLog(serverResourceId, pagingReqVo, search);
         logger.debug("resDtoPagingResVo : {}", resDtoPagingResVo);
         return resDtoPagingResVo;
     }
-
-
-
-
-
-
-
-
-
 }

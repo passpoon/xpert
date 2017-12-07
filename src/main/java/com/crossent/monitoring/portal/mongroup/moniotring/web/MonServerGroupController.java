@@ -33,8 +33,8 @@ public class MonServerGroupController extends BaseController {
                                @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
     })
     @Transactional
-    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server-group/server-statuses", method = RequestMethod.GET)
-    public PagingResVo<ServerGroupStatusesResDto> pageServerStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server-group/server-group-statuses", method = RequestMethod.GET)
+    public PagingResVo<ServerGroupStatusesResDto> pageServerGroupStatuses(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
 
         if(logger.isDebugEnabled()){
@@ -45,6 +45,34 @@ public class MonServerGroupController extends BaseController {
 
         PagingResVo<ServerGroupStatusesResDto> serverGroupStatuses = monServerGroupService.pageServerGroupStatuses(monitoringGroupId, paging, search);
 
+
+        if(logger.isDebugEnabled()){
+            logger.debug("serverGroupStatuses : {}", serverGroupStatuses);
+        }
+
+        return serverGroupStatuses;
+    }
+
+
+
+    @ApiOperation(value = "모니터링그룹의 서버그룹에 속한 서버들의 상태 조회")
+    @ApiImplicitParams({
+                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server-group/server-group-statuses/{serverGroupId}/server-statuses", method = RequestMethod.GET)
+    public PagingResVo<ServerStatusesResDto> pageServerGroupServerStatuses(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @ModelAttribute("paging") PagingReqVo paging) {
+
+
+        if(logger.isDebugEnabled()){
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverGroupId);
+            logger.debug("paging : {}", paging);
+        }
+
+        PagingResVo<ServerStatusesResDto> serverGroupStatuses = monServerGroupService.pageServerGroupServerStatuses(monitoringGroupId, serverGroupId, paging);
 
         if(logger.isDebugEnabled()){
             logger.debug("serverGroupStatuses : {}", serverGroupStatuses);

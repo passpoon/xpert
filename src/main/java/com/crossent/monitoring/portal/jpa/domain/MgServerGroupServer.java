@@ -10,6 +10,7 @@ public class MgServerGroupServer implements Serializable {
     private Integer serverGroupId;
     private Integer monGroupId;
     private Integer serverResourceId;
+    private ServerResource serverResource;
 
     @Id
     @Column(name = "server_group_id", nullable = false)
@@ -39,6 +40,17 @@ public class MgServerGroupServer implements Serializable {
 
     public void setServerResourceId(Integer serverResourceId) {
         this.serverResourceId = serverResourceId;
+    }
+
+
+    @ManyToOne
+    @JoinColumn(name = "server_resource_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public ServerResource getServerResource() {
+        return serverResource;
+    }
+
+    public void setServerResource(ServerResource serverResource) {
+        this.serverResource = serverResource;
     }
 
     @Override
