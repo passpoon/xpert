@@ -58,6 +58,13 @@ public class MonServerController extends BaseController {
         return serverStatuses;
     }
 
+    @ApiOperation(value = "서버 상세 조회")
+    @ApiImplicitParams({
+                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
+                               @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
+    })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}", method = RequestMethod.GET)
     public ServerDetailStatusDto getServerDetailStatus(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @ModelAttribute("search") SearchReqVo search) {
@@ -78,6 +85,13 @@ public class MonServerController extends BaseController {
         return serverDetailStatus;
     }
 
+    @ApiOperation(value = "서버 이벤트 조회")
+    @ApiImplicitParams({
+                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
+                               @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
+    })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}/events", method = RequestMethod.GET)
     public PagingResVo<EventResDto> pageEvent(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @ModelAttribute("paging") PagingReqVo pagingReqVo, @ModelAttribute("search") SearchReqVo search){
@@ -93,6 +107,13 @@ public class MonServerController extends BaseController {
         return resDtoPagingResVo;
     }
 
+    @ApiOperation(value = "서버 로그 조회")
+    @ApiImplicitParams({
+                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
+                               @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
+    })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}/logs", method = RequestMethod.GET)
     public PagingResVo<LogResDto> pageLog(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @ModelAttribute("paging") PagingReqVo pagingReqVo, @ModelAttribute("search") SearchReqVo search){
