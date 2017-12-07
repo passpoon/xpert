@@ -238,9 +238,9 @@ public class MonServerGroupService {
 
 
 
-                    procContent.append(MessageUtil.getMessage("processStatusTotal", totalCnt+"") + "/n");
-                    procContent.append(MessageUtil.getMessage("processStatusNormal", normalCnt+"") + "/n");
-                    procContent.append(MessageUtil.getMessage("processStatusAbnormal", normalCnt+"") + "/n");
+                    procContent.append(MessageUtil.getMessage("processStatusTotal", totalCnt+"") + "\n");
+                    procContent.append(MessageUtil.getMessage("processStatusNormal", normalCnt+"") + "\n");
+                    procContent.append(MessageUtil.getMessage("processStatusAbnormal", normalCnt+"") + "\n");
 
                     if (abnormalCnt > 0) {
                         procStatus = StatusEnum.Error;
