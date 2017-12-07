@@ -162,6 +162,7 @@ public class ServerGroupService {
         updateServerGroup.setName(mgServerGroup.getName());
         updateServerGroup.setServerTypeId(mgServerGroup.getServerTypeId());
         updateServerGroup.setMonitoringYn(mgServerGroup.getMonitoringYn());
+        updateServerGroup.setDescription(mgServerGroup.getDescription());
         updateServerGroup.setDashboardYn(mgServerGroup.getDashboardYn());
 
         MgServerGroup updateData = mgServerGroupRepository.save(updateServerGroup);

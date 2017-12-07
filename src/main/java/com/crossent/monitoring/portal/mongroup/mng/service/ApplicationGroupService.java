@@ -148,6 +148,7 @@ public class ApplicationGroupService {
         updateAppGroup.setName(mgAppGroup.getName());
         updateAppGroup.setAppInfoId(mgAppGroup.getAppInfoId());
         updateAppGroup.setMonitoringYn(mgAppGroup.getMonitoringYn());
+        updateAppGroup.setDescription(mgAppGroup.getDescription());
         updateAppGroup.setDashboardYn(mgAppGroup.getDashboardYn());
 
         MgAppGroup updateData = mgAppGroupRepository.save(updateAppGroup);

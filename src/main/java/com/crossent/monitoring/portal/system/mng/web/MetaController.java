@@ -9,6 +9,9 @@ import com.crossent.monitoring.portal.jpa.domain.Meta;
 import com.crossent.monitoring.portal.jpa.domain.StateCode;
 import com.crossent.monitoring.portal.system.mng.service.ManualService;
 import com.crossent.monitoring.portal.system.mng.service.MetaService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +24,11 @@ public class MetaController extends BaseController{
     @Autowired
     MetaService metaService;
 
+    @ApiOperation(value = "시스템 관리 메타 페이징")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
+    })
     @RequestMapping(value = "/system/management/meta", method = RequestMethod.GET)
     public PagingResVo pagingMeta(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
@@ -29,6 +37,10 @@ public class MetaController extends BaseController{
         return resPage;
     }
 
+    @ApiOperation(value = "시스템 관리 메타 등록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "meta", value = "메타", required = true, dataType = "string", paramType = "body"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/meta", method = RequestMethod.POST)
     public void insertMeta(@RequestBody Meta meta){
@@ -36,6 +48,10 @@ public class MetaController extends BaseController{
         metaService.insertMeta(meta);
     }
 
+    @ApiOperation(value = "시스템 관리 메타 선택삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaIds", value = "메타 ID 목록", required = true, dataType = "int", paramType = "query"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/meta", method = RequestMethod.DELETE)
     public void deleteMetas(@RequestParam Integer[] metaIds){
@@ -43,6 +59,10 @@ public class MetaController extends BaseController{
         metaService.deleteMetas(metaIds);
     }
 
+    @ApiOperation(value = "시스템 관리 메타 상세조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaId", value = "메타 ID", required = true, dataType = "int", paramType = "path"),
+    })
     @RequestMapping(value = "/system/management/meta/{metaId}", method = RequestMethod.GET)
     public Meta getMeta(@PathVariable Integer metaId){
 
@@ -51,6 +71,11 @@ public class MetaController extends BaseController{
         return getResource;
     }
 
+    @ApiOperation(value = "시스템 관리 메타 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaId", value = "메타 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "meta", value = "메타", required = true, dataType = "string", paramType = "body"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/meta/{metaId}", method = RequestMethod.PUT)
     public void updateMeta(@PathVariable Integer metaId, @RequestBody Meta meta){
@@ -58,6 +83,10 @@ public class MetaController extends BaseController{
         metaService.updateMeta(metaId, meta);
     }
 
+    @ApiOperation(value = "시스템 관리 메타 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaId", value = "메타 ID", required = true, dataType = "int", paramType = "path"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/meta/{metaId}", method = RequestMethod.DELETE)
     public void deleteMeta(@PathVariable Integer metaId){
@@ -65,6 +94,10 @@ public class MetaController extends BaseController{
         metaService.deleteMeta(metaId);
     }
 
+    @ApiOperation(value = "시스템 관리 메타 메뉴얼 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaId", value = "메타 ID", required = true, dataType = "int", paramType = "path"),
+    })
     @RequestMapping(value = "/system/management/meta/{metaId}/manuals", method = RequestMethod.GET)
     public Collection<Manual> getMetaManuals(@PathVariable Integer metaId) {
 
@@ -73,6 +106,11 @@ public class MetaController extends BaseController{
         return manual;
     }
 
+    @ApiOperation(value = "시스템 관리 메타 메뉴얼 다중추가")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaId", value = "메타 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "manualIds", value = "메뉴얼 ID 목록", required = true, dataType = "int", paramType = "body"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/meta/{metaId}/manuals" , method = RequestMethod.POST)
     public void insertMetaManuals(@PathVariable Integer metaId, @RequestBody Integer[] manualIds){
@@ -80,6 +118,11 @@ public class MetaController extends BaseController{
         metaService.insertMetaManuals(metaId, manualIds);
     }
 
+    @ApiOperation(value = "시스템 관리 메타 메뉴얼 다중추가")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaId", value = "메타 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "manualIds", value = "메뉴얼 ID 목록", required = true, dataType = "string", paramType = "query"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/meta/{metaId}/manuals" , method = RequestMethod.DELETE)
     public void deleteMetaManuals(@PathVariable Integer metaId, @RequestParam Integer[] manualIds) {
@@ -87,6 +130,11 @@ public class MetaController extends BaseController{
         metaService.deleteMetaManuals(metaId, manualIds);
     }
 
+    @ApiOperation(value = "시스템 관리 메타 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "metaId", value = "메타 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "manualId", value = "메뉴얼 ID", required = true, dataType = "int", paramType = "path"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/meta/{metaId}/manuals/{manualId}" , method = RequestMethod.DELETE)
     public void deleteMetaManual(@PathVariable Integer metaId, @PathVariable Integer manualId) {
@@ -102,6 +150,7 @@ public class MetaController extends BaseController{
         return manuals;
     }*/
 
+    @ApiOperation(value = "시스템 관리 메타 상태코드 조회")
     @RequestMapping(value = "/system/management/meta/state-codes", method = RequestMethod.GET)
     public Collection<StateCode> getStateCodes() {
 

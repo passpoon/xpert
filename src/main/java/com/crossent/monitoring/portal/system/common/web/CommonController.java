@@ -5,6 +5,9 @@ import com.crossent.monitoring.portal.jpa.domain.AppInfo;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
 import com.crossent.monitoring.portal.jpa.domain.ServerType;
 import com.crossent.monitoring.portal.system.common.service.CommonService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.catalina.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +39,10 @@ public class CommonController extends BaseController {
     }*/
 
     // 메저먼트 메트릭 조회
+    @ApiOperation(value = "공통 메저먼트 메트릭 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "measurementId", value = "메저먼트 ID", required = true, dataType = "int", paramType = "path"),
+    })
     @RequestMapping(value = "/common/measurement/{measurementId}/metrics", method = RequestMethod.GET)
     public Collection<Metric> geteMeasurementMetrics(@PathVariable Integer measurementId) {
 
@@ -45,6 +52,9 @@ public class CommonController extends BaseController {
     }
 
     // 서버 유형 조회
+    @ApiOperation(value = "공통 서버 유형 조회")
+    @ApiImplicitParams({
+    })
     @RequestMapping(value = "/common/server-types", method = RequestMethod.GET)
     public Collection<ServerType> getServerTypes() {
 
@@ -54,6 +64,9 @@ public class CommonController extends BaseController {
     }
 
     // 어플리케이션 정보 조회
+    @ApiOperation(value = "공통 어플리케이션 정보 조회")
+    @ApiImplicitParams({
+    })
     @RequestMapping(value = "/common/app-infos", method = RequestMethod.GET)
     public Collection<AppInfo> getAppInfos() {
 

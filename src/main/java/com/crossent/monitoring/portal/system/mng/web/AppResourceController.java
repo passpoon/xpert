@@ -8,6 +8,9 @@ import com.crossent.monitoring.portal.jpa.domain.AppResource;
 import com.crossent.monitoring.portal.jpa.domain.ServerResource;
 import com.crossent.monitoring.portal.system.mng.service.AppResourceService;
 import com.crossent.monitoring.portal.system.mng.service.ServerResourceService;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,11 @@ public class AppResourceController extends BaseController{
     @Autowired
     AppResourceService appResourceService;
 
+    @ApiOperation(value = "시스템 관리 어플리케이션 리소스 페이징")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
+    })
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.GET)
     public PagingResVo pagingAppResource(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
@@ -27,6 +35,10 @@ public class AppResourceController extends BaseController{
         return resPage;
     }
 
+    @ApiOperation(value = "시스템 관리 어플리케이션 리소스 등록")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appResource", value = "어플리케이션 리소스", required = false, dataType = "string", paramType = "body"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.POST)
     public void insertAppResource(@RequestBody AppResource appResource){
@@ -34,7 +46,10 @@ public class AppResourceController extends BaseController{
         appResourceService.insertAppResource(appResource);
     }
 
-
+    @ApiOperation(value = "시스템 관리 어플리케이션 리소스 선택삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appResourceIds", value = "어플리케이션 리소스 ID 목록", required = true, dataType = "int", paramType = "query"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.DELETE)
     public void deleteAppResources(@RequestParam Integer[] appResourceIds){
@@ -42,6 +57,10 @@ public class AppResourceController extends BaseController{
         appResourceService.deleteAppResources(appResourceIds);
     }
 
+    @ApiOperation(value = "시스템 관리 어플리케이션 리소스 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+    })
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.GET)
     public AppResource getAppResource(@PathVariable Integer appResourceId){
 
@@ -50,6 +69,11 @@ public class AppResourceController extends BaseController{
         return getResource;
     }
 
+    @ApiOperation(value = "시스템 관리 어플리케이션 리소스 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "appResource", value = "어플리케이션 리소스", required = true, dataType = "string", paramType = "body"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.PUT)
     public void updateAppResource(@PathVariable Integer appResourceId, @RequestBody AppResource appResource){
@@ -57,6 +81,10 @@ public class AppResourceController extends BaseController{
         appResourceService.updateAppResource(appResourceId, appResource);
     }
 
+    @ApiOperation(value = "시스템 관리 어플리케이션 리소스 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+    })
     @Transactional
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.DELETE)
     public void deleteAppResourceResource(@PathVariable Integer appResourceId){
