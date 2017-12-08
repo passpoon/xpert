@@ -137,7 +137,36 @@ public class MeasurementService {
         metricDomain.setMeasurementId(measurementId);
         metricDomain.setMetricTypeCode(metric.getMetricTypeCode());
         metricDomain.setFuncTypeCode(metric.getFuncTypeCode());
+        metricDomain.setUnit(metric.getUnit());
         metricRepository.save(metricDomain);
+    }
+
+    public Metric updateMeasurementMetic(Integer measurementId, Integer metricId, Metric metric) {
+
+        /*Measurement byIdAndMetrics_id = measurementRepository.findByIdAndMetrics_Id(measurementId, metricId);
+
+        if (byIdAndMetrics_id == null) {
+            return null;
+        }
+        byIdAndMetrics_id.setName(metric.getName());
+        byIdAndMetrics_id.setDescription(metric.getDescription());
+//        byIdAndMetrics_id.
+
+        Measurement updateData = measurementRepository.save(byIdAndMetrics_id);
+
+        return updateData;*/
+
+        Metric getData = metricRepository.findOne(metricId);
+
+        if (getData == null) {
+            return null;
+        }
+        getData.setName(metric.getName());
+        getData.setDescription(metric.getDescription());
+
+        Metric updateData = metricRepository.save(getData);
+
+        return updateData;
     }
 
     public void deleteMeasurementMetrics(Integer measurementId, Integer[] metricIds) {

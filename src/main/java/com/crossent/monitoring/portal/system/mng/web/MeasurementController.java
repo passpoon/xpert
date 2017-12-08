@@ -118,6 +118,19 @@ public class MeasurementController  extends BaseController {
         measurementService.insertMeasurementMetric(measurementId, metric);
     }
 
+    @ApiOperation(value = "시스템 관리 메저먼트 메트릭 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "measurementId", value = "메저먼트 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "metricIds", value = "메트릭 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "metric", value = "메트릭", required = true, dataType = "string", paramType = "body"),
+    })
+    @Transactional
+    @RequestMapping(value = "/system/management/measurements/{measurementId}/metrics/{metricId}", method = RequestMethod.PUT)
+    public void updateMeasurementMetic(@PathVariable Integer measurementId, @PathVariable Integer metricId, @RequestBody Metric metric) {
+
+        measurementService.updateMeasurementMetic(measurementId, metricId, metric);
+    }
+
     @ApiOperation(value = "시스템 관리 메저먼트 메트릭 선택삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "measurementId", value = "메저먼트 ID", required = true, dataType = "int", paramType = "path"),
