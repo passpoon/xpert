@@ -46,68 +46,68 @@ public class MonApplicationTest extends AbstractMockTest {
         get("/monitoring-groups/"+monitoringGroupId+"/monitoring/app/app-statuses/"+appResourceId, params);
     }
 
-//    @Test
-//    public void pageEvent() throws Exception{
-//
-//        PagingReqVo pagingReqVo = new PagingReqVo();
-//        pagingReqVo.setPage(0);
-//        pagingReqVo.setPageSize(100);
-//
-//        SearchReqVo searchReqVo = new SearchReqVo();
-//
-//        //searchReqVo.setKeywords();
-//
-//
-//        //searchReqVo.addKeyword("RESOURCE-TYPE", "SERVER");
-//        //searchReqVo.addKeyword("RESOURCE-TYPE", "LOG");
-//
-////        searchReqVo.addKeyword("STATE", "NORMAL");
-////        searchReqVo.addKeyword("STATE", "WARNNING");
-//        //searchReqVo.addKeyword("STATE", "CRITICAL");
-////        searchReqVo.addKeyword("STATE", "START");
-////        searchReqVo.addKeyword("STATE", "STOP");
-////        searchReqVo.addKeyword("STATE", "DEBUG");
-////        searchReqVo.addKeyword("STATE", "INFO");
-////        searchReqVo.addKeyword("STATE", "WARN");
-////        searchReqVo.addKeyword("STATE", "ERROR");
-//
-//        //searchReqVo.setRangeType("1h");
-//        searchReqVo.setRangeType("1M");
-////        searchReqVo.setRangeStart("20171202011000");
-////        searchReqVo.setRangeEnd("20171202022000");
-//
-//
-//
-//        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-//        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
-//        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
-//
-//        Integer monitoringGroupId = 1;
-//        Integer serverResourceId = 19;
-//
-//        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server/server-statuses/"+serverResourceId+"/events", params);
-//
-//    }
-//
-//    @Test
-//    public void pageLog() throws Exception{
-//
-//        PagingReqVo pagingReqVo = new PagingReqVo();
-//        pagingReqVo.setPage(1);
-//        pagingReqVo.setPageSize(10);
-//
-//        SearchReqVo searchReqVo = new SearchReqVo();
-////        searchReqVo.setRangeType("manual");
-////        searchReqVo.setRangeStart("20171202011000");
-////        searchReqVo.setRangeEnd("20171202022000");
-//
-//        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-//        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
-//        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
-//
-//        Integer monitoringGroupId = 1;
-//        Integer serverResourceId = 19;
-//
-//        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/server/server-statuses/"+serverResourceId+"/logs", params);
-//    }
+    @Test
+    public void pageEvent() throws Exception{
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(0);
+        pagingReqVo.setPageSize(100);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+
+        //searchReqVo.setKeywords();
+
+
+        //searchReqVo.addKeyword("RESOURCE-TYPE", "SERVER");
+        //searchReqVo.addKeyword("RESOURCE-TYPE", "LOG");
+
+//        searchReqVo.addKeyword("STATE", "NORMAL");
+//        searchReqVo.addKeyword("STATE", "WARNNING");
+        //searchReqVo.addKeyword("STATE", "CRITICAL");
+//        searchReqVo.addKeyword("STATE", "START");
+//        searchReqVo.addKeyword("STATE", "STOP");
+//        searchReqVo.addKeyword("STATE", "DEBUG");
+//        searchReqVo.addKeyword("STATE", "INFO");
+//        searchReqVo.addKeyword("STATE", "WARN");
+//        searchReqVo.addKeyword("STATE", "ERROR");
+
+        //searchReqVo.setRangeType("1h");
+        searchReqVo.setRangeType("1d");
+//        searchReqVo.setRangeStart("20171202011000");
+//        searchReqVo.setRangeEnd("20171202022000");
+
+
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+        Integer monitoringGroupId = 1;
+        Integer appResourceId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/app/app-statuses/"+appResourceId+"/events", params);
+
+    }
+
+    @Test
+    public void pageLog() throws Exception{
+
+        PagingReqVo pagingReqVo = new PagingReqVo();
+        pagingReqVo.setPage(1);
+        pagingReqVo.setPageSize(10);
+
+        SearchReqVo searchReqVo = new SearchReqVo();
+//        searchReqVo.setRangeType("manual");
+//        searchReqVo.setRangeStart("20171202011000");
+//        searchReqVo.setRangeEnd("20171202022000");
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("paging", JsonUtil.ObjectToJson(pagingReqVo));
+        params.add("search", JsonUtil.ObjectToJson(searchReqVo));
+
+        Integer monitoringGroupId = 1;
+        Integer appResourceId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/monitoring/app/app-statuses/"+appResourceId+"/logs", params);
+    }
 }
