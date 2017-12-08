@@ -1,11 +1,10 @@
 package com.crossent.monitoring.portal.mongroup.moniotring.util;
 
+import com.crossent.monitoring.portal.common.vo.CriticalValueMapVo;
 import com.crossent.monitoring.portal.jpa.domain.CriticalValueInterface;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class MonitoringUtil {
     private static DecimalFormat df = new DecimalFormat("#.#");
@@ -22,6 +21,39 @@ public class MonitoringUtil {
             }
         }
         return list;
+    }
+
+    public static Map<Integer, CriticalValueMapVo> convertCriticalValToMeasurementMap(List<CriticalValueInterface> criticalValueInterfaces){
+       // Map<Integer, List<CriticalValueMapVo>> measurementMap = new HashMap<Integer, List<CriticalValueMapVo>>();
+
+
+        Map<Integer, List<CriticalValueInterface>> measurementMap = new HashMap<Integer, List<CriticalValueInterface>>();
+
+        for(CriticalValueInterface criticalValueInterface : criticalValueInterfaces){
+            Integer mId = criticalValueInterface.getMetric().getMeasurementId();
+
+            List<CriticalValueInterface> criticalValueInterfaceList = measurementMap.get(mId);
+            if(criticalValueInterfaceList == null){
+                criticalValueInterfaceList = new ArrayList<CriticalValueInterface>();
+                measurementMap.put(mId, criticalValueInterfaceList);
+            }
+
+            criticalValueInterfaceList.add(criticalValueInterface);
+
+        }
+
+
+        Map<Integer, CriticalValueMapVo> criticalValueMapListMap = new HashMap<Integer, CriticalValueMapVo>();
+
+
+        Iterator<Integer> keys = measurementMap.keySet().iterator();
+        while(keys.hasNext()){
+            Integer key = keys.next();
+            //List<CriticalValueInterface> valueInterfaces = criticalCollectionToInterface(measurementMap.get(key));
+            CriticalValueMapVo criticalValueMapVo = new CriticalValueMapVo(measurementMap.get(key));
+            criticalValueMapListMap.put(key, criticalValueMapVo);
+        }
+        return criticalValueMapListMap;
     }
 
 
