@@ -15,6 +15,7 @@ public class Metric implements Serializable {
     private String metricTypeCode;
     private String description;
     private String funcTypeCode;
+    private String unit;
 
 
     private Measurement measurement;
@@ -78,6 +79,17 @@ public class Metric implements Serializable {
     public String getFuncTypeCode() { return funcTypeCode; }
 
     public void setFuncTypeCode(String funTypeCode) { this.funcTypeCode = funTypeCode; }
+
+
+    @Basic
+    @Column(name = "unit", nullable = true, length = 10)
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
 
     @ManyToOne
     @JoinColumn(name = "measurement_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
