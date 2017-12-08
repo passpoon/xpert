@@ -63,6 +63,9 @@ public class MonCommonService {
     @Autowired
     MeasurementRepository measurementRepository;
 
+    @Autowired
+    AppResourceRepository appResourceRepository;
+
 
     public PagingResVo<LogResDto> pageServerLog(List<Integer> serverResourceIds, PagingReqVo page, SearchReqVo search) {
 
@@ -249,6 +252,65 @@ public class MonCommonService {
         }
 
         return serverDetailStatusDto;
+    }
+
+
+    public AppDetailStatusDto getAppDetailStatus(Integer appResourceId, SearchReqVo search) {
+
+        AppResource appResource = appResourceRepository.findById(appResourceId);
+
+        if (appResource == null) {
+
+            throw new BusinessException("noSearchApp", appResourceId + "");
+        }
+        ServerResource serverResource = appResource.getServerResource();
+
+        String rangeType = search.getRangeType();
+
+        if (StringUtil.isEmpty(rangeType)) {
+            rangeType = "5m";
+        }
+        ServerType serverType = serverResource.getServerType();
+
+        Collection<Measurement> measurements = serverType.getMeasurements();
+
+        AppDetailStatusDto appDetailStatusDto = new AppDetailStatusDto();
+
+        appDetailStatusDto.setAppResourceId(appResourceId);
+        appDetailStatusDto.setAppName(appResource.getName());
+        appDetailStatusDto.setServerResourceId(serverResource.getId());
+        appDetailStatusDto.setServerName(serverResource.getName());
+        appDetailStatusDto.setHostName(serverResource.getHostName());
+        appDetailStatusDto.setIp(serverResource.getIp());
+
+        for (Measurement measurement : measurements) {
+            MeasurementDetail measurementDetail = new MeasurementDetail();
+
+            Integer measurementId = measurement.getId();
+            String measurementName = measurement.getName();
+            List<String> typeCodes = new ArrayList<String>();
+            typeCodes.add(MetricType.INT.getCode());
+            typeCodes.add(MetricType.DOUBLE.getCode());
+            Collection<Metric> metrics = metricRepository.findAllByMeasurementIdAndMetricTypeCodeIn(measurementId, typeCodes);
+
+
+            measurementDetail.setMeasurementId(measurementId);
+            measurementDetail.setMeasurementName(measurementName);
+
+            for (Metric metric : metrics) {
+                measurementDetail.addTitle(metric.getName());
+            }
+
+
+            List<Map<String, String>> listMetrics = monServerDao.listMetrics(serverResource.getHostName(), measurementName, rangeType, metrics);
+
+            logger.debug("listMetrics : {}", listMetrics);
+            measurementDetail.setRows(listMetrics);
+            appDetailStatusDto.addMeasurement(measurementDetail);
+
+        }
+
+        return appDetailStatusDto;
     }
 
 

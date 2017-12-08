@@ -58,33 +58,28 @@ public class MonApplicationController extends BaseController {
         return appStatuses;
     }
 
-//    @ApiOperation(value = "서버 상세 조회")
-//    @ApiImplicitParams({
-//                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-//                               @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
-//                               @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
-//                               @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
-//    })
-//    @Transactional
-//    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/server/server-statuses/{serverResourceId}", method = RequestMethod.GET)
-//    public ServerDetailStatusDto getServerDetailStatus(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @ModelAttribute("search") SearchReqVo search) {
-//
-//        if(logger.isDebugEnabled()){
-//            logger.debug("monitoringGroupId : {}", monitoringGroupId);
-//            logger.debug("serverResourceId : {}", serverResourceId);
-//            logger.debug("search : {}", search);
-//        }
-//
-//        ServerDetailStatusDto serverDetailStatus = monCommonService.getServerDetailStatus(serverResourceId, search);
-//
-//
-////        if(logger.isDebugEnabled()){
-////            logger.debug("serverStatuses : {}", serverStatuses);
-////        }
-//
-//        return serverDetailStatus;
-//    }
-//
+    @ApiOperation(value = "어플리케이션 상세 조회")
+    @ApiImplicitParams({
+                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+                               @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/monitoring/app/app-statuses/{appResourceId}", method = RequestMethod.GET)
+    public AppDetailStatusDto getAppDetailStatus(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @ModelAttribute("search") SearchReqVo search) {
+
+        if(logger.isDebugEnabled()){
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("search : {}", search);
+        }
+
+        AppDetailStatusDto appDetailStatus = monCommonService.getAppDetailStatus(appResourceId, search);
+
+
+        return appDetailStatus;
+    }
+
 //    @ApiOperation(value = "서버 이벤트 조회")
 //    @ApiImplicitParams({
 //                               @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
