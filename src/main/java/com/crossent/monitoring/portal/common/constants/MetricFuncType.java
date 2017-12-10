@@ -14,6 +14,10 @@ public enum MetricFuncType {
     }
 
     public static MetricFuncType forCode(String code){
+        if(code == null){
+            return null;
+        }
+
         switch(code){
             case "0000500001":
                 return MetricFuncType.AVERAGE_HIGH;

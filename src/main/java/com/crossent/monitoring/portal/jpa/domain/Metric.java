@@ -75,7 +75,7 @@ public class Metric implements Serializable {
     }
 
     @Basic
-    @Column(name = "func_type_code", nullable = false, length = 10)
+    @Column(name = "func_type_code", nullable = true, length = 10)
     public String getFuncTypeCode() { return funcTypeCode; }
 
     public void setFuncTypeCode(String funTypeCode) { this.funcTypeCode = funTypeCode; }
@@ -112,7 +112,7 @@ public class Metric implements Serializable {
     }
 
     @ManyToOne
-    @JoinColumn(name = "func_type_code", referencedColumnName = "code", nullable = false, insertable = false, updatable = false)
+    @JoinColumn(name = "func_type_code", referencedColumnName = "code", nullable = true, insertable = false, updatable = false)
     public TypeCode getTypeCodeForFunction() { return typeCodeForFunction; }
 
     public void setTypeCodeForFunction(TypeCode typeCodeForFunction) { this.typeCodeForFunction = typeCodeForFunction; }

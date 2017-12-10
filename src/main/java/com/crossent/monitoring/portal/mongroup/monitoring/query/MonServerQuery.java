@@ -103,7 +103,12 @@ public class MonServerQuery {
 
 
     private static String metricToFunction(String metricName, String funcTypeCode){
+
+
         MetricFuncType funcType = MetricFuncType.forCode(funcTypeCode);
+        if(funcType == null){
+            throw new BusinessException("unDefMetricFunctionCode", metricName);
+        }
         switch (funcType) {
             case AVERAGE_HIGH:
             case AVERAGE_LOW:

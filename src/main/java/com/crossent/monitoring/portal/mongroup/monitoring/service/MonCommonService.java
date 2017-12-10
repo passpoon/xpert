@@ -628,7 +628,7 @@ public class MonCommonService {
                 String mName = map.getMeasurements().getName();
 
                 //title입력
-                //serverStatusesResDto.addTile(mName);
+                //serverStatusesResDto.addTitle(mName);
 
                 Collection<MgServerCriticalValue> criticalValues = mgServerCriticalValueRepository
                                                                            .findAllByMonGroupIdAndServerResourceIdAndMetric_MeasurementId(monitoringGroupId,
