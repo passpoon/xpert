@@ -1,8 +1,7 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.query;
+package com.crossent.monitoring.portal.mongroup.monitoring.query;
 
 import com.crossent.monitoring.portal.common.constants.MetricFuncType;
 import com.crossent.monitoring.portal.common.exception.BusinessException;
-import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
 import com.crossent.monitoring.portal.common.vo.CriticalValueMapVo;

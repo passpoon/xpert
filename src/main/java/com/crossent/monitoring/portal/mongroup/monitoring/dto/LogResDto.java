@@ -1,4 +1,4 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.dto;
+package com.crossent.monitoring.portal.mongroup.monitoring.dto;
 
 public class LogResDto {
     public String id;

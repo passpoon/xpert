@@ -1,11 +1,11 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.dao;
+package com.crossent.monitoring.portal.mongroup.monitoring.dao;
 
 import com.crossent.monitoring.portal.common.lib.util.DateUtil;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
 import com.crossent.monitoring.portal.jpa.domain.Metric;
 import com.crossent.monitoring.portal.common.vo.CriticalValueMapVo;
-import com.crossent.monitoring.portal.mongroup.moniotring.query.MonServerQuery;
-import com.crossent.monitoring.portal.mongroup.moniotring.util.MonitoringUtil;
+import com.crossent.monitoring.portal.mongroup.monitoring.query.MonServerQuery;
+import com.crossent.monitoring.portal.mongroup.monitoring.util.MonitoringUtil;
 import org.influxdb.dto.Point;
 import org.influxdb.dto.Query;
 import org.influxdb.dto.QueryResult;

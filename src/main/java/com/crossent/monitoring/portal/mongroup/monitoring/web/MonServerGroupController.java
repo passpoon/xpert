@@ -1,14 +1,11 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.web;
+package com.crossent.monitoring.portal.mongroup.monitoring.web;
 
-import com.crossent.monitoring.portal.common.constants.ResourceType;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.*;
-import com.crossent.monitoring.portal.mongroup.moniotring.service.MonCommonService;
-import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerGroupService;
-import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
+import com.crossent.monitoring.portal.mongroup.monitoring.dto.*;
+import com.crossent.monitoring.portal.mongroup.monitoring.service.MonServerGroupService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;

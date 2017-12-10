@@ -1,6 +1,4 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.dto;
-
-import com.crossent.monitoring.portal.common.constants.StatusEnum;
+package com.crossent.monitoring.portal.mongroup.monitoring.dto;
 
 public class MeasurementStatusDto {
     Integer measurementId;

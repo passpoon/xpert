@@ -1,16 +1,16 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.web;
+package com.crossent.monitoring.portal.mongroup.monitoring.web;
 
 import com.crossent.monitoring.portal.common.constants.ResourceType;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.EventResDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.LogResDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerDetailStatusDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.dto.ServerStatusesResDto;
-import com.crossent.monitoring.portal.mongroup.moniotring.service.MonCommonService;
-import com.crossent.monitoring.portal.mongroup.moniotring.service.MonServerService;
+import com.crossent.monitoring.portal.mongroup.monitoring.dto.EventResDto;
+import com.crossent.monitoring.portal.mongroup.monitoring.dto.LogResDto;
+import com.crossent.monitoring.portal.mongroup.monitoring.dto.ServerDetailStatusDto;
+import com.crossent.monitoring.portal.mongroup.monitoring.dto.ServerStatusesResDto;
+import com.crossent.monitoring.portal.mongroup.monitoring.service.MonCommonService;
+import com.crossent.monitoring.portal.mongroup.monitoring.service.MonServerService;
 import io.swagger.annotations.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +62,6 @@ public class MonServerController extends BaseController {
     @ApiImplicitParams({
                                @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
                                @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
-                               @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
                                @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
     })
     @Transactional

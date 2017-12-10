@@ -265,4 +265,13 @@ public class SearchVo {
 
     }
 
+    public String getKey(int idx){
+        if(keys == null){
+            return null;
+        }else{
+            return keys.get(idx);
+        }
+
+    }
+
 }

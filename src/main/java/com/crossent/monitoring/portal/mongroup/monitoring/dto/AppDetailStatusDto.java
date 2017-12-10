@@ -1,15 +1,34 @@
-package com.crossent.monitoring.portal.mongroup.moniotring.dto;
+package com.crossent.monitoring.portal.mongroup.monitoring.dto;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ServerDetailStatusDto {
+public class AppDetailStatusDto{
+    Integer appResourceId;
+    String appName;
     Integer serverResourceId;
     String serverName;
     String hostName;
     String ip;
 
     List<MeasurementDetail> measurements;
+
+
+    public Integer getAppResourceId() {
+        return appResourceId;
+    }
+
+    public void setAppResourceId(Integer appResourceId) {
+        this.appResourceId = appResourceId;
+    }
+
+    public String getAppName() {
+        return appName;
+    }
+
+    public void setAppName(String appName) {
+        this.appName = appName;
+    }
 
     public Integer getServerResourceId() {
         return serverResourceId;
@@ -60,15 +79,15 @@ public class ServerDetailStatusDto {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ServerDetailStatusDto{");
-        sb.append("serverResourceId=").append(serverResourceId);
+        final StringBuilder sb = new StringBuilder("AppDetailStatusDto{");
+        sb.append("appResourceId=").append(appResourceId);
+        sb.append(", appName='").append(appName).append('\'');
+        sb.append(", serverResourceId=").append(serverResourceId);
         sb.append(", serverName='").append(serverName).append('\'');
-        sb.append(", host='").append(hostName).append('\'');
+        sb.append(", hostName='").append(hostName).append('\'');
         sb.append(", ip='").append(ip).append('\'');
         sb.append(", measurements=").append(measurements);
         sb.append('}');
         return sb.toString();
     }
-
-
 }
