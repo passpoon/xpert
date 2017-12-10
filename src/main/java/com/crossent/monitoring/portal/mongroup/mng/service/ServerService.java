@@ -3,10 +3,8 @@ package com.crossent.monitoring.portal.mongroup.mng.service;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
-import com.crossent.monitoring.portal.jpa.domain.MgServer;
-import com.crossent.monitoring.portal.jpa.domain.MgServerCriticalValue;
-import com.crossent.monitoring.portal.jpa.repository.MgServerCriticalValueRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgServerRepository;
+import com.crossent.monitoring.portal.jpa.domain.*;
+import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.mng.dto.MgServerDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +23,18 @@ public class ServerService {
 
     @Autowired
     MgServerCriticalValueRepository mgServerCriticalValueRepository;
+
+    @Autowired
+    ServerTypeRepository serverTypeRepository;
+
+    @Autowired
+    ServerResourceRepository serverResourceRepository;
+
+    @Autowired
+    ServerTypeMeasurementMapRepository serverTypeMeasurementMapRepository;
+
+    @Autowired
+    ServerTypeCriticalValueRepository serverTypeCriticalValueRepository;
 
     public PagingResVo<MgServerDto> pagingServer(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
@@ -87,14 +97,44 @@ public class ServerService {
         return updateData;
     }
 
-    public Collection<MgServerCriticalValue> getServerMetrics(Integer monitoringGroupId, Integer serverResourceId) {
+    // 메저먼트 조회
+    public Collection<Measurement> getMonServerMeasurements(Integer monitoringGroupId, Integer serverResourceId) {
 
-        /*MgServerCriticalValue id = mgServerCriticalValueRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
+        ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
+        Integer serverTypeId = serverResource.getServerTypeId();
 
-        MgServerCriticalValue out = new MgServerCriticalValue();
-        out.setMetricId(id.getMetricId());
-        out.setWarning(id.getWarning());
-        out.setCritical(id.getCritical());*/
+        ServerType serverType = serverTypeRepository.findById(serverTypeId);
+        Collection<Measurement> measurements = serverType.getMeasurements();
+
+        return measurements;
+    }
+
+    // 메저먼트 추가
+    public void insertMonServerMeasurement(Integer monitoringGroupId, Integer serverResourceId, Integer[] measurementIds){
+
+        ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
+        Integer serverTypeId = serverResource.getServerTypeId();
+
+        logger.debug("serverTypeId :", serverTypeId);
+        for(Integer measurementId : measurementIds) {
+            ServerTypeMeasurementMap map = new ServerTypeMeasurementMap();
+            map.setServerTypeId(serverTypeId);
+            map.setMeasurementId(measurementId);
+
+            ServerTypeMeasurementMap result = serverTypeMeasurementMapRepository.save(map);
+        }
+    }
+
+    // 메저먼트 삭제
+    public void deleteMonServerMeasurements(Integer monitoringGroupId, Integer serverResourceId, Integer[] measurementIds) {
+
+        ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
+        Integer serverTypeId = serverResource.getServerTypeId();
+
+        serverTypeMeasurementMapRepository.deleteByServerTypeIdAndMeasurementIdIn(serverTypeId, measurementIds);
+    }
+
+    public Collection<MgServerCriticalValue> getMonServerMetrics(Integer monitoringGroupId, Integer serverResourceId) {
 
         MgServer mgServer = mgServerRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
         Collection<MgServerCriticalValue> mgServerCriticalValues = mgServer.getMgServerCriticalValues();
@@ -102,7 +142,19 @@ public class ServerService {
         return mgServerCriticalValues;
     }
 
-    public MgServerCriticalValue updateServerMetrics(Integer monitoringGroupId, Integer serverResourceId, Integer metricId, MgServerCriticalValue mgServerCriticalValue) {
+    public void insertMonServerMetrics(Integer monitoringGroupId, Integer serverResourceId, Integer[] metricIds){
+
+        for(Integer metricId : metricIds) {
+            MgServerCriticalValue map = new MgServerCriticalValue();
+            map.setMonGroupId(monitoringGroupId);
+            map.setServerResourceId(serverResourceId);
+            map.setMetricId(metricId);
+
+            MgServerCriticalValue result = mgServerCriticalValueRepository.save(map);
+        }
+    }
+
+    public MgServerCriticalValue updateMonServerMetrics(Integer monitoringGroupId, Integer serverResourceId, Integer metricId, MgServerCriticalValue mgServerCriticalValue) {
 
         MgServerCriticalValue updateServerMetric = mgServerCriticalValueRepository.findByMonGroupIdAndServerResourceIdAndMetricId(monitoringGroupId, serverResourceId, metricId);
 
@@ -114,4 +166,8 @@ public class ServerService {
         return updateData;
     }
 
+    public void deleteMonServerMetrics(Integer monitoringGroupId, Integer serverResourceId, Integer[] metricIds) {
+
+        mgServerCriticalValueRepository.deleteByMonGroupIdAndServerResourceIdAndMetricIdIn(monitoringGroupId, serverResourceId, metricIds);
+    }
 }

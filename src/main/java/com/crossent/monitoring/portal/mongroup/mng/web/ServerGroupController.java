@@ -87,6 +87,15 @@ public class ServerGroupController extends BaseController {
         serverGroupService.deleteMgServerGroups(monitoringGroupId, serverGroupIds);
     }
 
+    // 메저먼트 조회
+    /*@RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements", method = RequestMethod.GET)
+    public Collection<Measurement> getServerGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @PathVariable Integer serverResourceId) {
+
+        Collection<Measurement> measurements = serverGroupService.getServerGroupMeasurements(monitoringGroupId, serverGroupId, serverResourceId);
+
+        return measurements;
+    }*/
+
     @ApiOperation(value = "관리 서버그룹 메트릭 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),

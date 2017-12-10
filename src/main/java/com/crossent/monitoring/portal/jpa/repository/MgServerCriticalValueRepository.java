@@ -15,4 +15,5 @@ public interface MgServerCriticalValueRepository extends CrudRepository<MgServer
 
     public Collection<MgServerCriticalValue> findAllByMonGroupIdAndServerResourceIdAndMetric_MeasurementId(Integer monitoringGroupId, Integer serverResourceId, Integer measurementId);
 
+    public void deleteByMonGroupIdAndServerResourceIdAndMetricIdIn(Integer monGroupId, Integer serverResourceId, Integer[] metricIds);
 }

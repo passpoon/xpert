@@ -3,10 +3,8 @@ package com.crossent.monitoring.portal.mongroup.mng.service;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
-import com.crossent.monitoring.portal.jpa.domain.MgApp;
-import com.crossent.monitoring.portal.jpa.domain.MgAppCriticalValue;
-import com.crossent.monitoring.portal.jpa.repository.MgAppCriticalValueRepository;
-import com.crossent.monitoring.portal.jpa.repository.MgAppRepository;
+import com.crossent.monitoring.portal.jpa.domain.*;
+import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.mng.dto.MgAppDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,7 +21,16 @@ public class ApplicationService {
     @Autowired
     MgAppCriticalValueRepository mgAppCriticalValueRepository;
 
-    public PagingResVo<MgAppDto> pagingApp(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
+    @Autowired
+    AppResourceRepository appResourceRepository;
+
+    @Autowired
+    AppInfoRepository appInfoRepository;
+
+    @Autowired
+    AppInfoMeasurementMapRepository appInfoMeasurementMapRepository;
+
+    public PagingResVo<MgAppDto> pagingMonApp(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Map<String, String> keywords = searchReqVo.getKeywords();
         String key = null;
@@ -68,7 +75,7 @@ public class ApplicationService {
         return resPage;
     }
 
-    public MgApp updateApp(Integer monitoringGroupId, Integer appResourceId, MgApp mgApp) {
+    public MgApp updateMonApp(Integer monitoringGroupId, Integer appResourceId, MgApp mgApp) {
 
         MgApp updateApp = mgAppRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
 
@@ -80,7 +87,43 @@ public class ApplicationService {
         return updateData;
     }
 
-    public Collection<MgAppCriticalValue> getAppMetrics(Integer monitoringGroupId, Integer appResourceId) {
+    // 메저먼트 조회
+    public Collection<Measurement> getMonAppMeasurements(Integer monitoringGroupId, Integer appResourceId) {
+
+        AppResource appResource = appResourceRepository.findById(appResourceId);
+        Integer appInfoId = appResource.getAppInfoId();
+
+        AppInfo appInfo = appInfoRepository.findById(appInfoId);
+        Collection<Measurement> measurements = appInfo.getMeasurements();
+
+        return measurements;
+    }
+
+    // 메저먼트 추가
+    public void insertMonAppMeasurement(Integer monitoringGroupId, Integer appResourceId, Integer[] measurementIds){
+
+        AppResource appResource = appResourceRepository.findById(appResourceId);
+        Integer appInfoId = appResource.getAppInfoId();
+
+        for(Integer measurementId : measurementIds) {
+            AppInfoMeasurementMap map = new AppInfoMeasurementMap();
+            map.setAppInfoId(appInfoId);
+            map.setMeasurementId(measurementId);
+
+            AppInfoMeasurementMap result = appInfoMeasurementMapRepository.save(map);
+        }
+    }
+
+    // 메저먼트 삭제
+    public void deleteMonAppMeasurements(Integer monitoringGroupId, Integer appResourceId, Integer[] measurementIds) {
+
+        AppResource appResource = appResourceRepository.findById(appResourceId);
+        Integer appInfoId = appResource.getAppInfoId();
+
+        appInfoMeasurementMapRepository.deleteByAppInfoIdAndMeasurementIdIn(appInfoId, measurementIds);
+    }
+
+    public Collection<MgAppCriticalValue> getMonAppMetrics(Integer monitoringGroupId, Integer appResourceId) {
 
         MgApp mgApp = mgAppRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
 
@@ -89,7 +132,19 @@ public class ApplicationService {
         return mgAppCriticalValues;
     }
 
-    public MgAppCriticalValue updateAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer metricId, MgAppCriticalValue mgAppCriticalValue) {
+    public void insertMonAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer[] metricIds){
+
+        for(Integer metricId : metricIds) {
+            MgAppCriticalValue map = new MgAppCriticalValue();
+            map.setMonGroupId(monitoringGroupId);
+            map.setAppResourceId(appResourceId);
+            map.setMetricId(metricId);
+
+            MgAppCriticalValue result = mgAppCriticalValueRepository.save(map);
+        }
+    }
+
+    public MgAppCriticalValue updateMonAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer metricId, MgAppCriticalValue mgAppCriticalValue) {
 
         MgAppCriticalValue updateAppMetric = mgAppCriticalValueRepository.findByMonGroupIdAndAppResourceIdAndMetricId(monitoringGroupId, appResourceId, metricId);
 
@@ -97,5 +152,10 @@ public class ApplicationService {
         updateAppMetric.setCritical(mgAppCriticalValue.getCritical());
 
         return updateAppMetric;
+    }
+
+    public void deleteMonAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer[] metricIds) {
+
+        mgAppCriticalValueRepository.deleteByMonGroupIdAndAppResourceIdAAndMetricIdIn(monitoringGroupId, appResourceId, metricIds);
     }
 }
