@@ -89,6 +89,14 @@ public class ServerService {
 
         MgServer updateServer = mgServerRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
 
+        if("Y".equals(mgServer.getDashboardYn())){
+            mgServer.setMonitoringYn("Y");
+        }
+
+        if("N".equals(mgServer.getMonitoringYn())){
+            mgServer.setDashboardYn("N");
+        }
+
         updateServer.setMonitoringYn(mgServer.getMonitoringYn());
         updateServer.setDashboardYn(mgServer.getDashboardYn());
 
