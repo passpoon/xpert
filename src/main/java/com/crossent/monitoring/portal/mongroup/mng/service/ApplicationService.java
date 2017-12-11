@@ -156,6 +156,6 @@ public class ApplicationService {
 
     public void deleteMonAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer[] metricIds) {
 
-        mgAppCriticalValueRepository.deleteByMonGroupIdAndAppResourceIdAAndMetricIdIn(monitoringGroupId, appResourceId, metricIds);
+        mgAppCriticalValueRepository.deleteByMonGroupIdAndAppResourceIdAndMetricIdIn(monitoringGroupId, appResourceId, metricIds);
     }
 }

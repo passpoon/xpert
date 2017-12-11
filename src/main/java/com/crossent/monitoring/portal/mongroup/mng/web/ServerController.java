@@ -139,7 +139,7 @@ public class ServerController extends BaseController {
             @ApiImplicitParam(name = "metricIds", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "query"),
     })
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server/servers/{serverResourceId}/metrics" , method = RequestMethod.DELETE)
-    public void deleteServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestParam Integer[] metricIds) {
+    public void deleteMonServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestParam Integer[] metricIds) {
 
         serverService.deleteMonServerMetrics(monitoringGroupId, serverResourceId, metricIds);
     }

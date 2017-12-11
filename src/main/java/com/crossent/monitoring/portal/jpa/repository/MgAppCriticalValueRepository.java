@@ -15,5 +15,5 @@ public interface MgAppCriticalValueRepository extends CrudRepository<MgAppCritic
 
     public List<MgAppCriticalValue> findAllByMonGroupIdAndAppResourceId(Integer monGroupId, Integer appResourceId);
 
-    public void deleteByMonGroupIdAndAppResourceIdAAndMetricIdIn(Integer monGroupId, Integer appResourceId, Integer[] metricIds);
+    public void deleteByMonGroupIdAndAppResourceIdAndMetricIdIn(Integer monGroupId, Integer appResourceId, Integer[] metricIds);
 }

@@ -108,6 +108,6 @@ public class ApplicationTest extends AbstractMockTest {
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         params.add("metricIds", "5");
 
-        delete("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+appResourceId+"/metrics", params);
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/metrics", params);
     }
 }
