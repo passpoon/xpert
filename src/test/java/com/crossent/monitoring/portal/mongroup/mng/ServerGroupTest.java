@@ -77,11 +77,49 @@ public class ServerGroupTest extends AbstractMockTest {
     }
 
     @Test
+    public void getMgServerGroupMeasurements() throws Exception {
+
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 18;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/measurements");
+    }
+
+    @Test
+    public void insertMgServerMeasurement() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 19;
+        Integer[] measurementIds = {71};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/measurements", measurementIds);
+    }
+
+    @Test
+    public void deleteMgServerMeasurements() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId = 19;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("measurementIds", "71");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/measurements", params);
+    }
+
+    @Test
     public void getServerGroupMetrics() throws Exception {
         Integer monitoringGroupId = 1;
         Integer serverGroupId = 19;
 
         get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics");
+    }
+
+    @Test
+    public void insertMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId =  19;
+        Integer[] metricIds = {5};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics", metricIds);
     }
 
     @Test
@@ -95,6 +133,17 @@ public class ServerGroupTest extends AbstractMockTest {
         update.setCritical(80.01);
 
         put("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics/"+metricId+"", update);
+    }
+
+    @Test
+    public void deleteMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverGroupId =  19;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("metricIds", "5");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics", params);
     }
 
     @Test

@@ -34,6 +34,9 @@ public class ApplicationGroupService {
     @Autowired
     MgAppGroupAppRepository mgAppGroupAppRepository;
 
+    @Autowired
+    AppInfoMeasurementMapRepository appInfoMeasurementMapRepository;
+
     public PagingResVo<MgAppGroupDto> pagingAppGroup(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Map<String, String> keywords = searchReqVo.getKeywords();
@@ -161,12 +164,56 @@ public class ApplicationGroupService {
         mgAppGroupRepository.deleteByMonGroupIdAndIdIn(monitoringGroupId, appGroupIds);
     }
 
+    public Collection<Measurement> getAppGroupMeasurements(Integer monitoringGroupId, Integer appGroupId) {
+
+        MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+        Integer appInfoId = mgAppGroup.getAppInfoId();
+
+        AppInfo appInfo = appInfoRepository.findById(appInfoId);
+        Collection<Measurement> measurements = appInfo.getMeasurements();
+
+        return measurements;
+    }
+
+    public void insertAppGroupMeasurement(Integer monitoringGroupId, Integer appGroupId, Integer[] measurementIds){
+
+        MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+        Integer appInfoId = mgAppGroup.getAppInfoId();
+
+        for(Integer measurementId : measurementIds) {
+            AppInfoMeasurementMap map = new AppInfoMeasurementMap();
+            map.setAppInfoId(appInfoId);
+            map.setMeasurementId(measurementId);
+
+            AppInfoMeasurementMap result = appInfoMeasurementMapRepository.save(map);
+        }
+    }
+
+    public void deleteAppGroupMeasurements(Integer monitoringGroupId, Integer appGroupId, Integer[] measurementIds) {
+
+        MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+        Integer appInfoId = mgAppGroup.getAppInfoId();
+
+        appInfoMeasurementMapRepository.deleteByAppInfoIdAndMeasurementIdIn(appInfoId, measurementIds);
+    }
+
     public Collection<MgAppGroupCriticalValue> getAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId) {
 
         MgAppGroup mgAppGroup = mgAppGroupRepository.findById(appGroupId);
         Collection<MgAppGroupCriticalValue> mgAppGroupCriticalValues = mgAppGroup.getMgAppGroupCriticalValues();
 
         return mgAppGroupCriticalValues;
+    }
+
+    public void insertAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId, Integer[] metricIds){
+
+        for(Integer metricId : metricIds) {
+            MgAppGroupCriticalValue map = new MgAppGroupCriticalValue();
+            map.setMgAppGroupId(appGroupId);
+            map.setMetricId(metricId);
+
+            MgAppGroupCriticalValue result = mgAppGroupCriticalValueRepository.save(map);
+        }
     }
 
     public MgAppGroupCriticalValue updateAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId, Integer metricId, MgAppGroupCriticalValue mgAppGroupCriticalValue) {
@@ -179,6 +226,11 @@ public class ApplicationGroupService {
         MgAppGroupCriticalValue updateData = mgAppGroupCriticalValueRepository.save(updateAppGroupMetric);
 
         return updateData;
+    }
+
+    public void deleteAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId, Integer[] metricIds) {
+
+        mgAppGroupCriticalValueRepository.deleteByAppGroupIdAndMetricIdIn(appGroupId, metricIds);
     }
 
     public Collection<MgApp> getAppGroupAppResource(Integer monitoringGroupId, Integer appGroupId) {

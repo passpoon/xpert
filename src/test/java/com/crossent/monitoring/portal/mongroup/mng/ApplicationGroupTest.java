@@ -74,11 +74,49 @@ public class ApplicationGroupTest extends AbstractMockTest {
     }
 
     @Test
+    public void getMgServerGroupMeasurements() throws Exception {
+
+        Integer monitoringGroupId = 1;
+        Integer appGroupId = 18;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/measurements");
+    }
+
+    @Test
+    public void insertMgServerMeasurement() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer appGroupId = 19;
+        Integer[] measurementIds = {71};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/measurements", measurementIds);
+    }
+
+    @Test
+    public void deleteMgServerMeasurements() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer appGroupId = 19;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("measurementIds", "71");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/measurements", params);
+    }
+
+    @Test
     public void getAppGroupMetrics() throws Exception {
         Integer monitoringGroupId = 3;
         Integer appGroupId = 1;
 
         get("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/metrics");
+    }
+
+    @Test
+    public void insertMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer appGroupId =  19;
+        Integer[] metricIds = {5};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/metrics", metricIds);
     }
 
     @Test
@@ -92,6 +130,17 @@ public class ApplicationGroupTest extends AbstractMockTest {
         update.setCritical(80.01);
 
         put("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/metrics/"+metricId+"", update);
+    }
+
+    @Test
+    public void deleteMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer appGroupId =  19;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("metricIds", "5");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/metrics", params);
     }
 
     @Test
