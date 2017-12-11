@@ -10,6 +10,7 @@ public class MgAppGroupApp implements Serializable {
     private Integer appGroupId;
     private Integer monGroupId;
     private Integer appResourceId;
+    private AppResource appResource;
 
     @Id
     @Column(name = "app_group_id", nullable = false)
@@ -39,6 +40,16 @@ public class MgAppGroupApp implements Serializable {
 
     public void setAppResourceId(Integer appResourceId) {
         this.appResourceId = appResourceId;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "app_resource_id", referencedColumnName = "id", nullable = false, insertable = false, updatable = false)
+    public AppResource getAppResource() {
+        return appResource;
+    }
+
+    public void setAppResource(AppResource appResource) {
+        this.appResource = appResource;
     }
 
     @Override

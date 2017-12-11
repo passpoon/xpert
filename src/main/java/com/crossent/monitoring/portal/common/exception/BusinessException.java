@@ -5,8 +5,8 @@ import com.crossent.monitoring.portal.common.lib.util.MessageUtil;
 public class BusinessException extends BaseException {
 
 
-    public BusinessException(String message) {
-        super(message);
+    public BusinessException(String messageCode) {
+        super(MessageUtil.getMessage(messageCode));
     }
 
     public BusinessException(String messageCode, String ...params) {
@@ -15,8 +15,8 @@ public class BusinessException extends BaseException {
     }
 
 
-    public BusinessException(String message, Throwable throwable) {
-        super(message, throwable);
+    public BusinessException(String messageCode, Throwable throwable) {
+        super(MessageUtil.getMessage(messageCode), throwable);
     }
 
     public BusinessException(Throwable throwable, String messageCode, String ...params) {

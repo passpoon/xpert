@@ -4,12 +4,13 @@ import com.crossent.monitoring.portal.jpa.domain.MgServerGroupServer;
 import com.crossent.monitoring.portal.jpa.domain.MgServerGroupServerPK;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Collection;
 
 
-public interface MgServerGroupServerRepository extends CrudRepository<MgServerGroupServer, MgServerGroupServerPK> {
+public interface MgServerGroupServerRepository extends JpaRepository<MgServerGroupServer, MgServerGroupServerPK> {
 
     public void deleteByMonGroupIdAndServerGroupIdAndServerResourceIdIn(Integer monGroupId, Integer serverGroupId, Integer[] serverResourceIds);
 
