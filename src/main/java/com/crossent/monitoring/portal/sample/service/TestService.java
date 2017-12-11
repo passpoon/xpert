@@ -3,6 +3,8 @@ package com.crossent.monitoring.portal.sample.service;
 
 import com.crossent.monitoring.portal.common.lib.elasticsearch.ElasticsearchTemplate;
 import com.crossent.monitoring.portal.common.properties.ApplicationProperties;
+import com.crossent.monitoring.portal.jpa.domain.Metric;
+import com.crossent.monitoring.portal.jpa.repository.MetricRepository;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
@@ -19,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.influxdb.InfluxDBTemplate;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -37,6 +41,12 @@ public class TestService {
 
     @Autowired
     private ApplicationProperties applicationProperties;
+
+    @Autowired
+    private MetricRepository metricRepository;
+
+    @Autowired
+    private EntityManager entityManager;
 
     public void testInfluxdb(){
         Query query = new Query("select * from cpu where time > now() - 5m", influxDBTemplate.getDatabase());
@@ -97,6 +107,20 @@ public class TestService {
 //        logger.debug("cpu :{}", applicationProperties.getInfluxQueryFilters().get("cpu"));
 //        logger.debug("cpu,get :{}", applicationProperties.getInfluxQueryFilters().get("cpu").get("cpu"));
 
+
+
+    }
+
+    public void testDynamicQuery(){
+
+        List<Integer> ids = new ArrayList<Integer>();
+
+        List<Metric> metrics = metricRepository.findAllByIdIsIn(ids);
+        //List<Metric> metrics = metricRepository.findAllByIdWithinAndAndIdIn(ids);
+
+        logger.debug("metrics : {}", metrics);
+
+        entityManager.createQuery("");
 
 
     }
