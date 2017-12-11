@@ -65,8 +65,11 @@ public class MonServerGroupService {
     @Autowired
     private MgServerGroupServerRepository mgServerGroupServerRepository;
 
+    public PagingResVo<ServerGroupStatusesResDto> pageServerGroupStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search){
+        return pageServerGroupStatuses(monitoringGroupId, paging, search, false);
 
-    public PagingResVo<ServerGroupStatusesResDto> pageServerGroupStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
+    }
+    public PagingResVo<ServerGroupStatusesResDto> pageServerGroupStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search, boolean forDashBoard) {
 
         String key = null;
         String keyword = null;
@@ -93,11 +96,23 @@ public class MonServerGroupService {
         Page<MgServerGroup> pageMgServerGroup = null;
 
         if(key == null){
-            pageMgServerGroup = mgServerGroupRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+            if(forDashBoard){
+                pageMgServerGroup = mgServerGroupRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYn(paging.toPagingRequest(), monitoringGroupId, "Y", "Y");
+
+            }else{
+                pageMgServerGroup = mgServerGroupRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+
+            }
         }else{
             switch (key) {
                 case "serverGroupName": {
-                    pageMgServerGroup = mgServerGroupRepository.findAllByMonGroupIdAndNameContainsAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId,  keyword, "Y");
+                    if(forDashBoard){
+                        pageMgServerGroup = mgServerGroupRepository.findAllByMonGroupIdAndNameContainsAndMonitoringYnAndDashboardYn(paging.toPagingRequest(), monitoringGroupId,  keyword, "Y", "Y");
+
+                    }else{
+                        pageMgServerGroup = mgServerGroupRepository.findAllByMonGroupIdAndNameContainsAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId,  keyword, "Y");
+
+                    }
                 }
                 break;
                 default:

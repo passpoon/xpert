@@ -77,8 +77,11 @@ public class MonApplicationGroupService {
     @Autowired
     private MgAppGroupAppRepository mgAppGroupAppRepository;
 
+    public PagingResVo<AppGroupStatusesResDto> pageAppGroupStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search){
+        return pageAppGroupStatuses(monitoringGroupId, paging, search, false);
+    }
 
-    public PagingResVo<AppGroupStatusesResDto> pageAppGroupStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
+    public PagingResVo<AppGroupStatusesResDto> pageAppGroupStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search, boolean forDashboard) {
 
         String key = null;
         String keyword = null;
@@ -105,11 +108,22 @@ public class MonApplicationGroupService {
         Page<MgAppGroup> pageMgServerGroup = null;
 
         if(key == null){
-            pageMgServerGroup = mgAppGroupRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+            if(forDashboard){
+                pageMgServerGroup = mgAppGroupRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYn(paging.toPagingRequest(), monitoringGroupId, "Y", "Y");
+
+            }else{
+                pageMgServerGroup = mgAppGroupRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+
+            }
         }else{
             switch (key) {
                 case "serverGroupName": {
-                    pageMgServerGroup = mgAppGroupRepository.findAllByMonGroupIdAndNameContainsAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId,  keyword, "Y");
+                    if(forDashboard){
+                        pageMgServerGroup = mgAppGroupRepository.findAllByMonGroupIdAndNameContainsAndMonitoringYnAndDashboardYn(paging.toPagingRequest(), monitoringGroupId, keyword, "Y", "Y");
+
+                    }else {
+                        pageMgServerGroup = mgAppGroupRepository.findAllByMonGroupIdAndNameContainsAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, keyword, "Y");
+                    }
                 }
                 break;
                 default:

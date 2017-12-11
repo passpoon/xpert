@@ -29,7 +29,12 @@ public class MonApplicationService {
     @Autowired
     MonCommonService monCommonService;
 
-    public PagingResVo<AppStatusesResDto> pageAppStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
+    public PagingResVo<AppStatusesResDto> pageAppStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search){
+        return pageAppStatuses(monitoringGroupId, paging, search, false);
+
+    }
+
+    public PagingResVo<AppStatusesResDto> pageAppStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search, boolean dashboardYn) {
 
         String key = null;
         String keyword = null;
@@ -54,16 +59,31 @@ public class MonApplicationService {
         logger.debug("keyword : {}", keyword);
 
         if (!searchVo.isHaveKeyworkd()) {
-            pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+            if(dashboardYn){
+                pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYn(paging.toPagingRequest(), monitoringGroupId, "Y", "Y");
+
+            }else {
+                pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+            }
         } else {
 
             switch (key) {
                 case "hostName": {
-                    pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYnAndAndAppResource_NameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+                    if(dashboardYn) {
+                        pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndAppResource_ServerResource_HostNameLike(paging.toPagingRequest(), monitoringGroupId, "Y","Y", keyword);
+                    }else{
+                        pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYnAndAppResource_ServerResource_HostNameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+
+                    }
                 }
                 break;
                 case "appName": {
-                    pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYnAndAndAppResource_NameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+                    if(dashboardYn) {
+                        pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndAppResource_NameLike(paging.toPagingRequest(), monitoringGroupId, "Y","Y", keyword);
+                    }else{
+                        pageMgApp = mgAppRepository.findAllByMonGroupIdAndMonitoringYnAndAppResource_NameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+
+                    }
                 }
                 break;
                 default:

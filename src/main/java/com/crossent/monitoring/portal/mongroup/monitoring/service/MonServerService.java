@@ -44,8 +44,13 @@ public class MonServerService {
     @Autowired
     private MonCommonService monCommonService;
 
+    public PagingResVo<ServerStatusesResDto> pageServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search){
+        return pageServerStatuses(monitoringGroupId, paging, search, false);
+    }
 
-    public PagingResVo<ServerStatusesResDto> pageServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search) {
+
+
+    public PagingResVo<ServerStatusesResDto> pageServerStatuses(Integer monitoringGroupId, PagingReqVo paging, SearchReqVo search, boolean forDashboard) {
 
         String key = null;
         String keyword = null;
@@ -67,16 +72,28 @@ public class MonServerService {
         logger.debug("keyword : {}", keyword);
 
         if (key == null) {
-            pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+            if(forDashboard){
+                pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYn(paging.toPagingRequest(), monitoringGroupId, "Y", "Y");
+            }else {
+                pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYn(paging.toPagingRequest(), monitoringGroupId, "Y");
+            }
         } else {
 
             switch (key) {
                 case "hostName": {
-                    pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndServerResource_HostNameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+                    if(forDashboard) {
+                        pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndServerResource_HostNameLike(paging.toPagingRequest(), monitoringGroupId, "Y", "Y", keyword);
+                    }else {
+                        pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndServerResource_HostNameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+                    }
                 }
                 break;
                 case "serverName": {
-                    pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndServerResource_NameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+                    if(forDashboard){
+                        pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndServerResource_NameLike(paging.toPagingRequest(), monitoringGroupId, "Y", "Y", keyword);
+                    }else{
+                        pageMgServer = mgServerRepository.findAllByMonGroupIdAndMonitoringYnAndServerResource_NameLike(paging.toPagingRequest(), monitoringGroupId, "Y", keyword);
+                    }
                 }
                 break;
                 default:

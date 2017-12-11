@@ -12,7 +12,7 @@ public interface EventHistoryRepository extends CrudRepository<EventHistory, Int
     public Page<EventHistory> findAllByMonGroupIdAndResourceIdAndResourceTypeInOrderByUpdateDttmDescIdDesc(Pageable pageable, Integer monGroupId, Integer resourceId, List<String> resourceTypes);
     public Page<EventHistory> findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(Pageable pageable, Integer monGroupId, Integer resourceId, List<String> resourceTypes, List<String> stateCodes);
     public Page<EventHistory> findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(Pageable pageable, Integer monGroupId, List<Integer> resourceIds, List<String> resourceTypes, List<String> stateCodes);
-    public Page<EventHistory> findAllByMonGroupIdAndResourceIdInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(Pageable pageable, Integer monGroupId, List<String> resourceTypes, List<String> stateCodes);
+    public Page<EventHistory> findAllByMonGroupIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(Pageable pageable, Integer monGroupId, List<String> resourceTypes, List<String> stateCodes);
 
     public Page<EventHistory> findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanEqualAndUpdateDttmLessThanEqualOrderByUpdateDttmDescIdDesc(Pageable pageable, Integer monGroupId, Integer resourceId, List<String> resourceTypes, List<String> stateCodes, String startDttm, String endDttm);
 

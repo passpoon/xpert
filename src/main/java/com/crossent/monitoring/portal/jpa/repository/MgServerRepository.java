@@ -14,14 +14,17 @@ import java.util.List;
 public interface MgServerRepository extends JpaRepository<MgServer, MgServerPK> {
 
     public Page<MgServer> findAllByMonGroupIdAndMonitoringYn(Pageable pageable, Integer monGroupId, String monitoringYn);
+    public Page<MgServer> findAllByMonGroupIdAndMonitoringYnAndDashboardYn(Pageable pageable, Integer monGroupId, String monitoringYn, String dashboardYn);
 
     public Page<MgServer> findAllByMonGroupId(Pageable pageable, Integer monGroupId);
 
     public MgServer findByMonGroupIdAndServerResourceId(Integer monGroupId, Integer serverResourceId);
 
     public Page<MgServer> findAllByMonGroupIdAndMonitoringYnAndServerResource_NameLike(Pageable pageable, Integer monGroupId, String monitoringYn,String serverResourceName);
+    public Page<MgServer> findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndServerResource_NameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String dashboardYn, String serverResourceName);
     public Page<MgServer> findAllByMonGroupIdAndServerResource_NameLike(Pageable pageable, Integer monGroupId, String serverResourceName);
     public Page<MgServer> findAllByMonGroupIdAndMonitoringYnAndServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String hostName);
+    public Page<MgServer> findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String dashboardYn, String hostName);
     public Page<MgServer> findAllByMonGroupIdAndServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String hostName);
 
     public void deleteByMonGroupIdAndServerResourceIdIn(Integer monGroupId, Integer[] serverResourceIds);

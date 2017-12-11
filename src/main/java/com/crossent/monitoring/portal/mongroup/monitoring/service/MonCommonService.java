@@ -583,7 +583,7 @@ public class MonCommonService {
 
         } else {
             if(resourceIds == null) {
-                eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceTypes, stateCodes);
+                eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceTypes, stateCodes);
             }else{
                 eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, resourceIds, serverResourceTypes, stateCodes);
 

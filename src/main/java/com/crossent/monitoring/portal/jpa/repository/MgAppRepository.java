@@ -19,7 +19,10 @@ public interface MgAppRepository extends JpaRepository<MgApp, MgAppPK> {
     public void deleteByMonGroupIdAndAppResourceId(Integer monGroupId, Integer appResourceId);
 
     public Page<MgApp> findAllByMonGroupIdAndMonitoringYn(Pageable pageable, Integer monGroupId, String monitoringYn);
-    public Page<MgApp> findAllByMonGroupIdAndMonitoringYnAndAndAppResource_ServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String hostName);
-    public Page<MgApp> findAllByMonGroupIdAndMonitoringYnAndAndAppResource_NameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String appName);
+    public Page<MgApp> findAllByMonGroupIdAndMonitoringYnAndDashboardYn(Pageable pageable, Integer monGroupId, String monitoringYn, String dashboardYn);
+    public Page<MgApp> findAllByMonGroupIdAndMonitoringYnAndAppResource_ServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String hostName);
+    public Page<MgApp> findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndAppResource_ServerResource_HostNameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String dashboardYn, String hostName);
+    public Page<MgApp> findAllByMonGroupIdAndMonitoringYnAndAppResource_NameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String appName);
+    public Page<MgApp> findAllByMonGroupIdAndMonitoringYnAndDashboardYnAndAppResource_NameLike(Pageable pageable, Integer monGroupId, String monitoringYn, String dashBoardYn, String appName);
     //public Page<MgApp> find
 }
