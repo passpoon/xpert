@@ -115,12 +115,14 @@ public class TestService {
 
         List<Integer> ids = new ArrayList<Integer>();
 
-        List<Metric> metrics = metricRepository.findAllByIdIsIn(ids);
-        //List<Metric> metrics = metricRepository.findAllByIdWithinAndAndIdIn(ids);
+//        List<Metric> metrics = metricRepository.ids);
+//        //List<Metric> metrics = metricRepository.findAllByIdWithinAndAndIdIn(ids);
+//
+//        logger.debug("metrics : {}", metrics);
+//
+//        entityManager.createQuery("");
 
-        logger.debug("metrics : {}", metrics);
 
-        entityManager.createQuery("");
 
 
     }
