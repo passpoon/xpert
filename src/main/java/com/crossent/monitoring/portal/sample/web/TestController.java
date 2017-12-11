@@ -36,5 +36,13 @@ public class    TestController extends BaseController {
 
     }
 
+
+    @RequestMapping(value = "/test/dynamicquery", method = RequestMethod.GET)
+    public void testDinamicQuery() {
+
+        testService.testDynamicQuery();
+
+    }
+
 }
 

@@ -35,5 +35,10 @@ public class TestControllerTest extends AbstractMockTest{
         get("/test/properties");
     }
 
+    @Test
+    public void testDynamitQuery() throws Throwable{
+        get("/test/dynamicquery");
+    }
+
 
 }

@@ -483,13 +483,22 @@ public class MonCommonService {
                     case "RESOURCE-TYPE":
                         switch (keyword) {
                             case "SERVER":
-                                serverResourceTypes.add(resourceType.getCode());
+                                if(resourceType == null){
+                                    serverResourceTypes.add(ResourceType.SERVER.getCode());
+
+                                }else{
+                                    serverResourceTypes.add(resourceType.getCode());
+                                }
                                 break;
                             case "LOG":
                                 serverResourceTypes.add(ResourceType.LOG.getCode());
                                 break;
                             case "APPLICATION":
-                                serverResourceTypes.add(resourceType.getCode());
+                                if(resourceType == null){
+                                    serverResourceTypes.add(ResourceType.APPLICATION.getCode());
+                                }else {
+                                    serverResourceTypes.add(resourceType.getCode());
+                                }
                                 break;
                         }
 
@@ -525,16 +534,22 @@ public class MonCommonService {
         }
 
         if (serverResourceTypes.size() == 0) {
-            switch (resourceType){
-                case SERVER:
-                case SERVER_GROUP:
-                    serverResourceTypes.add(ResourceType.LOG.getCode());
-                case APPLICATION:
-                case APPLICATION_GROUP:
-                    serverResourceTypes.add(resourceType.getCode());
+            if(resourceType == null) {
+                serverResourceTypes.add(ResourceType.SERVER.getCode());
+                serverResourceTypes.add(ResourceType.SERVER_GROUP.getCode());
+                serverResourceTypes.add(ResourceType.LOG.getCode());
+                serverResourceTypes.add(ResourceType.APPLICATION.getCode());
+                serverResourceTypes.add(ResourceType.APPLICATION_GROUP.getCode());
+            }else{
+                switch (resourceType) {
+                    case SERVER:
+                    case SERVER_GROUP:
+                        serverResourceTypes.add(ResourceType.LOG.getCode());
+                    case APPLICATION:
+                    case APPLICATION_GROUP:
+                        serverResourceTypes.add(resourceType.getCode());
+                }
             }
-            //serverResourceTypes.add(resourceType.getCode());
-            //serverResourceTypes.add(ResourceType.LOG.getCode());
         }
 
         if (stateCodes.size() == 0) {
@@ -559,10 +574,22 @@ public class MonCommonService {
 
             //findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanAndUpdateDttmLessThanOrderByUpdateDttmDescIdDesc
 
-            eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanEqualAndUpdateDttmLessThanEqualOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, resourceIds, serverResourceTypes, stateCodes, startDttm, endDttm);
+            if(resourceIds == null) {
+                eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanEqualAndUpdateDttmLessThanEqualOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceTypes, stateCodes, startDttm, endDttm);
+
+            }else{
+                eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanEqualAndUpdateDttmLessThanEqualOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, resourceIds, serverResourceTypes, stateCodes, startDttm, endDttm);
+            }
 
         } else {
-            eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, resourceIds, serverResourceTypes, stateCodes);
+            if(resourceIds == null) {
+                eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceTypes, stateCodes);
+            }else{
+                eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, resourceIds, serverResourceTypes, stateCodes);
+
+            }
+
+
         }
 
         eventResPage = new PagingResVo<EventResDto>(eventHistoryPage, false);
