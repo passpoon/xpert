@@ -1,6 +1,6 @@
 package com.crossent.monitoring.portal.mongroup.monitoring.dto;
 
-public class StatisticsResVo {
+public class StatisticsResDto {
 
     Integer allCnt;
     Integer runCnt;
@@ -42,7 +42,7 @@ public class StatisticsResVo {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("StatisticsResVo{");
+        final StringBuilder sb = new StringBuilder("StatisticsResDto{");
         sb.append("allCnt=").append(allCnt);
         sb.append(", runCnt=").append(runCnt);
         sb.append(", stopCnt=").append(stopCnt);

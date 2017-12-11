@@ -16,14 +16,17 @@ public class ApplicationProperties {
     public static String influxQeryGroupTerm;
 
     public static String influxMeasurementProcess;
-
-
-
-
     public static String elasticsearchDateTimezone;
     public static String elasticsearchDateFormat;
     public static String elasticsearchIndexLog;
     public static String elasticsearchTypeLog;
+
+    public static Integer dashboardListMaxCntServer;
+    public static Integer dashboardListMaxCntServerGroup;
+    public static Integer dashboardListMaxCntApp;
+    public static Integer dashboardListMaxCntAppGroup;
+    public static Integer dashboardListMaxCntEvent;
+    public static Integer dashboardListMaxCntAlarm;
 
     //log.default.term
     public static Long logDefaultTerm;
@@ -105,4 +108,60 @@ public class ApplicationProperties {
     public void setLogDefaultTerm(Long logDefaultTerm) {
         ApplicationProperties.logDefaultTerm = logDefaultTerm;
     }
+
+    public Integer getDashboardListMaxCntServer() {
+        return dashboardListMaxCntServer;
+    }
+
+    @Value("${dashboard.list.max.cnt.server}")
+    public void setDashboardListMaxCntServer(Integer dashboardListMaxCntServer) {
+        ApplicationProperties.dashboardListMaxCntServer = dashboardListMaxCntServer;
+    }
+
+    public Integer getDashboardListMaxCntServerGroup() {
+        return dashboardListMaxCntServerGroup;
+    }
+
+    @Value("${dashboard.list.max.cnt.server-group}")
+    public void setDashboardListMaxCntServerGroup(Integer dashboardListMaxCntServerGroup) {
+        ApplicationProperties.dashboardListMaxCntServerGroup = dashboardListMaxCntServerGroup;
+    }
+
+    public Integer getDashboardListMaxCntApp() {
+        return dashboardListMaxCntApp;
+    }
+
+    @Value("${dashboard.list.max.cnt.app}")
+    public void setDashboardListMaxCntApp(Integer dashboardListMaxCntApp) {
+        ApplicationProperties.dashboardListMaxCntApp = dashboardListMaxCntApp;
+    }
+
+    public Integer getDashboardListMaxCntAppGroup() {
+        return dashboardListMaxCntAppGroup;
+    }
+
+    @Value("${dashboard.list.max.cnt.app-group}")
+    public void setDashboardListMaxCntAppGroup(Integer dashboardListMaxCntAppGroup) {
+        ApplicationProperties.dashboardListMaxCntAppGroup = dashboardListMaxCntAppGroup;
+    }
+
+    public Integer getDashboardListMaxCntEvent() {
+        return dashboardListMaxCntEvent;
+    }
+
+    @Value("${dashboard.list.max.cnt.event}")
+    public void setDashboardListMaxCntEvent(Integer dashboardListMaxCntEvent) {
+        ApplicationProperties.dashboardListMaxCntEvent = dashboardListMaxCntEvent;
+    }
+
+    public static Integer getDashboardListMaxCntAlarm() {
+        return dashboardListMaxCntAlarm;
+    }
+
+    @Value("${dashboard.list.max.cnt.alarm}")
+    public static void setDashboardListMaxCntAlarm(Integer dashboardListMaxCntAlarm) {
+        ApplicationProperties.dashboardListMaxCntAlarm = dashboardListMaxCntAlarm;
+    }
+
+
 }
