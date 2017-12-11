@@ -23,7 +23,7 @@ public class ServerGroupController extends BaseController {
     @Autowired
     ServerGroupService serverGroupService;
 
-    @ApiOperation(value = "관리 서버그룹 페이징")
+    @ApiOperation(value = "관리 서버 그룹 페이징")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "paging", value = "페이징 정보", required = false, dataType = "string", paramType = "query"),
@@ -37,7 +37,7 @@ public class ServerGroupController extends BaseController {
         return resPage;
     }
 
-    @ApiOperation(value = "관리 서버그룹 등록")
+    @ApiOperation(value = "관리 서버 그룹 등록")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "mgServerGroup", value = "모니터링 서버그룹", required = true, dataType = "string", paramType = "body"),
@@ -49,10 +49,10 @@ public class ServerGroupController extends BaseController {
         serverGroupService.createServerGroup(monitoringGroupId, mgServerGroup);
     }
 
-    @ApiOperation(value = "관리 서버그룹 조회")
+    @ApiOperation(value = "관리 서버 그룹 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
     })
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}", method = RequestMethod.GET)
     public MgServerGroupDto getServerGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
@@ -62,10 +62,10 @@ public class ServerGroupController extends BaseController {
         return mgServerGroupDto;
     }
 
-    @ApiOperation(value = "관리 서버그룹 수정")
+    @ApiOperation(value = "관리 서버 그룹 수정")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "mgServerGroup", value = "모니터링 서버그룹", required = true, dataType = "string", paramType = "body"),
     })
     @Transactional
@@ -75,10 +75,10 @@ public class ServerGroupController extends BaseController {
         serverGroupService.updateServerGroup(monitoringGroupId, serverGroupId, mgServerGroup);
     }
 
-    @ApiOperation(value = "관리 서버그룹 선택삭제")
+    @ApiOperation(value = "관리 서버 그룹 선택삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupIds", value = "서버그룹 ID 목록", required = true, dataType = "int", paramType = "query"),
+            @ApiImplicitParam(name = "serverGroupIds", value = "서버 그룹 ID 목록", required = true, dataType = "int", paramType = "query"),
     })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups", method = RequestMethod.DELETE)
@@ -87,19 +87,49 @@ public class ServerGroupController extends BaseController {
         serverGroupService.deleteMgServerGroups(monitoringGroupId, serverGroupIds);
     }
 
-    // 메저먼트 조회
-    /*@RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements", method = RequestMethod.GET)
-    public Collection<Measurement> getServerGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @PathVariable Integer serverResourceId) {
-
-        Collection<Measurement> measurements = serverGroupService.getServerGroupMeasurements(monitoringGroupId, serverGroupId, serverResourceId);
-
-        return measurements;
-    }*/
-
-    @ApiOperation(value = "관리 서버그룹 메트릭 조회")
+    @ApiOperation(value = "관리 서버 그룹 메저먼트 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
+    })
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements", method = RequestMethod.GET)
+    public Collection<Measurement> getServerGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
+
+        Collection<Measurement> measurements = serverGroupService.getServerGroupMeasurements(monitoringGroupId, serverGroupId);
+
+        return measurements;
+    }
+
+    @ApiOperation(value = "관리 서버 그룹 메저먼트 추가")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementIds", value = "메저먼트 ID 목록", required = true, dataType = "string", paramType = "body"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements" , method = RequestMethod.POST)
+    public void insertServerGroupMeasurement(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestBody Integer[] measurementIds){
+
+        serverGroupService.insertServerGroupMeasurement(monitoringGroupId, serverResourceId, measurementIds);
+    }
+
+    @ApiOperation(value = "관리 서버 그룹 메저먼트 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementIds", value = "메저먼트 ID 목록", required = true, dataType = "string", paramType = "query"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements" , method = RequestMethod.DELETE)
+    public void deleteServerGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestParam Integer[] measurementIds) {
+
+        serverGroupService.deleteServerGroupMeasurements(monitoringGroupId, serverGroupId, measurementIds);
+    }
+
+    @ApiOperation(value = "관리 서버 그룹 메트릭 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
     })
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics", method = RequestMethod.GET)
     public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
@@ -109,12 +139,25 @@ public class ServerGroupController extends BaseController {
         return serverGroupMetrics;
     }
 
-    @ApiOperation(value = "관리 서버그룹 메트릭 임계치 수정")
+    @ApiOperation(value = "관리 서버 그룹 메트릭 추가")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "metricIds", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "body"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics" , method = RequestMethod.POST)
+    public void insertServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody Integer[] metricIds){
+
+        serverGroupService.insertServerGroupMetrics(monitoringGroupId, serverGroupId, metricIds);
+    }
+
+    @ApiOperation(value = "관리 서버 그룹 메트릭 임계치 수정")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "metricId", value = "메트릭 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "mgServerGroupCriticalValue", value = "모니터링 서버그룹 임계치", required = true, dataType = "string", paramType = "body"),
+            @ApiImplicitParam(name = "mgServerGroupCriticalValue", value = "모니터링 서버 그룹 임계치", required = true, dataType = "string", paramType = "body"),
     })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics/{metricId}", method = RequestMethod.PUT)
@@ -123,10 +166,23 @@ public class ServerGroupController extends BaseController {
         serverGroupService.updateServerGroupMetrics(monitoringGroupId, serverGroupId, metricId, mgServerGroupCriticalValue);
     }
 
-    @ApiOperation(value = "관리 서버그룹 서버 리소스 조회")
+    @ApiOperation(value = "관리 서버 그룹 메트릭 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "metricIds", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "query"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics" , method = RequestMethod.DELETE)
+    public void deleteServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestParam Integer[] metricIds) {
+
+        serverGroupService.deleteServerGroupMetrics(monitoringGroupId, serverGroupId, metricIds);
+    }
+
+    @ApiOperation(value = "관리 서버 그룹 서버 리소스 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
     })
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/servers" , method = RequestMethod.GET)
     public Collection<MgServer> getServerGroupServerResource(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
@@ -136,10 +192,10 @@ public class ServerGroupController extends BaseController {
         return mgServers;
     }
 
-    @ApiOperation(value = "관리 서버그룹 서버 리소스 추가")
+    @ApiOperation(value = "관리 서버 그룹 서버 리소스 추가")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "serverResourceIds", value = "서버 리소스 ID 목록", required = true, dataType = "int", paramType = "body"),
     })
     @Transactional
@@ -149,10 +205,10 @@ public class ServerGroupController extends BaseController {
         serverGroupService.insertServerGroupServerResources(monitoringGroupId, serverGroupId, serverResourceIds);
     }
 
-    @ApiOperation(value = "관리 서버그룹 서버 리소스 선택삭제")
+    @ApiOperation(value = "관리 서버 그룹 서버 리소스 선택삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "serverResourceIds", value = "서버 리소스 ID 목록", required = true, dataType = "int", paramType = "query"),
     })
     @Transactional
@@ -162,10 +218,10 @@ public class ServerGroupController extends BaseController {
         serverGroupService.deleteServerGroupServerResources(monitoringGroupId, serverGroupId, serverResourceIds);
     }
 
-    @ApiOperation(value = "관리 서버그룹 서버 리소스 삭제")
+    @ApiOperation(value = "관리 서버 그룹 서버 리소스 삭제")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverGroupId", value = "서버그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
     })
     @Transactional

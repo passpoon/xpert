@@ -40,6 +40,9 @@ public class ServerGroupService {
     @Autowired
     MgServerGroupTitleMapRepository mgServerGroupTitleMapRepository;
 
+    @Autowired
+    ServerTypeMeasurementMapRepository serverTypeMeasurementMapRepository;
+
     public PagingResVo<MgServerGroupDto> pagingServerGroup(Integer monitoringGroupId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
 
         Map<String, String> keywords = searchReqVo.getKeywords();
@@ -175,12 +178,56 @@ public class ServerGroupService {
         mgServerGroupRepository.deleteByMonGroupIdAndIdIn(monitoringGroupId, serverGroupIds);
     }
 
+    public Collection<Measurement> getServerGroupMeasurements(Integer monitoringGroupId, Integer serverGroupId) {
+
+        MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        Integer serverTypeId = mgServerGroup.getServerTypeId();
+
+        ServerType serverType = serverTypeRepository.findById(serverTypeId);
+        Collection<Measurement> measurements = serverType.getMeasurements();
+
+        return measurements;
+    }
+
+    public void insertServerGroupMeasurement(Integer monitoringGroupId, Integer serverGroupId, Integer[] measurementIds){
+
+        MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        Integer serverTypeId = mgServerGroup.getServerTypeId();
+
+        for(Integer measurementId : measurementIds) {
+            ServerTypeMeasurementMap map = new ServerTypeMeasurementMap();
+            map.setServerTypeId(serverTypeId);
+            map.setMeasurementId(measurementId);
+
+            ServerTypeMeasurementMap result = serverTypeMeasurementMapRepository.save(map);
+        }
+    }
+
+    public void deleteServerGroupMeasurements(Integer monitoringGroupId, Integer serverGroupId, Integer[] measurementIds) {
+
+        MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        Integer serverTypeId = mgServerGroup.getServerTypeId();
+
+        serverTypeMeasurementMapRepository.deleteByServerTypeIdAndMeasurementIdIn(serverTypeId, measurementIds);
+    }
+
     public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId) {
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findById(serverGroupId);
         Collection<MgServerGroupCriticalValue> mgServerGroupCriticalValues = mgServerGroup.getMgServerGroupCriticalValues();
 
         return mgServerGroupCriticalValues;
+    }
+
+    public void insertServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId, Integer[] metricIds){
+
+        for(Integer metricId : metricIds) {
+            MgServerGroupCriticalValue map = new MgServerGroupCriticalValue();
+            map.setServerGroupId(serverGroupId);
+            map.setMetricId(metricId);
+
+            MgServerGroupCriticalValue result = mgServerGroupCriticalValueRepository.save(map);
+        }
     }
 
     public MgServerGroupCriticalValue updateServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId, Integer metricId, MgServerGroupCriticalValue mgServerGroupCriticalValue) {
@@ -193,6 +240,11 @@ public class ServerGroupService {
         MgServerGroupCriticalValue updateData = mgServerGroupCriticalValueRepository.save(updateServerGroupMetric);
 
         return updateData;
+    }
+
+    public void deleteServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId, Integer[] metricIds) {
+
+        mgServerGroupCriticalValueRepository.deleteByServerGroupIdAndMetricIdIn(serverGroupId, metricIds);
     }
 
     public Collection<MgServer> getServerGroupServerResource(Integer monitoringGroupId, Integer serverGroupId) {
