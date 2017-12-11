@@ -16,7 +16,7 @@ import java.util.Arrays;
 @SpringBootApplication
 @EnableAsync
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = {"com.crossent.monitoring.portal.jpa.repository", "com.crossent.monitoring.portal.sample.repository"})
+@EnableJpaRepositories(basePackages = {"com.crossent.monitoring.portal.jpa.repository"})
 //@EnableElasticsearchRepositories("com.crossent.monitoring.portal.elasticsearch.repository")
 public class MonitoringApplication {
 
