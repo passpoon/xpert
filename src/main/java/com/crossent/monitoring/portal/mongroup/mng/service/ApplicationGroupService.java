@@ -230,7 +230,7 @@ public class ApplicationGroupService {
 
     public void deleteAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId, Integer[] metricIds) {
 
-        mgAppGroupCriticalValueRepository.deleteByAppGroupIdAndMetricIdIn(appGroupId, metricIds);
+        mgAppGroupCriticalValueRepository.deleteByMgAppGroupIdAndMetricIdIn(appGroupId, metricIds);
     }
 
     public Collection<MgApp> getAppGroupAppResource(Integer monitoringGroupId, Integer appGroupId) {

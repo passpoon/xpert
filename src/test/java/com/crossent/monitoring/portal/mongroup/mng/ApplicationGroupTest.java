@@ -74,7 +74,7 @@ public class ApplicationGroupTest extends AbstractMockTest {
     }
 
     @Test
-    public void getMgServerGroupMeasurements() throws Exception {
+    public void getAppGroupMeasurements() throws Exception {
 
         Integer monitoringGroupId = 1;
         Integer appGroupId = 18;
@@ -83,7 +83,7 @@ public class ApplicationGroupTest extends AbstractMockTest {
     }
 
     @Test
-    public void insertMgServerMeasurement() throws Exception {
+    public void insertAppGroupMeasurement() throws Exception {
         Integer monitoringGroupId = 1;
         Integer appGroupId = 19;
         Integer[] measurementIds = {71};
@@ -92,7 +92,7 @@ public class ApplicationGroupTest extends AbstractMockTest {
     }
 
     @Test
-    public void deleteMgServerMeasurements() throws Exception {
+    public void deleteAppGroupMeasurements() throws Exception {
         Integer monitoringGroupId = 1;
         Integer appGroupId = 19;
 
@@ -111,7 +111,7 @@ public class ApplicationGroupTest extends AbstractMockTest {
     }
 
     @Test
-    public void insertMonServerMetrics() throws Exception {
+    public void insertAppGroupMetrics() throws Exception {
         Integer monitoringGroupId = 1;
         Integer appGroupId =  19;
         Integer[] metricIds = {5};
@@ -133,18 +133,18 @@ public class ApplicationGroupTest extends AbstractMockTest {
     }
 
     @Test
-    public void deleteMonServerMetrics() throws Exception {
+    public void deleteAppGroupMetrics() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer appGroupId =  19;
+        Integer appGroupId =  2;
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("metricIds", "5");
+        params.add("metricIds", "112");
 
         delete("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/metrics", params);
     }
 
     @Test
-    public void getAppGroupServerResource() throws Exception {
+    public void getAppGroupResource() throws Exception {
         Integer monitoringGroupId = 3;
         Integer appGroupId = 1;
 
