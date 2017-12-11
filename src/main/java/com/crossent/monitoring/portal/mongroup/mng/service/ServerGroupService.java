@@ -225,4 +225,6 @@ public class ServerGroupService {
 
         mgServerGroupServerRepository.deleteByMonGroupIdAndServerGroupIdAndServerResourceId(monitoringGroupId, serverGroupId, serverResourceId);
     }
+
+
 }

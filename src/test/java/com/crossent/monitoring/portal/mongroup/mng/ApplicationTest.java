@@ -12,7 +12,7 @@ import org.springframework.util.LinkedMultiValueMap;
 public class ApplicationTest extends AbstractMockTest {
 
     @Test
-    public void pageServer() throws Exception {
+    public void pageMonServer() throws Exception {
         Integer monitoringGroupId = 1;
 
         PagingReqVo pagingReqVo = new PagingReqVo();
@@ -30,7 +30,7 @@ public class ApplicationTest extends AbstractMockTest {
     }
 
     @Test
-    public void updateApp() throws Exception {
+    public void updateMonApp() throws Exception {
         Integer monitoringGroupId = 1;
         Integer appResourceId =  1;
 
@@ -42,7 +42,36 @@ public class ApplicationTest extends AbstractMockTest {
     }
 
     @Test
-    public void getAppMetrics() throws Exception {
+    public void getMonAppMeasurement() throws Exception {
+
+        Integer monitoringGroupId = 1;
+        Integer appResourceId = 18;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/measurements");
+    }
+
+    @Test
+    public void insertMonAppMeasurement() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer appResourceId = 18;
+        Integer[] measurementIds = {6};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/measurements", measurementIds);
+    }
+
+    @Test
+    public void deleteMonAppMeasurements() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer appResourceId = 18;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("measurementIds", "6");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/measurements", params);
+    }
+
+    @Test
+    public void getMonAppMetrics() throws Exception {
         Integer monitoringGroupId = 1;
         Integer appResourceId = 1;
 
@@ -50,17 +79,35 @@ public class ApplicationTest extends AbstractMockTest {
     }
 
     @Test
-    public void updateServerMetrics() throws Exception {
+    public void insertMonAppMetrics() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer appResourceId =  1;
-        Integer metricId = 207;
+        Integer appResourceId =  19;
+        Integer[] metricIds = {5};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/metrics", metricIds);
+    }
+
+    @Test
+    public void updateMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 2;
+        Integer appResourceId =  4;
+        Integer metricId = 54 ;
 
         MgAppCriticalValue update = new MgAppCriticalValue();
-        update.setWarning(80.0);
-        update.setCritical(100.0);
+        update.setWarning(65.42);
+        update.setCritical(80.01);
 
         put("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/metrics/"+metricId+"", update);
     }
 
+    @Test
+    public void deleteMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer appResourceId =  19;
 
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("metricIds", "5");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+appResourceId+"/metrics", params);
+    }
 }

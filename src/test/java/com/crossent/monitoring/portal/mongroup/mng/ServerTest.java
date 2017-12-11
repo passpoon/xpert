@@ -13,7 +13,7 @@ import org.springframework.util.LinkedMultiValueMap;
 public class ServerTest extends AbstractMockTest {
 
     @Test
-    public void pageServer() throws Exception {
+    public void pageMonServer() throws Exception {
         Integer monitoringGroupId = 1;
 
         PagingReqVo pagingReqVo = new PagingReqVo();
@@ -31,7 +31,7 @@ public class ServerTest extends AbstractMockTest {
     }
 
     @Test
-    public void updateServer() throws Exception {
+    public void updateMonServer() throws Exception {
         Integer monitoringGroupId = 1;
         Integer serverResourceId =  1;
 
@@ -43,7 +43,36 @@ public class ServerTest extends AbstractMockTest {
     }
 
     @Test
-    public void getServerMetrics() throws Exception {
+    public void getMonServerMeasurement() throws Exception {
+
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId = 19;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/measurements");
+    }
+
+    @Test
+    public void insertMonServerMeasurement() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId = 19;
+        Integer[] measurementIds = {71};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/measurements", measurementIds);
+    }
+
+    @Test
+    public void deleteMonServerMeasurements() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId = 19;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("measurementIds", "71");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/measurements", params);
+    }
+
+    @Test
+    public void getMonServerMetrics() throws Exception {
         Integer monitoringGroupId = 1;
         Integer serverResourceId = 1;
 
@@ -51,7 +80,16 @@ public class ServerTest extends AbstractMockTest {
     }
 
     @Test
-    public void updateServerMetrics() throws Exception {
+    public void insertMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId =  19;
+        Integer[] metricIds = {5};
+
+        post("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/metrics", metricIds);
+    }
+
+    @Test
+    public void updateMonServerMetrics() throws Exception {
         Integer monitoringGroupId = 2;
         Integer serverResourceId =  4;
         Integer metricId = 54 ;
@@ -61,5 +99,16 @@ public class ServerTest extends AbstractMockTest {
         update.setCritical(80.01);
 
         put("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/metrics/"+metricId+"", update);
+    }
+
+    @Test
+    public void deleteMonServerMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId =  19;
+
+        LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.add("metricIds", "5");
+
+        delete("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/metrics", params);
     }
 }

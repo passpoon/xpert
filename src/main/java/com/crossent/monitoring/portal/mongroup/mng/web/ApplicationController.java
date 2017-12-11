@@ -4,6 +4,7 @@ import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.common.web.BaseController;
+import com.crossent.monitoring.portal.jpa.domain.Measurement;
 import com.crossent.monitoring.portal.jpa.domain.MgApp;
 import com.crossent.monitoring.portal.jpa.domain.MgAppCriticalValue;
 import com.crossent.monitoring.portal.jpa.repository.MgAppCriticalValueRepository;
@@ -32,9 +33,9 @@ public class ApplicationController extends BaseController {
             @ApiImplicitParam(name = "search", value = "검색 정보", required = false, dataType = "string", paramType = "query"),
     })
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps", method = RequestMethod.GET)
-    public PagingResVo pagingApp(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
+    public PagingResVo pagingMonApp(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
-        PagingResVo<MgAppDto> resPage = applicationService.pagingApp(monitoringGroupId, paging, search);
+        PagingResVo<MgAppDto> resPage = applicationService.pagingMonApp(monitoringGroupId, paging, search);
 
         return resPage;
     }
@@ -47,9 +48,48 @@ public class ApplicationController extends BaseController {
     })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}", method = RequestMethod.PUT)
-    public void updateApp(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody MgApp mgApp) {
+    public void updateMonApp(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody MgApp mgApp) {
 
-        applicationService.updateApp(monitoringGroupId, appResourceId, mgApp);
+        applicationService.updateMonApp(monitoringGroupId, appResourceId, mgApp);
+    }
+
+    @ApiOperation(value = "관리 어플리케이션 메저먼트 조회")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+    })
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/measurements", method = RequestMethod.GET)
+    public Collection<Measurement> getMonAppMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
+
+        Collection<Measurement> measurements = applicationService.getMonAppMeasurements(monitoringGroupId, appResourceId);
+
+        return measurements;
+    }
+
+    @ApiOperation(value = "관리 서버 메저먼트 추가")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementIds", value = "메저먼트 ID 목록", required = true, dataType = "string", paramType = "body"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/measurements" , method = RequestMethod.POST)
+    public void insertMonAppMeasurement(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody Integer[] measurementIds){
+
+        applicationService.insertMonAppMeasurement(monitoringGroupId, appResourceId, measurementIds);
+    }
+
+    @ApiOperation(value = "관리 어플리케이션 메저먼트 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "appResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementIds", value = "메저먼트 ID 목록", required = true, dataType = "string", paramType = "query"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/measurements" , method = RequestMethod.DELETE)
+    public void deleteMonAppMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestParam Integer[] measurementIds) {
+
+        applicationService.deleteMonAppMeasurements(monitoringGroupId, appResourceId, measurementIds);
     }
 
     @ApiOperation(value = "관리 어플리케이션 임계치 설정을 위한 메트릭 목록 조회")
@@ -58,12 +98,26 @@ public class ApplicationController extends BaseController {
             @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
     })
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics", method = RequestMethod.GET)
-    public Collection<MgAppCriticalValue> getAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
+    public Collection<MgAppCriticalValue> getMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
 
-        Collection<MgAppCriticalValue> appMetrics = applicationService.getAppMetrics(monitoringGroupId, appResourceId);
+        Collection<MgAppCriticalValue> appMetrics = applicationService.getMonAppMetrics(monitoringGroupId, appResourceId);
 
         return appMetrics;
     }
+
+    @ApiOperation(value = "관리 어플리케이션 메트릭 추가")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "metricIds", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "body"),
+    })
+    @Transactional
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics" , method = RequestMethod.POST)
+    public void insertMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody Integer[] metricIds){
+
+        applicationService.insertMonAppMetrics(monitoringGroupId, appResourceId, metricIds);
+    }
+
 
     @ApiOperation(value = "관리 어플리케이션 메트릭별 임계치 수정")
     @ApiImplicitParams({
@@ -74,8 +128,20 @@ public class ApplicationController extends BaseController {
     })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics/{metricId}", method = RequestMethod.PUT)
-    public void updateAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @PathVariable Integer metricId, @RequestBody MgAppCriticalValue mgAppCriticalValue) {
+    public void updateMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @PathVariable Integer metricId, @RequestBody MgAppCriticalValue mgAppCriticalValue) {
 
-        applicationService.updateAppMetrics(monitoringGroupId, appResourceId, metricId, mgAppCriticalValue);
+        applicationService.updateMonAppMetrics(monitoringGroupId, appResourceId, metricId, mgAppCriticalValue);
+    }
+
+    @ApiOperation(value = "관리 어플리케이션 메트릭 삭제")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "metricIds", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "query"),
+    })
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics" , method = RequestMethod.DELETE)
+    public void deleteAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestParam Integer[] metricIds) {
+
+        applicationService.deleteMonAppMetrics(monitoringGroupId, appResourceId, metricIds);
     }
 }
