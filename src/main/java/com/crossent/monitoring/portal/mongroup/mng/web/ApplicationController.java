@@ -139,6 +139,7 @@ public class ApplicationController extends BaseController {
             @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "metricIds", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "query"),
     })
+    @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics" , method = RequestMethod.DELETE)
     public void deleteAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestParam Integer[] metricIds) {
 

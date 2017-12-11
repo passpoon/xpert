@@ -12,7 +12,7 @@ import org.springframework.util.LinkedMultiValueMap;
 public class ApplicationTest extends AbstractMockTest {
 
     @Test
-    public void pageMonServer() throws Exception {
+    public void pageMonApp() throws Exception {
         Integer monitoringGroupId = 1;
 
         PagingReqVo pagingReqVo = new PagingReqVo();
@@ -88,7 +88,7 @@ public class ApplicationTest extends AbstractMockTest {
     }
 
     @Test
-    public void updateMonServerMetrics() throws Exception {
+    public void updateMonAppMetrics() throws Exception {
         Integer monitoringGroupId = 2;
         Integer appResourceId =  4;
         Integer metricId = 54 ;
@@ -101,12 +101,12 @@ public class ApplicationTest extends AbstractMockTest {
     }
 
     @Test
-    public void deleteMonServerMetrics() throws Exception {
-        Integer monitoringGroupId = 1;
+    public void deleteMonAppMetrics() throws Exception {
+        Integer monitoringGroupId = 12;
         Integer appResourceId =  19;
 
         LinkedMultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.add("metricIds", "5");
+        params.add("metricIds", "88");
 
         delete("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/metrics", params);
     }
