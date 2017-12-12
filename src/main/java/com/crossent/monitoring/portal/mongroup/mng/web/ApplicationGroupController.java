@@ -13,14 +13,19 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import javafx.application.Application;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collection;
 
 @RestController
 public class ApplicationGroupController extends BaseController {
+
+    private static Logger logger = LoggerFactory.getLogger(ApplicationGroupController.class);
 
     @Autowired
     ApplicationGroupService applicationGroupService;
@@ -34,8 +39,15 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups", method = RequestMethod.GET)
     public PagingResVo pagingAppGroup(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
+        if(logger.isDebugEnabled()){
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
+        }
         PagingResVo<MgAppGroupDto> resPage = applicationGroupService.pagingAppGroup(monitoringGroupId, paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage : {}", resPage);
+        }
         return resPage;
     }
 
@@ -48,7 +60,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups", method = RequestMethod.POST)
     public void createAppGroup(@PathVariable Integer monitoringGroupId, @RequestBody MgAppGroup mgAppGroup) {
 
-       applicationGroupService.createAppGroup(monitoringGroupId, mgAppGroup);
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("mgAppGroup : {}", mgAppGroup);
+        }
+        applicationGroupService.createAppGroup(monitoringGroupId, mgAppGroup);
     }
 
     @ApiOperation(value = "관리 어플리케이션 그룹 조회")
@@ -59,8 +75,14 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}", method = RequestMethod.GET)
     public MgAppGroupDto getAppGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+        }
         MgAppGroupDto mgAppGroupDto = applicationGroupService.getAppGroup(monitoringGroupId, appGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("mgAppGroupDto : {}", mgAppGroupDto);
+        }
         return mgAppGroupDto;
     }
 
@@ -74,6 +96,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}", method = RequestMethod.PUT)
     public void updateAppGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestBody MgAppGroup mgAppGroup) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("mgAppGroup : {}", mgAppGroup);
+        }
         applicationGroupService.updateAppGroup(monitoringGroupId, appGroupId, mgAppGroup);
     }
 
@@ -86,6 +113,10 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups", method = RequestMethod.DELETE)
     public void deleteAppGroups(@PathVariable Integer monitoringGroupId, @RequestParam Integer[] appGroupIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupIds : {}", Arrays.toString(appGroupIds));
+        }
         applicationGroupService.deleteAppGroups(monitoringGroupId, appGroupIds);
     }
 
@@ -97,8 +128,14 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/measurements", method = RequestMethod.GET)
     public Collection<Measurement> getAppGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+        }
         Collection<Measurement> measurements = applicationGroupService.getAppGroupMeasurements(monitoringGroupId, appGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("measurements : {}", measurements);
+        }
         return measurements;
     }
 
@@ -112,6 +149,10 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/measurements" , method = RequestMethod.POST)
     public void insertAppGroupMeasurement(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestBody Integer[] measurementIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
+        }
         applicationGroupService.insertAppGroupMeasurement(monitoringGroupId, appGroupId, measurementIds);
     }
 
@@ -125,6 +166,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/measurements" , method = RequestMethod.DELETE)
     public void deleteAppGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestParam Integer[] measurementIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
+        }
         applicationGroupService.deleteAppGroupMeasurements(monitoringGroupId, appGroupId, measurementIds);
     }
 
@@ -136,8 +182,14 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/metrics", method = RequestMethod.GET)
     public Collection<MgAppGroupCriticalValue> getServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+        }
         Collection<MgAppGroupCriticalValue> appGroupMetrics = applicationGroupService.getAppGroupMetrics(monitoringGroupId, appGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("appGroupMetrics : {}", appGroupMetrics);
+        }
         return appGroupMetrics;
     }
 
@@ -151,6 +203,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/metrics" , method = RequestMethod.POST)
     public void insertAppGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestBody Integer[] metricIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
+        }
         applicationGroupService.insertAppGroupMetrics(monitoringGroupId, appGroupId, metricIds);
     }
 
@@ -165,6 +222,12 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/metrics/{metricId}", method = RequestMethod.PUT)
     public void updateAppGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @PathVariable Integer metricId, @RequestBody MgAppGroupCriticalValue mgAppGroupCriticalValue) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("metricId : {}", metricId);
+            logger.debug("mgAppGroupCriticalValue : {}", mgAppGroupCriticalValue);
+        }
         applicationGroupService.updateAppGroupMetrics(monitoringGroupId, appGroupId, metricId, mgAppGroupCriticalValue);
     }
 
@@ -178,6 +241,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/metrics" , method = RequestMethod.DELETE)
     public void deleteAppGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestParam Integer[] metricIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
+        }
         applicationGroupService.deleteAppGroupMetrics(monitoringGroupId, appGroupId, metricIds);
     }
 
@@ -189,8 +257,14 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/apps" , method = RequestMethod.GET)
     public Collection<MgApp> getAppGroupAppResource(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+        }
         Collection<MgApp> mgApps = applicationGroupService.getAppGroupAppResource(monitoringGroupId, appGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("mgApps : {}", mgApps);
+        }
         return mgApps;
     }
 
@@ -204,6 +278,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/apps" , method = RequestMethod.POST)
     public void insertAppGroupAppResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestBody Integer[] appResourceIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("appResourceIds : {}", Arrays.toString(appResourceIds));
+        }
         applicationGroupService.insertAppGroupAppResources(monitoringGroupId, appGroupId, appResourceIds);
     }
 
@@ -217,6 +296,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/apps" , method = RequestMethod.DELETE)
     public void deleteAppGroupAppResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @RequestParam Integer[] appResourceIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("appResourceIds : {}", Arrays.toString(appResourceIds));
+        }
         applicationGroupService.deleteAppGroupAppResources(monitoringGroupId, appGroupId, appResourceIds);
     }
 
@@ -230,6 +314,11 @@ public class ApplicationGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/apps/{appResourceId}" , method = RequestMethod.DELETE)
     public void deleteAppGroupAppResource(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @PathVariable Integer appResourceId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+        }
         applicationGroupService.deleteAppGroupAppResource(monitoringGroupId, appGroupId, appResourceId);
     }
 }

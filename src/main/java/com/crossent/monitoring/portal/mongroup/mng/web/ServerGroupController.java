@@ -10,15 +10,20 @@ import com.crossent.monitoring.portal.mongroup.mng.service.ServerGroupService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.ws.rs.PathParam;
+import java.util.Arrays;
 import java.util.Collection;
 
 @RestController
 public class ServerGroupController extends BaseController {
+
+    private static Logger logger = LoggerFactory.getLogger(ServerGroupController.class);
 
     @Autowired
     ServerGroupService serverGroupService;
@@ -32,8 +37,15 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups", method = RequestMethod.GET)
     public PagingResVo pagingServerGroup(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("paging", paging);
+            logger.debug("search", search);
+        }
         PagingResVo<MgServerGroupDto> resPage = serverGroupService.pagingServerGroup(monitoringGroupId, paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage", resPage);
+        }
         return resPage;
     }
 
@@ -46,6 +58,10 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups", method = RequestMethod.POST)
     public void createServerGroup(@PathVariable Integer monitoringGroupId, @RequestBody MgServerGroup mgServerGroup) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("mgServerGroup", mgServerGroup);
+        }
         serverGroupService.createServerGroup(monitoringGroupId, mgServerGroup);
     }
 
@@ -57,8 +73,14 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}", method = RequestMethod.GET)
     public MgServerGroupDto getServerGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+        }
         MgServerGroupDto mgServerGroupDto = serverGroupService.getServerGroup(monitoringGroupId, serverGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("mgServerGroupDto", mgServerGroupDto);
+        }
         return mgServerGroupDto;
     }
 
@@ -72,6 +94,11 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}", method = RequestMethod.PUT)
     public void updateServerGroup(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody MgServerGroup mgServerGroup) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("mgServerGroup", mgServerGroup);
+        }
         serverGroupService.updateServerGroup(monitoringGroupId, serverGroupId, mgServerGroup);
     }
 
@@ -84,6 +111,10 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups", method = RequestMethod.DELETE)
     public void deleteServerGroups(@PathVariable Integer monitoringGroupId, @RequestParam Integer[] serverGroupIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupIds", Arrays.toString(serverGroupIds));
+        }
         serverGroupService.deleteMgServerGroups(monitoringGroupId, serverGroupIds);
     }
 
@@ -95,8 +126,14 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements", method = RequestMethod.GET)
     public Collection<Measurement> getServerGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+        }
         Collection<Measurement> measurements = serverGroupService.getServerGroupMeasurements(monitoringGroupId, serverGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("measurements", measurements);
+        }
         return measurements;
     }
 
@@ -108,9 +145,14 @@ public class ServerGroupController extends BaseController {
     })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements" , method = RequestMethod.POST)
-    public void insertServerGroupMeasurement(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestBody Integer[] measurementIds){
+    public void insertServerGroupMeasurement(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody Integer[] measurementIds){
 
-        serverGroupService.insertServerGroupMeasurement(monitoringGroupId, serverResourceId, measurementIds);
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("measurementIds", Arrays.toString(measurementIds));
+        }
+        serverGroupService.insertServerGroupMeasurement(monitoringGroupId, serverGroupId, measurementIds);
     }
 
     @ApiOperation(value = "관리 서버 그룹 메저먼트 삭제")
@@ -123,6 +165,11 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements" , method = RequestMethod.DELETE)
     public void deleteServerGroupMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestParam Integer[] measurementIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("measurementIds", Arrays.toString(measurementIds));
+        }
         serverGroupService.deleteServerGroupMeasurements(monitoringGroupId, serverGroupId, measurementIds);
     }
 
@@ -134,8 +181,14 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics", method = RequestMethod.GET)
     public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+        }
         Collection<MgServerGroupCriticalValue> serverGroupMetrics = serverGroupService.getServerGroupMetrics(monitoringGroupId, serverGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("serverGroupMetrics", serverGroupMetrics);
+        }
         return serverGroupMetrics;
     }
 
@@ -149,6 +202,11 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics" , method = RequestMethod.POST)
     public void insertServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody Integer[] metricIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("metricIds", Arrays.toString(metricIds));
+        }
         serverGroupService.insertServerGroupMetrics(monitoringGroupId, serverGroupId, metricIds);
     }
 
@@ -163,6 +221,12 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics/{metricId}", method = RequestMethod.PUT)
     public void updateServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @PathVariable Integer metricId, @RequestBody MgServerGroupCriticalValue mgServerGroupCriticalValue) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("metricId", metricId);
+            logger.debug("mgServerGroupCriticalValue", mgServerGroupCriticalValue);
+        }
         serverGroupService.updateServerGroupMetrics(monitoringGroupId, serverGroupId, metricId, mgServerGroupCriticalValue);
     }
 
@@ -176,6 +240,11 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics" , method = RequestMethod.DELETE)
     public void deleteServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestParam Integer[] metricIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("metricIds", Arrays.toString(metricIds));
+        }
         serverGroupService.deleteServerGroupMetrics(monitoringGroupId, serverGroupId, metricIds);
     }
 
@@ -187,8 +256,14 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/servers" , method = RequestMethod.GET)
     public Collection<MgServer> getServerGroupServerResource(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+        }
         Collection<MgServer> mgServers = serverGroupService.getServerGroupServerResource(monitoringGroupId, serverGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("mgServers", mgServers);
+        }
         return mgServers;
     }
 
@@ -202,6 +277,11 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/servers" , method = RequestMethod.POST)
     public void insertServerGroupServerResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestBody Integer[] serverResourceIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("serverResourceIds", Arrays.toString(serverResourceIds));
+        }
         serverGroupService.insertServerGroupServerResources(monitoringGroupId, serverGroupId, serverResourceIds);
     }
 
@@ -215,6 +295,11 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/servers" , method = RequestMethod.DELETE)
     public void deleteServerGroupServerResources(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @RequestParam Integer[] serverResourceIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("serverResourceIds", Arrays.toString(serverResourceIds));
+        }
         serverGroupService.deleteServerGroupServerResources(monitoringGroupId, serverGroupId, serverResourceIds);
     }
 
@@ -228,6 +313,11 @@ public class ServerGroupController extends BaseController {
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/servers/{serverResourceId}" , method = RequestMethod.DELETE)
     public void deleteServerGroupServerResource(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @PathVariable Integer serverResourceId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("monitoringGroupId", monitoringGroupId);
+            logger.debug("serverGroupId", serverGroupId);
+            logger.debug("serverResourceId", serverResourceId);
+        }
         serverGroupService.deleteServerGroupServerResource(monitoringGroupId, serverGroupId, serverResourceId);
     }
 }
