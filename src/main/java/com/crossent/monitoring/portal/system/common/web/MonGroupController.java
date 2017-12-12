@@ -1,5 +1,7 @@
 package com.crossent.monitoring.portal.system.common.web;
 
+import com.crossent.monitoring.portal.common.exception.ValidationException;
+import com.crossent.monitoring.portal.common.lib.util.StringUtil;
 import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.AppResource;
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
@@ -42,6 +44,10 @@ public class MonGroupController extends BaseController {
     })
     @RequestMapping(value = "/system/common/user", method = RequestMethod.GET)
     public UserDto getUser(@RequestParam(name = "uuid") String uuid) {
+
+        if(StringUtil.isEmpty(uuid)){
+            throw new ValidationException("validationUUID");
+        }
 
         UserDto user = monGroupService.listUsers(uuid);
 

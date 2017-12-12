@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.common.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.jpa.domain.MonGroup;
 import com.crossent.monitoring.portal.jpa.domain.User;
 import com.crossent.monitoring.portal.jpa.repository.UserRepository;
@@ -35,6 +36,11 @@ public class MonGroupService {
     public UserDto listUsers(String uuid) {
 
         User user = userRepository.findByUuid(uuid);
+        if(user == null){
+            throw new BusinessException("noSearchUser", uuid);
+        }
+
+
         UserDto userDto = new UserDto();
 
         userDto.setId(user.getId());
