@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -21,7 +22,8 @@ import java.util.*;
 
 @Service
 public class MeasurementService {
-    Logger logger = LoggerFactory.getLogger(MeasurementService.class);
+
+    private static Logger logger = LoggerFactory.getLogger(MeasurementService.class);
 
     @Autowired
     MeasurementRepository measurementRepository;
@@ -46,6 +48,9 @@ public class MeasurementService {
             }
         }
         Page<Measurement> measurements = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if(key == null){
             //TODO 전체조회
             measurements = measurementRepository.findAll(pagingReqVo.toPagingRequest());
@@ -61,6 +66,8 @@ public class MeasurementService {
                     measurements = measurementRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -71,6 +78,7 @@ public class MeasurementService {
 
     public void insertMeasurement(Measurement inDto){
         Measurement measurement = new Measurement();
+
         measurement.setName(inDto.getName());
         measurement.setDescription(inDto.getDescription());
 
@@ -79,15 +87,21 @@ public class MeasurementService {
 
     public void deleteMeasurements(Integer[] measurementIds) {
 
-        metricRepository.deleteByMeasurement_IdIn(measurementIds);
         measurementRepository.deleteByIdIn(measurementIds);
     }
 
     public Measurement getMeasurement(Integer measurementId) {
 
         Measurement measurement = measurementRepository.findOne(measurementId);
+        if(logger.isDebugEnabled()){
+            logger.debug("measurement : {}", measurement);
+        }
+        if(measurement == null) {
+            throw new BusinessException("noFindMeasurement");
+        }
 
         Measurement out = new Measurement();
+
         out.setId(measurement.getId());
         out.setName(measurement.getName());
         out.setDescription(measurement.getDescription());
@@ -98,10 +112,13 @@ public class MeasurementService {
     public Measurement updateUMeasurement(Integer measurementId, Measurement measurement) {
 
         Measurement getData = measurementRepository.findOne(measurementId);
-
-        if(getData == null) {
-            return null;
+        if(logger.isDebugEnabled()){
+            logger.debug("Measurement : {}", getData);
         }
+        if(getData == null) {
+            throw new BusinessException("noFindMeasurement");
+        }
+
         getData.setName(measurement.getName());
         getData.setDescription(measurement.getDescription());
 
@@ -118,6 +135,9 @@ public class MeasurementService {
     public Collection<Metric> getMeasurementMetrics(Integer measurementId){
 
         Measurement measurement = measurementRepository.findById(measurementId);
+        if(measurement == null) {
+            throw new BusinessException("noFindMeasurement");
+        }
         Collection<Metric> metrics = measurement.getMetrics();
 
         return metrics;
@@ -157,9 +177,8 @@ public class MeasurementService {
         return updateData;*/
 
         Metric getData = metricRepository.findOne(metricId);
-
-        if (getData == null) {
-            return null;
+        if(getData == null) {
+            throw new BusinessException("noFindMetric");
         }
         getData.setName(metric.getName());
         getData.setDescription(metric.getDescription());

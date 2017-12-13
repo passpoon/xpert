@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.mongroup.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -17,6 +18,7 @@ import java.util.*;
 
 @Service
 public class ApplicationGroupService {
+
     private static Logger logger = LoggerFactory.getLogger(ApplicationGroupService.class);
 
     @Autowired
@@ -51,6 +53,8 @@ public class ApplicationGroupService {
             }
         }
         Page<MgAppGroup> mgAppGroups = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
         if (key == null) {
             //TODO 전체조회
             mgAppGroups = mgAppGroupRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
@@ -64,12 +68,17 @@ public class ApplicationGroupService {
                     mgAppGroups = mgAppGroupRepository.findAllByMonGroupIdAndDescriptionLike(monitoringGroupId, pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
         PagingResVo<MgAppGroupDto> resPage = new PagingResVo<MgAppGroupDto>(mgAppGroups, false);
 
         List<MgAppGroup> content = mgAppGroups.getContent();
+        if(logger.isDebugEnabled()){
+            logger.debug("content : {}", content);
+        }
 
         for(MgAppGroup mgAppGroup : content){
             MgAppGroupDto mgAppGroupDto = new MgAppGroupDto();
@@ -99,8 +108,15 @@ public class ApplicationGroupService {
         mg.setMonitoringYn(mgAppGroup.getMonitoringYn());
 
         MgAppGroup result = mgAppGroupRepository.save(mg);
+        if(logger.isDebugEnabled()){
+            logger.debug("result : {}", result);
+        }
 
         AppInfo appInfo = appInfoRepository.findById(result.getAppInfoId());
+        if(logger.isDebugEnabled()){
+            logger.debug("appInfo : {}", appInfo);
+        }
+
         Collection<Measurement> measurements = appInfo.getMeasurements();
         for(Measurement measurement : measurements) {
             Collection<Metric> metrics = measurement.getMetrics();
@@ -130,6 +146,9 @@ public class ApplicationGroupService {
     public MgAppGroupDto getAppGroup(Integer monitoringGroupId, Integer appGroupId) {
 
         MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgAppGroup : {}", mgAppGroup);
+        }
 
         MgAppGroupDto mgAppGroupDto = new MgAppGroupDto();
         mgAppGroupDto.setId(appGroupId);
@@ -167,6 +186,9 @@ public class ApplicationGroupService {
     public Collection<Measurement> getAppGroupMeasurements(Integer monitoringGroupId, Integer appGroupId) {
 
         MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgAppGroup : {}", mgAppGroup);
+        }
         Integer appInfoId = mgAppGroup.getAppInfoId();
 
         AppInfo appInfo = appInfoRepository.findById(appInfoId);
@@ -178,6 +200,9 @@ public class ApplicationGroupService {
     public void insertAppGroupMeasurement(Integer monitoringGroupId, Integer appGroupId, Integer[] measurementIds){
 
         MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgAppGroup : {}", mgAppGroup);
+        }
         Integer appInfoId = mgAppGroup.getAppInfoId();
 
         for(Integer measurementId : measurementIds) {
@@ -200,6 +225,9 @@ public class ApplicationGroupService {
     public Collection<MgAppGroupCriticalValue> getAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId) {
 
         MgAppGroup mgAppGroup = mgAppGroupRepository.findById(appGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgAppGroup : {}", mgAppGroup);
+        }
         Collection<MgAppGroupCriticalValue> mgAppGroupCriticalValues = mgAppGroup.getMgAppGroupCriticalValues();
 
         return mgAppGroupCriticalValues;
@@ -236,6 +264,9 @@ public class ApplicationGroupService {
     public Collection<MgApp> getAppGroupAppResource(Integer monitoringGroupId, Integer appGroupId) {
 
         MgAppGroup mgAppGroup = mgAppGroupRepository.findByMonGroupIdAndId(monitoringGroupId, appGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgAppGroup : {}", mgAppGroup);
+        }
         Collection<MgApp> mgApps = mgAppGroup.getMgApps();
 
         return mgApps;

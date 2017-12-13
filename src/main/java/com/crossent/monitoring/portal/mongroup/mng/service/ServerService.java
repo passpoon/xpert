@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.mongroup.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -16,6 +17,7 @@ import java.util.*;
 
 @Service
 public class ServerService {
+
     private static Logger logger = LoggerFactory.getLogger(ServerService.class);
 
     @Autowired
@@ -50,6 +52,8 @@ public class ServerService {
             }
         }
         Page<MgServer> mgServers = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
         if (key == null) {
             //mgServers = mgServerRepository.findAll(pagingReqVo.toPagingRequest());
             mgServers = mgServerRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId); // Dto 새로 생성, repository에 monGroupId로 조회
@@ -63,6 +67,8 @@ public class ServerService {
                     mgServers = mgServerRepository.findAllByMonGroupIdAndServerResource_HostNameLike(pagingReqVo.toPagingRequest(), monitoringGroupId,  keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -71,6 +77,9 @@ public class ServerService {
         List<MgServer> content = mgServers.getContent();
 
         for(MgServer mgServer : content){
+            if(logger.isDebugEnabled()){
+                logger.debug("content : {}", content);
+            }
             MgServerDto mgServerDto = new MgServerDto();
             mgServerDto.setMonGroupId(mgServer.getMonGroupId());
             mgServerDto.setServerResourceId(mgServer.getServerResourceId());
@@ -88,9 +97,9 @@ public class ServerService {
     public MgServer updateServer(Integer monitoringGroupId, Integer serverResourceId, MgServer mgServer) {
 
         MgServer updateServer = mgServerRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
-
-
-
+        if(logger.isDebugEnabled()){
+            logger.debug("updateServer : {}", updateServer);
+        }
         updateServer.setMonitoringYn(mgServer.getMonitoringYn());
         updateServer.setDashboardYn(mgServer.getDashboardYn());
 
@@ -104,7 +113,9 @@ public class ServerService {
 
         ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
         Integer serverTypeId = serverResource.getServerTypeId();
-
+        if(logger.isDebugEnabled()){
+            logger.debug("serverTypeId : {}", serverTypeId);
+        }
         ServerType serverType = serverTypeRepository.findById(serverTypeId);
         Collection<Measurement> measurements = serverType.getMeasurements();
 
@@ -116,8 +127,9 @@ public class ServerService {
 
         ServerResource serverResource = serverResourceRepository.findById(serverResourceId);
         Integer serverTypeId = serverResource.getServerTypeId();
-
-        logger.debug("serverTypeId :", serverTypeId);
+        if(logger.isDebugEnabled()){
+            logger.debug("serverTypeId : {}", serverTypeId);
+        }
         for(Integer measurementId : measurementIds) {
             ServerTypeMeasurementMap map = new ServerTypeMeasurementMap();
             map.setServerTypeId(serverTypeId);
@@ -139,6 +151,9 @@ public class ServerService {
     public Collection<MgServerCriticalValue> getMonServerMetrics(Integer monitoringGroupId, Integer serverResourceId) {
 
         MgServer mgServer = mgServerRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgServer : {}", mgServer);
+        }
         Collection<MgServerCriticalValue> mgServerCriticalValues = mgServer.getMgServerCriticalValues();
 
         return mgServerCriticalValues;

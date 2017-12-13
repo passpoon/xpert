@@ -9,13 +9,18 @@ import com.crossent.monitoring.portal.system.mng.service.ManualService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 
 @RestController
 public class ManualController extends BaseController{
+
+    private static Logger logger = LoggerFactory.getLogger(ManualController.class);
 
     @Autowired
     ManualService manualService;
@@ -28,20 +33,28 @@ public class ManualController extends BaseController{
     @RequestMapping(value = "/system/management/manuals", method = RequestMethod.GET)
     public PagingResVo pagingManual(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
+        }
         PagingResVo<Manual> resPage = manualService.pagingManual(paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage : {}", resPage);
+        }
         return resPage;
     }
 
     @ApiOperation(value = "시스템 관리 메뉴얼 등록")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "manual", value = "메뉴얼", required = true, dataType = "string", paramType = "body"),
-
     })
     @Transactional
     @RequestMapping(value = "/system/management/manuals", method = RequestMethod.POST)
     public void insertManual(@RequestBody Manual manual){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("manual : {}", manual);
+        }
         manualService.insertManual(manual);
     }
 
@@ -53,6 +66,9 @@ public class ManualController extends BaseController{
     @RequestMapping(value = "/system/management/manuals", method = RequestMethod.DELETE)
     public void deleteManuals(@RequestParam Integer[] manualIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("manualIds : {}", Arrays.toString(manualIds));
+        }
         manualService.deleteManuals(manualIds);
     }
 
@@ -63,8 +79,13 @@ public class ManualController extends BaseController{
     @RequestMapping(value = "/system/management/manuals/{manualId}", method = RequestMethod.GET)
     public Manual getManual(@PathVariable Integer manualId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("manualId : {}", manualId);
+        }
         Manual getResource =  manualService.getManual(manualId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("getResource : {}", getResource);
+        }
         return getResource;
     }
 
@@ -77,6 +98,10 @@ public class ManualController extends BaseController{
     @RequestMapping(value = "/system/management/manuals/{manualId}", method = RequestMethod.PUT)
     public void updateManual(@PathVariable Integer manualId, @RequestBody Manual manual){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("manualId : {}", manualId);
+            logger.debug("manual : {}", manual);
+        }
         manualService.updateManual(manualId, manual);
     }
 
@@ -88,6 +113,9 @@ public class ManualController extends BaseController{
     @RequestMapping(value = "/system/management/manuals/{manualId}", method = RequestMethod.DELETE)
     public void deleteManual(@PathVariable Integer manualId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("manualId : {}", manualId);
+        }
         manualService.deleteManual(manualId);
     }
 }

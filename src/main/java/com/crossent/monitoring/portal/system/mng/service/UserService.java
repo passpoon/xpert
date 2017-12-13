@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -19,6 +20,7 @@ import java.util.Map;
 
 @Service
 public class UserService {
+
     private static Logger logger = LoggerFactory.getLogger(UserService.class);
 
     @Autowired
@@ -45,12 +47,12 @@ public class UserService {
             }
         }
         Page<User> users = null;
-        logger.debug("userF :::: "+ users);
-        if(
-                key == null){
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
+        if(key == null){
             //TODO 전체조회
             users = userRepository.findAll(pagingReqVo.toPagingRequest());
-            logger.debug("userAll :::: "+ users);
         }else{
             switch (key){
                 case "id":
@@ -68,11 +70,10 @@ public class UserService {
                     users = userRepository.findByEmailLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
-
-        //Sort.Order order = new Sort.Order(Sort.Direction.ASC, "name");
-        //Page<User> outPage = userRepository.findAll(pagingReqVo.toPagingRequest());
 
         PagingResVo<User> resPage = new PagingResVo<User>(users, true);
 
@@ -103,6 +104,12 @@ public class UserService {
     public User getUser(String userId) {
 
         User user = userRepository.findOne(userId);
+        if(logger.isDebugEnabled()){
+            logger.debug("user : {}", user);
+        }
+        if(user == null) {
+            throw new BusinessException("noFindUser");
+        }
 
         User out = new User();
         out.setId(user.getId());
@@ -119,9 +126,11 @@ public class UserService {
     public User updateUser(String userId, User user){
 
         User getData = userRepository.findOne(userId);
-
+        if(logger.isDebugEnabled()){
+            logger.debug("User : {}", getData);
+        }
         if(getData == null) {
-            return null;
+            throw new BusinessException("noFindUser");
         }
         getData.setName(user.getName());
         getData.setEmail(user.getEmail());

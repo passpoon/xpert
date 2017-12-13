@@ -15,10 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 
 
 @RestController
 public class UserController extends BaseController {
+
+    private static Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserService userService;
@@ -31,11 +34,14 @@ public class UserController extends BaseController {
     @RequestMapping(value="/system/management/users", method = RequestMethod.GET)
     public PagingResVo pagingUser(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
-        /*String m1 = MessageUtil.getMessage("monitoring.portal.common.error.test", "하하", "호호");
-        String m2 =MessageUtil.getMessage("monitoring.portal.common.error.pagingParameterError");*/
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
+        }
         PagingResVo<User> resPage = userService.pagingUser(paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage : {}", resPage);
+        }
         return resPage;
     }
 
@@ -47,6 +53,9 @@ public class UserController extends BaseController {
     @RequestMapping(value="/system/management/users", method = RequestMethod.POST)
     public void insertUser(@RequestBody User user){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("user : {}", user);
+        }
         userService.insertUser(user);
     }
 
@@ -58,6 +67,9 @@ public class UserController extends BaseController {
     @RequestMapping(value="/system/management/users", method = RequestMethod.DELETE)
     public void deleteUsers(@RequestParam String[] userIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userIds : {}", Arrays.toString(userIds));
+        }
         userService.deleteUsers(userIds);
     }
 
@@ -68,7 +80,13 @@ public class UserController extends BaseController {
     @RequestMapping(value="/system/management/users/{userId}", method = RequestMethod.GET)
     public User getUser(@PathVariable String userId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userId : {}", userId);
+        }
         User outUser =  userService.getUser(userId);
+        if(logger.isDebugEnabled()) {
+            logger.debug("outUser : {}", outUser);
+        }
         return outUser;
     }
 
@@ -82,6 +100,10 @@ public class UserController extends BaseController {
     @ResponseBody
     public void updateUser(@PathVariable String userId, @RequestBody User user) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userId : {}", userId);
+            logger.debug("user : {}", user);
+        }
         userService.updateUser(userId, user);
     }
 
@@ -93,6 +115,9 @@ public class UserController extends BaseController {
     @RequestMapping(value="/system/management/users/{userId}", method = RequestMethod.DELETE)
     public void deleteUser(@PathVariable String userId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userId : {}", userId);
+        }
         userService.deleteUser(userId);
     }
 }

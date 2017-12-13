@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.mongroup.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -17,6 +18,7 @@ import java.util.*;
 
 @Service
 public class ServerGroupService {
+
     private static Logger logger = LoggerFactory.getLogger(ServerGroupService.class);
 
     @Autowired
@@ -57,6 +59,8 @@ public class ServerGroupService {
             }
         }
         Page<MgServerGroup> mgServerGroups = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
         if (key == null) {
             //TODO 전체조회
             mgServerGroups = mgServerGroupRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
@@ -70,12 +74,17 @@ public class ServerGroupService {
                     mgServerGroups = mgServerGroupRepository.findAllByMonGroupIdAndDescriptionLike(monitoringGroupId, pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
         PagingResVo<MgServerGroupDto> resPage = new PagingResVo<MgServerGroupDto>(mgServerGroups, false);
 
         List<MgServerGroup> content = mgServerGroups.getContent();
+        if(logger.isDebugEnabled()){
+            logger.debug("content : {}", content);
+        }
 
         for(MgServerGroup mgServerGroup : content){
             MgServerGroupDto mgServerGroupDto = new MgServerGroupDto();
@@ -107,8 +116,17 @@ public class ServerGroupService {
         mg.setMonitoringYn(mgServerGroup.getMonitoringYn());
 
         MgServerGroup result = mgServerGroupRepository.save(mg);
+        if(logger.isDebugEnabled()){
+            logger.debug("result : {}", result);
+        }
 
-       ServerType serverType = serverTypeRepository.findById(result.getServerTypeId());
+        ServerType serverType = serverTypeRepository.findById(result.getServerTypeId());
+        if(logger.isDebugEnabled()){
+            logger.debug("serverType : {}", serverType);
+        }
+        if(serverType == null) {
+            throw new BusinessException("noFindServerType");
+        }
         Collection<Measurement> measurements = serverType.getMeasurements();
         for(Measurement measurement : measurements) {
             Collection<Metric> metrics = measurement.getMetrics();
@@ -144,6 +162,9 @@ public class ServerGroupService {
     public MgServerGroupDto getServerGroup(Integer monitoringGroupId, Integer serverGroupId) {
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgServerGroup : {}", mgServerGroup);
+        }
 
         MgServerGroupDto mgServerGroupDto = new MgServerGroupDto();
         mgServerGroupDto.setId(serverGroupId);
@@ -161,6 +182,9 @@ public class ServerGroupService {
     public MgServerGroup updateServerGroup(Integer monitoringGroupId, Integer serverGroupId, MgServerGroup mgServerGroup) {
 
         MgServerGroup updateServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("updateServerGroup : {}", updateServerGroup);
+        }
 
         updateServerGroup.setName(mgServerGroup.getName());
         updateServerGroup.setServerTypeId(mgServerGroup.getServerTypeId());
@@ -181,6 +205,9 @@ public class ServerGroupService {
     public Collection<Measurement> getServerGroupMeasurements(Integer monitoringGroupId, Integer serverGroupId) {
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgServerGroup : {}", mgServerGroup);
+        }
         Integer serverTypeId = mgServerGroup.getServerTypeId();
 
         ServerType serverType = serverTypeRepository.findById(serverTypeId);
@@ -192,6 +219,9 @@ public class ServerGroupService {
     public void insertServerGroupMeasurement(Integer monitoringGroupId, Integer serverGroupId, Integer[] measurementIds){
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgServerGroup : {}", mgServerGroup);
+        }
         Integer serverTypeId = mgServerGroup.getServerTypeId();
 
         for(Integer measurementId : measurementIds) {
@@ -206,6 +236,9 @@ public class ServerGroupService {
     public void deleteServerGroupMeasurements(Integer monitoringGroupId, Integer serverGroupId, Integer[] measurementIds) {
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgServerGroup : {}", mgServerGroup);
+        }
         Integer serverTypeId = mgServerGroup.getServerTypeId();
 
         serverTypeMeasurementMapRepository.deleteByServerTypeIdAndMeasurementIdIn(serverTypeId, measurementIds);
@@ -214,6 +247,9 @@ public class ServerGroupService {
     public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(Integer monitoringGroupId, Integer serverGroupId) {
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findById(serverGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgServerGroup : {}", mgServerGroup);
+        }
         Collection<MgServerGroupCriticalValue> mgServerGroupCriticalValues = mgServerGroup.getMgServerGroupCriticalValues();
 
         return mgServerGroupCriticalValues;
@@ -250,6 +286,9 @@ public class ServerGroupService {
     public Collection<MgServer> getServerGroupServerResource(Integer monitoringGroupId, Integer serverGroupId) {
 
         MgServerGroup mgServerGroup = mgServerGroupRepository.findByMonGroupIdAndId(monitoringGroupId, serverGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgServerGroup : {}", mgServerGroup);
+        }
 
         Collection<MgServer> mgServers = mgServerGroup.getMgServers();
 

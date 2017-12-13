@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -11,6 +12,8 @@ import com.crossent.monitoring.portal.jpa.repository.MeasurementRepository;
 import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
 import com.crossent.monitoring.portal.system.mng.dto.MeasurementDto;
 import com.crossent.monitoring.portal.system.mng.dto.MetricDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ import java.util.*;
 
 @Service
 public class AppInfoService {
+
+    private static Logger logger = LoggerFactory.getLogger(AppInfoService.class);
 
     @Autowired
     AppInfoRepository appInfoRepository;
@@ -47,6 +52,9 @@ public class AppInfoService {
             }
         }
         Page<AppInfo> appInfos = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if(key == null){
             //TODO 전체조회
             appInfos = appInfoRepository.findAll(pagingReqVo.toPagingRequest());
@@ -62,12 +70,15 @@ public class AppInfoService {
                     appInfos = appInfoRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
         if(appInfos != null) {
             resPage = new PagingResVo<AppInfoDto>(appInfos, false);
             List<AppInfo> content = appInfos.getContent();
+            logger.debug("content : {}", content);
 
             List<AppInfoDto> appInfoDtos = new ArrayList<AppInfoDto>();
             for(AppInfo appInfo : content){
@@ -91,6 +102,7 @@ public class AppInfoService {
                 appInfoDtos.add(appInfoDto);
             }
             resPage.setList(appInfoDtos);
+            logger.debug("resPage : {}", resPage);
         }
 
         return resPage;
@@ -104,19 +116,7 @@ public class AppInfoService {
         inAppInfo.setDescription(appInfo.getDescription());
 
         AppInfo result = appInfoRepository.save(inAppInfo);
-
-        /*List<MeasurementDto> measurements = appInfo.getMeasurements();
-        for(MeasurementDto measurementDto : measurements){
-
-            AppInfoMeasurementMap appInfoMeasurementMap = new AppInfoMeasurementMap();
-            appInfoMeasurementMap.setAppInfoId(result.getId());
-            appInfoMeasurementMap.setMeasurementId(measurementDto.getId());
-
-            appInfoMeasurementMapRepository.save(appInfoMeasurementMap);
-        }*/
-
     }
-
 
     public void deleteAppInfos(Integer[] appInfoIds) {
 
@@ -126,6 +126,12 @@ public class AppInfoService {
     public AppInfo getAppInfo(Integer appInfoId) {
 
         AppInfo appInfo = appInfoRepository.findOne(appInfoId);
+        if(logger.isDebugEnabled()){
+            logger.debug("appInfo : {}", appInfo);
+        }
+        if(appInfo == null) {
+            throw new BusinessException("noFindAppInfo");
+        }
 
         AppInfo out = new AppInfo();
         out.setId(appInfo.getId());
@@ -138,9 +144,9 @@ public class AppInfoService {
     public AppInfo updateAppInfo(Integer appInfoId, AppInfo appInfo){
 
         AppInfo getData = appInfoRepository.findOne(appInfoId);
-
+        logger.debug("getData: {}", getData);
         if(getData == null) {
-            return null;
+            throw new BusinessException("noFindAppInfo");
         }
         getData.setName(appInfo.getName());
         getData.setDescription(appInfo.getDescription());
@@ -158,7 +164,14 @@ public class AppInfoService {
     public Collection<Measurement> getAppInfoMeasurements(Integer appInfoId){
 
         AppInfo appInfo = appInfoRepository.findById(appInfoId);
+        if(logger.isDebugEnabled()){
+            logger.debug("appInfo : {}", appInfo);
+        }
+        if(appInfo == null) {
+            throw new BusinessException("noFindAppInfo");
+        }
         Collection<Measurement> measurements = appInfo.getMeasurements();
+        logger.debug("measurements: {}", measurements);
 
         return measurements;
     }
@@ -248,6 +261,9 @@ public class AppInfoService {
     public Collection<AppInfoCriticalValue> getAppInfoMeasurementMetrics(Integer appInfoId, Integer measurementId) {
 
         Collection<AppInfoCriticalValue> appInfoCriticalValues = appInfoCriticalValueRepository.findAllByAppInfoIdAndMeasurementId(appInfoId, measurementId);
+        if(logger.isDebugEnabled()){
+            logger.debug("appInfoCriticalValues : {}", appInfoCriticalValues);
+        }
 
         return  appInfoCriticalValues;
     }

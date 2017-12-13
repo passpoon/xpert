@@ -2,6 +2,7 @@ package com.crossent.monitoring.portal.system.mng.service;
 
 import com.crossent.monitoring.portal.common.constants.Constants;
 import com.crossent.monitoring.portal.common.constants.MgGroupUserType;
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -18,6 +19,7 @@ import java.util.*;
 
 @Service
 public class MonitorGroupService {
+
     private static Logger logger = LoggerFactory.getLogger(MonitorGroupService.class);
 
     @Autowired
@@ -73,6 +75,9 @@ public class MonitorGroupService {
             }
         }
         Page<MonGroup> monGroups = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if (key == null) {
             //TODO 전체조회
             monGroups = monGroupRepository.findAll(pagingReqVo.toPagingRequest());
@@ -86,6 +91,8 @@ public class MonitorGroupService {
                     monGroups = monGroupRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -111,6 +118,12 @@ public class MonitorGroupService {
     public MonGroup getMonGroup(Integer monitoringGroupId) {
 
         MonGroup monGroup = monGroupRepository.findOne(monitoringGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("monGroup : {}", monGroup);
+        }
+        if(monGroup == null) {
+            throw new BusinessException("noFindMonGroup");
+        }
 
         MonGroup out = new MonGroup();
         out.setId(monitoringGroupId);
@@ -123,10 +136,13 @@ public class MonitorGroupService {
     public MonGroup updateMonGroup(Integer monitoringGroupId, MonGroup monGroup) {
 
         MonGroup getData = monGroupRepository.findOne(monitoringGroupId);
-
-        if (getData == null) {
-            return null;
+        if(logger.isDebugEnabled()){
+            logger.debug("MonGroup : {}", getData);
         }
+        if(getData == null) {
+            throw new BusinessException("noFindMonGroup");
+        }
+
         getData.setName(monGroup.getName());
         getData.setDescription(monGroup.getDescription());
 
@@ -144,27 +160,44 @@ public class MonitorGroupService {
     public Collection<ServerResource> getMonGroupServers(Integer monitoringGroupId) {
 
         MonGroup monGroup = monGroupRepository.findOne(monitoringGroupId);
-        logger.debug("monGroup ID get :: {}", monGroup);
+        if(logger.isDebugEnabled()){
+            logger.debug("monGroup : {}", monGroup);
+        }
+        if(monGroup == null) {
+            throw new BusinessException("noFindMonGroup");
+        }
+
         Collection<ServerResource> serverResources = monGroup.getServerResource();
-        logger.debug("serverResources ::: {}", serverResources);
+        if(logger.isDebugEnabled()){
+            logger.debug("serverResources : {}", serverResources);
+        }
 
         return serverResources;
     }
 
     public void insertMonGroupServers(Integer monitoringGroupId, Integer[] serverResourceIds) {
 
-        // 다른 데이터가 null이기 때문에 추후에 모니터링 영역에서 셋팅하는 부분임
         for (Integer resourceId : serverResourceIds) {
             MgServer mgServer = new MgServer();
             mgServer.setMonGroupId(monitoringGroupId);
             mgServer.setServerResourceId(resourceId);
 
             MgServer groupMap = mgServerRepository.save(mgServer);
-            logger.debug("groupMap :: {}", groupMap);
-
+            if(logger.isDebugEnabled()) {
+                logger.debug("groupMap :: {}", groupMap);
+            }
 //          ServerResource serverResource = groupMap.getServerResource();
             ServerResource serverResource = serverResourceRepository.findById(groupMap.getServerResourceId());
+            if(logger.isDebugEnabled()) {
+                logger.debug("serverResource :: {}", serverResource);
+            }
+            if(serverResource == null) {
+                throw new BusinessException("noFindServerResource");
+            }
             ServerType serverType = serverResource.getServerType();
+            if(logger.isDebugEnabled()) {
+                logger.debug("serverType :: {}", serverType);
+            }
             Collection<Measurement> measurements = serverType.getMeasurements();
             for(Measurement measurement : measurements) {
                 Collection<Metric> metrics = measurement.getMetrics();
@@ -178,6 +211,12 @@ public class MonitorGroupService {
                     serverTypeCriticalValuePK.setMetricId(id);
 
                     ServerTypeCriticalValue serverTypeCriticalValue = serverTypeCriticalValueRepository.findOne(serverTypeCriticalValuePK);
+                    if(logger.isDebugEnabled()) {
+                        logger.debug("serverTypeCriticalValue :: {}", serverTypeCriticalValue);
+                    }
+                    if(serverTypeCriticalValue == null) {
+                        throw new BusinessException("noFindServerTypeCriticalValue");
+                    }
                     if(serverTypeCriticalValue != null) {
                         MgServerCriticalValue mgServerCriticalValue = new MgServerCriticalValue();
                         mgServerCriticalValue.setMonGroupId(monitoringGroupId);
@@ -185,6 +224,7 @@ public class MonitorGroupService {
                         mgServerCriticalValue.setMetricId(id);
                         mgServerCriticalValue.setWarning(serverTypeCriticalValue.getWarning());
                         mgServerCriticalValue.setCritical(serverTypeCriticalValue.getCritical());
+
                         mgServerCriticalValueRepository.save(mgServerCriticalValue);
                     }
                 }
@@ -218,7 +258,16 @@ public class MonitorGroupService {
     public Collection<AppResource> getMonGroupApps(Integer monitoringGroupId) {
 
         MonGroup monGroup = monGroupRepository.findOne(monitoringGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("monGroup : {}", monGroup);
+        }
+        if(monGroup == null) {
+            throw new BusinessException("noFindMonGroup");
+        }
         Collection<AppResource> appResources = monGroup.getAppResource();
+        if(logger.isDebugEnabled()){
+            logger.debug("appResources : {}", appResources);
+        }
 
         return appResources;
     }
@@ -231,9 +280,22 @@ public class MonitorGroupService {
             mgApp.setAppResourceId(appId);
 
             MgApp groupMap = mgAppRepository.save(mgApp);
+            if(logger.isDebugEnabled()){
+                logger.debug("groupMap : {}", groupMap);
+            }
 
             AppResource appResource = appResourceRepository.findById(groupMap.getAppResourceId());
+            if(logger.isDebugEnabled()) {
+                logger.debug("appResource :: {}", appResource);
+            }
+            if(appResource == null) {
+                throw new BusinessException("noFindAppResource");
+            }
+
             AppInfo appInfo = appResource.getAppInfo();
+            if(logger.isDebugEnabled()) {
+                logger.debug("appInfo :: {}", appInfo);
+            }
             Collection<Measurement> measurements = appInfo.getMeasurements();
             for (Measurement measurement : measurements) {
                 Collection<Metric> metrics = measurement.getMetrics();
@@ -282,16 +344,20 @@ public class MonitorGroupService {
     public Collection<MgUserDto> getMonGroupManagers(Integer monitoringGroupId) {
 
         Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, MgGroupUserType.MANAGER.getCode());
-
+        if(logger.isDebugEnabled()){
+            logger.debug("mgUsers : {}", mgUsers);
+        }
+        if(mgUsers == null) {
+            throw new BusinessException("noFindMgUserManager");
+        }
         Collection<MgUserDto> mgUserDtos = new ArrayList<MgUserDto>();
 
         for (MgUser mgUser : mgUsers) {
             MgUserDto mgUserDto = new MgUserDto();
+
             mgUserDto.setUserId(mgUser.getUserId());
-            logger.debug("mgUserDto.setUserId(mgUser.getUserId()) :: {}", mgUser.getUserId());
             mgUserDto.setUserName(mgUser.getUser().getName());
 
-            logger.debug("mgUserDto :: {}", mgUserDto);
             mgUserDtos.add(mgUserDto);
         }
         return mgUserDtos;
@@ -323,7 +389,12 @@ public class MonitorGroupService {
     public Collection<MgUserDto> getMonGroupOperators(Integer monitoringGroupId) {
 
         Collection<MgUser> mgUsers = mgUserRepository.findAllByMonGroupIdAndTypeCodeCode(monitoringGroupId, MgGroupUserType.OPERRATOR.getCode());
-
+        if(logger.isDebugEnabled()){
+            logger.debug("mgUsers : {}", mgUsers);
+        }
+        if(mgUsers == null) {
+            throw new BusinessException("noFindMgUserOperator");
+        }
         Collection<MgUserDto> mgUserDtos = new ArrayList<MgUserDto>();
 
         for (MgUser mgUser : mgUsers) {

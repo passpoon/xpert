@@ -1,10 +1,13 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.ServerResource;
 import com.crossent.monitoring.portal.jpa.repository.ServerResourceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -15,6 +18,8 @@ import java.util.Map;
 
 @Service
 public class ServerResourceService {
+
+    private static Logger logger = LoggerFactory.getLogger(ServerResourceService.class);
 
     @Autowired
     ServerResourceRepository serverResourceRepository;
@@ -33,6 +38,9 @@ public class ServerResourceService {
             }
         }
         Page<ServerResource> serverResources = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if (key == null) {
             //TODO 전체조회
             serverResources = serverResourceRepository.findAll(pagingReqVo.toPagingRequest());
@@ -54,6 +62,8 @@ public class ServerResourceService {
                     serverResources = serverResourceRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -82,16 +92,22 @@ public class ServerResourceService {
 
     public ServerResource getServerResource(Integer serverResourceId) {
 
-        ServerResource resource = serverResourceRepository.findOne(serverResourceId);
+        ServerResource serverResource = serverResourceRepository.findOne(serverResourceId);
+        if(logger.isDebugEnabled()) {
+            logger.debug("serverResource :: {}", serverResource);
+        }
+        if(serverResource == null) {
+            throw new BusinessException("noFindServerResource");
+        }
 
         ServerResource out = new ServerResource();
-        out.setId(resource.getId());
-        out.setName(resource.getName());
-        out.setHostName(resource.getHostName());
-        out.setIp(resource.getIp());
-        out.setServerTypeId(resource.getServerTypeId());
-        out.setUuid(resource.getUuid());
-        out.setDescription(resource.getDescription());
+        out.setId(serverResource.getId());
+        out.setName(serverResource.getName());
+        out.setHostName(serverResource.getHostName());
+        out.setIp(serverResource.getIp());
+        out.setServerTypeId(serverResource.getServerTypeId());
+        out.setUuid(serverResource.getUuid());
+        out.setDescription(serverResource.getDescription());
 
         return out;
     }
@@ -99,10 +115,13 @@ public class ServerResourceService {
     public ServerResource updateServerResource(Integer serverResourceId, ServerResource serverResource) {
 
         ServerResource getData = serverResourceRepository.findOne(serverResourceId);
-
-        if (getData == null) {
-            return null;
+        if(logger.isDebugEnabled()) {
+            logger.debug("getData :: {}", getData);
         }
+        if(getData == null) {
+            throw new BusinessException("noFindServerResource");
+        }
+
         getData.setName(serverResource.getName());
         getData.setHostName(serverResource.getHostName());
         getData.setIp(serverResource.getIp());

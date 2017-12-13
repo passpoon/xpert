@@ -1,11 +1,14 @@
 package com.crossent.monitoring.portal.mongroup.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.*;
 import com.crossent.monitoring.portal.jpa.repository.*;
 import com.crossent.monitoring.portal.mongroup.mng.dto.MgAppDto;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import java.util.*;
 
 @Service
 public class ApplicationService {
+
+    private static Logger logger = LoggerFactory.getLogger(ApplicationService.class);
 
     @Autowired
     MgAppRepository mgAppRepository;
@@ -44,6 +49,8 @@ public class ApplicationService {
             }
         }
         Page<MgApp> mgApps = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
         if (key == null) {
             //TODO 전체조회
             mgApps = mgAppRepository.findAllByMonGroupId(pagingReqVo.toPagingRequest(), monitoringGroupId);
@@ -53,12 +60,17 @@ public class ApplicationService {
                     mgApps = mgAppRepository.findAllByMonGroupIdAndAppResource_NameLike(monitoringGroupId, pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
         PagingResVo<MgAppDto> resPage = new PagingResVo<MgAppDto>(mgApps, false);
 
         List<MgApp> content = mgApps.getContent();
+        if(logger.isDebugEnabled()){
+            logger.debug("content : {}", content);
+        }
 
         for(MgApp mgApp : content){
             MgAppDto mgAppDto = new MgAppDto();
@@ -78,6 +90,9 @@ public class ApplicationService {
     public MgApp updateMonApp(Integer monitoringGroupId, Integer appResourceId, MgApp mgApp) {
 
         MgApp updateApp = mgAppRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
+        if(logger.isDebugEnabled()){
+            logger.debug("updateApp : {}", updateApp);
+        }
 
         updateApp.setMonitoringYn(mgApp.getMonitoringYn());
         updateApp.setDashboardYn(mgApp.getDashboardYn());
@@ -91,6 +106,9 @@ public class ApplicationService {
     public Collection<Measurement> getMonAppMeasurements(Integer monitoringGroupId, Integer appResourceId) {
 
         AppResource appResource = appResourceRepository.findById(appResourceId);
+        if(logger.isDebugEnabled()){
+            logger.debug("appResource : {}", appResource);
+        }
         Integer appInfoId = appResource.getAppInfoId();
 
         AppInfo appInfo = appInfoRepository.findById(appInfoId);
@@ -103,6 +121,9 @@ public class ApplicationService {
     public void insertMonAppMeasurement(Integer monitoringGroupId, Integer appResourceId, Integer[] measurementIds){
 
         AppResource appResource = appResourceRepository.findById(appResourceId);
+        if(logger.isDebugEnabled()){
+            logger.debug("appResource : {}", appResource);
+        }
         Integer appInfoId = appResource.getAppInfoId();
 
         for(Integer measurementId : measurementIds) {
@@ -118,6 +139,9 @@ public class ApplicationService {
     public void deleteMonAppMeasurements(Integer monitoringGroupId, Integer appResourceId, Integer[] measurementIds) {
 
         AppResource appResource = appResourceRepository.findById(appResourceId);
+        if(logger.isDebugEnabled()){
+            logger.debug("appResource : {}", appResource);
+        }
         Integer appInfoId = appResource.getAppInfoId();
 
         appInfoMeasurementMapRepository.deleteByAppInfoIdAndMeasurementIdIn(appInfoId, measurementIds);
@@ -126,6 +150,9 @@ public class ApplicationService {
     public Collection<MgAppCriticalValue> getMonAppMetrics(Integer monitoringGroupId, Integer appResourceId) {
 
         MgApp mgApp = mgAppRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
+        if(logger.isDebugEnabled()){
+            logger.debug("mgApp : {}", mgApp);
+        }
 
         Collection<MgAppCriticalValue> mgAppCriticalValues = mgApp.getMgAppCriticalValues();
 

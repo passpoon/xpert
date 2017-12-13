@@ -1,10 +1,13 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
 import com.crossent.monitoring.portal.jpa.domain.Manual;
 import com.crossent.monitoring.portal.jpa.repository.ManualRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import java.util.Map;
 
 @Service
 public class ManualService {
+
+    private static Logger logger = LoggerFactory.getLogger(ManualService.class);
 
     @Autowired
     ManualRepository manualRepository;
@@ -32,6 +37,9 @@ public class ManualService {
             }
         }
         Page<Manual> manuals = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if (key == null) {
             //TODO 전체조회
             manuals = manualRepository.findAll(pagingReqVo.toPagingRequest());
@@ -49,6 +57,8 @@ public class ManualService {
                     manuals = manualRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -64,7 +74,7 @@ public class ManualService {
         in.setLink(manual.getLink());
         in.setDescription(manual.getDescription());
 
-        Manual resUser = manualRepository.save(in);
+        Manual result = manualRepository.save(in);
     }
 
     public void deleteManuals(Integer[] manualIds) {
@@ -75,6 +85,12 @@ public class ManualService {
     public Manual getManual(Integer manualId) {
 
         Manual manual = manualRepository.findOne(manualId);
+        if(logger.isDebugEnabled()){
+            logger.debug("manual : {}", manual);
+        }
+        if(manual == null) {
+            throw new BusinessException("noFindManual");
+        }
 
         Manual out = new Manual();
         out.setId(manual.getId());
@@ -88,9 +104,11 @@ public class ManualService {
     public Manual updateManual(Integer manualId, Manual manual) {
 
         Manual getData = manualRepository.findOne(manualId);
-
-        if (getData == null) {
-            return null;
+        if(logger.isDebugEnabled()){
+            logger.debug("manual : {}", manual);
+        }
+        if(manual == null) {
+            throw new BusinessException("noFindManual");
         }
         getData.setName(manual.getName());
         getData.setLink(manual.getLink());

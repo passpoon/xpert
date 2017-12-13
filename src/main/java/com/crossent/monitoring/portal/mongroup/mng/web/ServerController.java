@@ -40,13 +40,13 @@ public class ServerController extends BaseController {
     public PagingResVo pagingMonServer(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("paging", paging);
-            logger.debug("search", search);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
         }
         PagingResVo<MgServerDto> resPage = serverService.pagingServer(monitoringGroupId, paging, search);
         if(logger.isDebugEnabled()) {
-            logger.debug("resPage", resPage);
+            logger.debug("resPage : {}", resPage);
         }
         return resPage;
     }
@@ -62,9 +62,9 @@ public class ServerController extends BaseController {
     public void updateMonServer(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestBody MgServer mgServer) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
-            logger.debug("mgServer", mgServer);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("mgServer : {}", mgServer);
         }
         serverService.updateServer(monitoringGroupId, serverResourceId, mgServer);
 
@@ -79,12 +79,12 @@ public class ServerController extends BaseController {
     public Collection<Measurement> getMonServerMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
         }
         Collection<Measurement> measurements = serverService.getMonServerMeasurements(monitoringGroupId, serverResourceId);
         if(logger.isDebugEnabled()) {
-            logger.debug("measurements", measurements);
+            logger.debug("measurements : {}", measurements);
         }
         return measurements;
     }
@@ -100,9 +100,9 @@ public class ServerController extends BaseController {
     public void insertMonServerMeasurement(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestBody Integer[] measurementIds){
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
-            logger.debug("measurementIds", Arrays.toString(measurementIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
         }
         serverService.insertMonServerMeasurement(monitoringGroupId, serverResourceId, measurementIds);
     }
@@ -118,9 +118,9 @@ public class ServerController extends BaseController {
     public void deleteMonServerMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestParam Integer[] measurementIds) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
-            logger.debug("measurementIds", Arrays.toString(measurementIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
         }
         serverService.deleteMonServerMeasurements(monitoringGroupId, serverResourceId, measurementIds);
     }
@@ -134,30 +134,30 @@ public class ServerController extends BaseController {
     public Collection<MgServerCriticalValue> getMonServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
         }
         Collection<MgServerCriticalValue> serverMetrics = serverService.getMonServerMetrics(monitoringGroupId, serverResourceId);
         if(logger.isDebugEnabled()) {
-            logger.debug("serverMetrics", serverMetrics);
+            logger.debug("serverMetrics : {}", serverMetrics);
         }
         return serverMetrics;
     }
 
     @ApiOperation(value = "관리 서버 메트릭 추가")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
-            @ApiImplicitParam(name = "metricIds", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "body"),
+            @ApiImplicitParam(name = "monitoringGroupId : {}", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "serverResourceId : {}", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "metricIds : {}", value = "메트릭 ID 목록", required = true, dataType = "string", paramType = "body"),
     })
     @Transactional
     @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server/servers/{serverResourceId}/metrics" , method = RequestMethod.POST)
     public void insertMonServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestBody Integer[] metricIds){
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
-            logger.debug("metricIds", Arrays.toString(metricIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
         }
         serverService.insertMonServerMetrics(monitoringGroupId, serverResourceId, metricIds);
     }
@@ -174,10 +174,10 @@ public class ServerController extends BaseController {
     public void updateMonServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @PathVariable Integer metricId, @RequestBody MgServerCriticalValue mgServerCriticalValue) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
-            logger.debug("metricId", metricId);
-            logger.debug("mgServerCriticalValue", mgServerCriticalValue);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("metricId : {}", metricId);
+            logger.debug("mgServerCriticalValue : {}", mgServerCriticalValue);
         }
         serverService.updateMonServerMetrics(monitoringGroupId, serverResourceId, metricId, mgServerCriticalValue);
     }
@@ -193,9 +193,9 @@ public class ServerController extends BaseController {
     public void deleteMonServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @RequestParam Integer[] metricIds) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("serverResourceId", serverResourceId);
-            logger.debug("metricIds", Arrays.toString(metricIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
         }
         serverService.deleteMonServerMetrics(monitoringGroupId, serverResourceId, metricIds);
     }

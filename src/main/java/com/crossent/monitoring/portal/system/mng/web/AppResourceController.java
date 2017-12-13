@@ -11,13 +11,18 @@ import com.crossent.monitoring.portal.system.mng.service.ServerResourceService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 
 @RestController
-public class AppResourceController extends BaseController{
+public class AppResourceController extends BaseController {
+
+    private static Logger logger = LoggerFactory.getLogger(AppResourceController.class);
 
     @Autowired
     AppResourceService appResourceService;
@@ -30,8 +35,14 @@ public class AppResourceController extends BaseController{
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.GET)
     public PagingResVo pagingAppResource(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
+        }
         PagingResVo<AppResource> resPage = appResourceService.pagingAppResource(paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage : {}", resPage);
+        }
         return resPage;
     }
 
@@ -43,6 +54,9 @@ public class AppResourceController extends BaseController{
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.POST)
     public void insertAppResource(@RequestBody AppResource appResource){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appResource : {}", appResource);
+        }
         appResourceService.insertAppResource(appResource);
     }
 
@@ -54,6 +68,9 @@ public class AppResourceController extends BaseController{
     @RequestMapping(value = "/system/management/apps", method = RequestMethod.DELETE)
     public void deleteAppResources(@RequestParam Integer[] appResourceIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appResourceIds : {}", Arrays.toString(appResourceIds));
+        }
         appResourceService.deleteAppResources(appResourceIds);
     }
 
@@ -64,8 +81,13 @@ public class AppResourceController extends BaseController{
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.GET)
     public AppResource getAppResource(@PathVariable Integer appResourceId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appResourceId : {}", appResourceId);
+        }
         AppResource getResource =  appResourceService.getAppResource(appResourceId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("getResource : {}", getResource);
+        }
         return getResource;
     }
 
@@ -78,6 +100,10 @@ public class AppResourceController extends BaseController{
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.PUT)
     public void updateAppResource(@PathVariable Integer appResourceId, @RequestBody AppResource appResource){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("appResource : {}", appResource);
+        }
         appResourceService.updateAppResource(appResourceId, appResource);
     }
 
@@ -89,6 +115,9 @@ public class AppResourceController extends BaseController{
     @RequestMapping(value = "/system/management/apps/{appResourceId}", method = RequestMethod.DELETE)
     public void deleteAppResourceResource(@PathVariable Integer appResourceId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appResourceId : {}", appResourceId);
+        }
         appResourceService.deleteAppResourceResource(appResourceId);
     }
 }

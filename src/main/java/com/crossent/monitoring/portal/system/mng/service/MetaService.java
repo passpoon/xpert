@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -11,6 +12,8 @@ import com.crossent.monitoring.portal.jpa.repository.ManualRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetaManualMapRepository;
 import com.crossent.monitoring.portal.jpa.repository.MetaRepository;
 import com.crossent.monitoring.portal.jpa.repository.StateCodeRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,8 @@ import java.util.Map;
 
 @Service
 public class MetaService {
+
+    private static Logger logger = LoggerFactory.getLogger(MetaService.class);
 
     @Autowired
     MetaRepository metaRepository;
@@ -48,6 +53,9 @@ public class MetaService {
             }
         }
         Page<Meta> metas = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if (key == null) {
             //TODO 전체조회
             metas = metaRepository.findAll(pagingReqVo.toPagingRequest());
@@ -69,6 +77,8 @@ public class MetaService {
                     metas = metaRepository.findByStateCodeLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -87,7 +97,7 @@ public class MetaService {
         in.setPattern(meta.getPattern());
         in.setStateCodeId(meta.getStateCodeId());
 
-        Meta resUser = metaRepository.save(in);
+        Meta result = metaRepository.save(in);
     }
 
     public void deleteMetas(Integer[] metaIds) {
@@ -98,6 +108,12 @@ public class MetaService {
     public Meta getMeta(Integer metaId) {
 
         Meta meta = metaRepository.findOne(metaId);
+        if(logger.isDebugEnabled()){
+            logger.debug("meta : {}", meta);
+        }
+        if(meta == null) {
+            throw new BusinessException("noFindMeta");
+        }
 
         Meta out = new Meta();
         out.setId(meta.getId());
@@ -114,9 +130,11 @@ public class MetaService {
     public Meta updateMeta(Integer metaId, Meta meta) {
 
         Meta getData = metaRepository.findOne(metaId);
-
-        if (getData == null) {
-            return null;
+        if(logger.isDebugEnabled()){
+            logger.debug("Meta : {}", getData);
+        }
+        if(getData == null) {
+            throw new BusinessException("noFindMeta");
         }
         getData.setProg(meta.getProg());
         getData.setStateCodeId(meta.getStateCodeId());
@@ -138,7 +156,17 @@ public class MetaService {
     public Collection<Manual> getMetaManuals(Integer metaId){
 
         Meta meta = metaRepository.findById(metaId);
+        if(logger.isDebugEnabled()){
+            logger.debug("meta : {}", meta);
+        }
+        if(meta == null) {
+            throw new BusinessException("noFindMeta");
+        }
+
         Collection<Manual> manuals = meta.getManuals();
+        if(logger.isDebugEnabled()){
+            logger.debug("manuals : {}", manuals);
+        }
 
         return manuals;
     }

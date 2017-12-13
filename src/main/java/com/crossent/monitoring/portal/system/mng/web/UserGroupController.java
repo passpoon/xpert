@@ -21,7 +21,9 @@ import java.util.Collection;
 
 @RestController
 public class UserGroupController extends BaseController {
+
     private static Logger logger = LoggerFactory.getLogger(UserGroupController.class);
+
     @Autowired
     UserGroupService userGroupService;
 
@@ -33,8 +35,14 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups", method = RequestMethod.GET)
     public PagingResVo pagingUserGroup(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
+        }
         PagingResVo<UserGroup> resPage = userGroupService.pagingUserGroup(paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage : {}", resPage);
+        }
         return resPage;
     }
 
@@ -46,6 +54,9 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups", method = RequestMethod.POST)
     public void insertUserGroup(@RequestBody UserGroup userGroup){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroup : {}", userGroup);
+        }
         userGroupService.insertUserGroup(userGroup);
     }
 
@@ -57,6 +68,9 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups", method = RequestMethod.DELETE)
     public void deleteUserGroups(@RequestParam String[] userGroupIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupIds : {}", Arrays.toString(userGroupIds));
+        }
         userGroupService.deleteUserGroups(userGroupIds);
     }
 
@@ -67,8 +81,13 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}", method = RequestMethod.GET)
     public UserGroup getUserGroup(@PathVariable String userGroupId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupId : {}", userGroupId);
+        }
         UserGroup getUser =  userGroupService.getUserGroup(userGroupId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("getUser : {}", getUser);
+        }
         return getUser;
     }
 
@@ -81,6 +100,10 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}", method = RequestMethod.PUT)
     public void updateUserGroup(@PathVariable String userGroupId, @RequestBody UserGroup userGroup){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupId : {}", userGroupId);
+            logger.debug("userGroup : {}", userGroup);
+        }
         userGroupService.updateUserGroup(userGroupId, userGroup);
     }
 
@@ -92,6 +115,9 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}", method = RequestMethod.DELETE)
     public void deleteUserGroup(@PathVariable String userGroupId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupId : {}", userGroupId);
+        }
         userGroupService.deleteUserGroup(userGroupId);
     }
 
@@ -102,7 +128,13 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.GET)
     public Collection<User> getUserGroupUsers(@PathVariable String userGroupId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupId : {}", userGroupId);
+        }
         Collection<User> users = userGroupService.getUserGroupUsers(userGroupId);
+        if(logger.isDebugEnabled()) {
+            logger.debug("users : {}", users);
+        }
         return users;
     }
 
@@ -114,12 +146,10 @@ public class UserGroupController extends BaseController {
     @Transactional
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.POST)
     public void insertUserGroupUsers(@PathVariable String userGroupId, @RequestBody String[] userIds){
-        /*logger.debug("userGroupId : {}", userGroupId);
-        if(userIds == null){
-            logger.debug("userIds is null");
-        }else {
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupId : {}", userGroupId);
             logger.debug("userIds : {}", Arrays.toString(userIds));
-        }*/
+        }
         userGroupService.insertUserGroupUsers(userGroupId, userIds);
     }
 
@@ -132,6 +162,10 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users" , method = RequestMethod.DELETE)
     public void deleteUserGroupUsers(@PathVariable String userGroupId, @RequestParam String[] userIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupId : {}", userGroupId);
+            logger.debug("userIds : {}", Arrays.toString(userIds));
+        }
         userGroupService.deleteUserGroupUsers(userGroupId, userIds);
     }
 
@@ -144,6 +178,10 @@ public class UserGroupController extends BaseController {
     @RequestMapping(value = "/system/management/user-groups/{userGroupId}/users/{userId}" , method = RequestMethod.DELETE)
     public void deleteUserGroupUser(@PathVariable String userGroupId, @PathVariable String userId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("userGroupId : {}", userGroupId);
+            logger.debug("userId : {}", userId);
+        }
         userGroupService.deleteUserGroupUser(userGroupId, userId);
     }
 

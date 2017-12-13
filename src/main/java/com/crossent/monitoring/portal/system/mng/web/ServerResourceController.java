@@ -9,14 +9,19 @@ import com.crossent.monitoring.portal.system.mng.service.ServerResourceService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collection;
 
 @RestController
-public class ServerResourceController extends BaseController{
+public class ServerResourceController extends BaseController {
+
+    private static Logger logger = LoggerFactory.getLogger(ServerResourceController.class);
 
     @Autowired
     ServerResourceService serverResourceService;
@@ -29,8 +34,14 @@ public class ServerResourceController extends BaseController{
     @RequestMapping(value = "/system/management/servers", method = RequestMethod.GET)
     public PagingResVo pagingServerResource(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
+        }
         PagingResVo<ServerResource> resPage = serverResourceService.pagingServerResource(paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage : {}", resPage);
+        }
         return resPage;
     }
 
@@ -42,6 +53,9 @@ public class ServerResourceController extends BaseController{
     @RequestMapping(value = "/system/management/servers", method = RequestMethod.POST)
     public void insertServerResource(@RequestBody ServerResource serverResource){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("serverResource : {}", serverResource);
+        }
         serverResourceService.insertServerResource(serverResource);
     }
 
@@ -53,6 +67,9 @@ public class ServerResourceController extends BaseController{
     @RequestMapping(value = "/system/management/servers", method = RequestMethod.DELETE)
     public void deleteServerResources(@RequestParam Integer[] serverResourceIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("serverResourceIds : {}", Arrays.toString(serverResourceIds));
+        }
         serverResourceService.deleteServerResources(serverResourceIds);
     }
 
@@ -63,8 +80,13 @@ public class ServerResourceController extends BaseController{
     @RequestMapping(value = "/system/management/servers/{serverResourceId}", method = RequestMethod.GET)
     public ServerResource getServerResource(@PathVariable Integer serverResourceId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("serverResourceId : {}", serverResourceId);
+        }
         ServerResource getResource =  serverResourceService.getServerResource(serverResourceId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("getResource : {}", getResource);
+        }
         return getResource;
     }
 
@@ -77,6 +99,10 @@ public class ServerResourceController extends BaseController{
     @RequestMapping(value = "/system/management/servers/{serverResourceId}", method = RequestMethod.PUT)
     public void updateServerResource(@PathVariable Integer serverResourceId, @RequestBody ServerResource serverResource){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("serverResource : {}", serverResource);
+        }
         serverResourceService.updateServerResource(serverResourceId, serverResource);
     }
 
@@ -88,6 +114,9 @@ public class ServerResourceController extends BaseController{
     @RequestMapping(value = "/system/management/servers/{serverResourceId}", method = RequestMethod.DELETE)
     public void deleteServerResource(@PathVariable Integer serverResourceId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("serverResourceId : {}", serverResourceId);
+        }
         serverResourceService.deleteServerResource(serverResourceId);
     }
 }

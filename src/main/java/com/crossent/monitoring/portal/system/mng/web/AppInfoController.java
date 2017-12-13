@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
 import java.util.Collection;
 
 @RestController
@@ -38,8 +39,14 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos", method = RequestMethod.GET)
     public PagingResVo pagingAppInfo(@ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
+        }
         PagingResVo<AppInfoDto> resPage = appInfoService.pagingAppInfo(paging, search);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("resPage : {}", resPage);
+        }
         return resPage;
     }
 
@@ -51,6 +58,9 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos", method = RequestMethod.POST)
     public void insertAppInfo(@RequestBody AppInfo appInfo){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfo : {}", appInfo);
+        }
         appInfoService.insertAppInfo(appInfo);
     }
 
@@ -62,6 +72,9 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos", method = RequestMethod.DELETE)
     public void deleteAppInfos(@RequestParam Integer[] appInfoIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoIds : {}", Arrays.toString(appInfoIds));
+        }
         appInfoService.deleteAppInfos(appInfoIds);
     }
 
@@ -72,8 +85,13 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}", method = RequestMethod.GET)
     public AppInfo getAppInfo(@PathVariable Integer appInfoId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+        }
         AppInfo getAppInfo =  appInfoService.getAppInfo(appInfoId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("getAppInfo : {}", getAppInfo);
+        }
         return getAppInfo;
     }
 
@@ -86,6 +104,10 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}", method = RequestMethod.PUT)
     public void updateAppInfo(@PathVariable Integer appInfoId, @RequestBody AppInfo appInfo){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("appInfo : {}", appInfo);
+        }
         appInfoService.updateAppInfo(appInfoId, appInfo);
     }
 
@@ -97,6 +119,9 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}", method = RequestMethod.DELETE)
     public void deleteAppInfo(@PathVariable Integer appInfoId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+        }
         appInfoService.deleteAppInfo(appInfoId);
     }
 
@@ -107,7 +132,13 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements" , method = RequestMethod.GET)
     public Collection<Measurement> getAppInfoMeasurements(@PathVariable Integer appInfoId){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+        }
         Collection<Measurement> measurement = appInfoService.getAppInfoMeasurements(appInfoId);
+        if(logger.isDebugEnabled()) {
+            logger.debug("measurement : {}", measurement);
+        }
         return measurement;
     }
 
@@ -120,6 +151,10 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements" , method = RequestMethod.POST)
     public void insertAppInfoMeasurements(@PathVariable Integer appInfoId, @RequestBody Integer[] measurementIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
+        }
         appInfoService.insertAppInfoMeasurements(appInfoId, measurementIds);
     }
 
@@ -132,6 +167,10 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements" , method = RequestMethod.DELETE)
     public void deleteAppInfoMeasurements(@PathVariable Integer appInfoId, @RequestParam Integer[] measurementIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
+        }
         appInfoService.deleteAppInfoMeasurements(appInfoId, measurementIds);
     }
 
@@ -144,16 +183,12 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}" , method = RequestMethod.DELETE)
     public void deleteAppInfoMeasurement(@PathVariable Integer appInfoId, @PathVariable Integer measurementId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementId : {}", measurementId);
+        }
         appInfoService.deleteAppInfoMeasurement(appInfoId, measurementId);
     }
-
-    /*@RequestMapping(value = "/system/management/app-infos/{appInfoId}/critical", method = RequestMethod.GET)
-    public PagingResVo pagingAppInfoCritical(@PathVariable Integer appInfoId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
-
-        PagingResVo<MeasurementDto> resPage = appInfoService.pagingAppInfoCritical(appInfoId, paging, search);
-
-        return resPage;
-    }*/
 
     @ApiOperation(value = "시스템 관리 어플리케이션 정보 메저먼트 메트릭 조회")
     @ApiImplicitParams({
@@ -163,8 +198,14 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
     public Collection<AppInfoCriticalValue> getAppInfoMeasurementMetrics(@PathVariable Integer appInfoId, @PathVariable Integer measurementId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementId : {}", measurementId);
+        }
         Collection<AppInfoCriticalValue> appInfoCriticalValues = appInfoService.getAppInfoMeasurementMetrics(appInfoId, measurementId);
-
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoCriticalValues : {}", appInfoCriticalValues);
+        }
         return appInfoCriticalValues;
     }
 
@@ -179,6 +220,12 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}/metrics/{metricId}", method = RequestMethod.PUT)
     public void updateAppInfoCritical(@PathVariable Integer appInfoId, @PathVariable Integer measurementId, @PathVariable Integer metricId, @RequestBody AppInfoCriticalValue appInfoCriticalValue) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementId : {}", measurementId);
+            logger.debug("metricId : {}", metricId);
+            logger.debug("appInfoCriticalValue : {}", appInfoCriticalValue);
+        }
         appInfoService.updateAppInfoCritical(appInfoId, measurementId, metricId, appInfoCriticalValue);
     }
 
@@ -192,6 +239,11 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}" , method = RequestMethod.POST)
     public void insertAppInfoMeasurementMetrics(@PathVariable Integer appInfoId, @PathVariable Integer measurementId, @RequestBody Integer[] metricIds){
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementId : {}", measurementId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
+        }
         appInfoService.insertAppInfoMeasurementMetrics(appInfoId, measurementId, metricIds);
     }
 
@@ -205,6 +257,11 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}/metrics" , method = RequestMethod.DELETE)
     public void deleteAppInfoMeasurementsMetrics(@PathVariable Integer appInfoId, @PathVariable Integer measurementId, @RequestParam Integer[] metricIds) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementId : {}", measurementId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
+        }
         appInfoService.deleteAppInfoMeasurementsMetrics(appInfoId, measurementId, metricIds);
     }
 
@@ -218,6 +275,11 @@ public class AppInfoController extends BaseController {
     @RequestMapping(value = "/system/management/app-infos/{appInfoId}/measurements/{measurementId}/metrics/{metricId}" , method = RequestMethod.DELETE)
     public void deleteAppInfoMeasurementsMetric(@PathVariable Integer appInfoId, @PathVariable Integer measurementId, @PathVariable Integer metricId) {
 
+        if(logger.isDebugEnabled()) {
+            logger.debug("appInfoId : {}", appInfoId);
+            logger.debug("measurementId : {}", measurementId);
+            logger.debug("metricId : {}", metricId);
+        }
         appInfoService.deleteAppInfoMeasurementsMetrics(appInfoId, measurementId, metricId);
     }
 }

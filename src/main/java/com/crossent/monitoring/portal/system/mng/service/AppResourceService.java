@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -8,6 +9,8 @@ import com.crossent.monitoring.portal.jpa.domain.AppResource;
 import com.crossent.monitoring.portal.jpa.domain.ServerResource;
 import com.crossent.monitoring.portal.jpa.repository.AppResourceRepository;
 import com.crossent.monitoring.portal.jpa.repository.ServerResourceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import java.util.Map;
 
 @Service
 public class AppResourceService {
+
+    private static Logger logger = LoggerFactory.getLogger(AppResourceService.class);
 
     @Autowired
     AppResourceRepository appResourceRepository;
@@ -35,6 +40,9 @@ public class AppResourceService {
             }
         }
         Page<AppResource> appResources = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if (key == null) {
             //TODO 전체조회
             appResources = appResourceRepository.findAll(pagingReqVo.toPagingRequest());
@@ -48,6 +56,8 @@ public class AppResourceService {
                     appResources = appResourceRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -75,15 +85,21 @@ public class AppResourceService {
 
     public AppResource getAppResource(Integer appResourceId) {
 
-        AppResource resource = appResourceRepository.findOne(appResourceId);
+        AppResource appResource = appResourceRepository.findOne(appResourceId);
+        if(logger.isDebugEnabled()){
+            logger.debug("appResource : {}", appResource);
+        }
+        if(appResource == null) {
+            throw new BusinessException("noFindAppResource");
+        }
 
         AppResource out = new AppResource();
-        out.setId(resource.getId());
-        out.setName(resource.getName());
-        out.setAppInfo(resource.getAppInfo());
-        out.setServerResource(resource.getServerResource());
-        out.setUuid(resource.getUuid());
-        out.setDescription(resource.getDescription());
+        out.setId(appResource.getId());
+        out.setName(appResource.getName());
+        out.setAppInfo(appResource.getAppInfo());
+        out.setServerResource(appResource.getServerResource());
+        out.setUuid(appResource.getUuid());
+        out.setDescription(appResource.getDescription());
 
         return out;
     }
@@ -91,12 +107,13 @@ public class AppResourceService {
     public AppResource updateAppResource(Integer appResourceId, AppResource appResource) {
 
         AppResource getData = appResourceRepository.findOne(appResourceId);
-
-        AppInfo appInfo = new AppInfo();
-
-        if (getData == null) {
-            return null;
+        if(logger.isDebugEnabled()){
+            logger.debug("appResource : {}", appResource);
         }
+        if(appResource == null) {
+            throw new BusinessException("noFindAppResource");
+        }
+
         getData.setName(appResource.getName());
         getData.setAppInfoId(appResource.getAppInfoId());
         getData.setServerResourceId(appResource.getServerResourceId());

@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -19,6 +20,7 @@ import java.util.*;
 
 @Service
 public class ServerTypeService  {
+
     private static Logger logger = LoggerFactory.getLogger(ServerTypeService.class);
 
     @Autowired
@@ -55,6 +57,9 @@ public class ServerTypeService  {
             }
         }
         Page<ServerType> serverTypes = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if(key == null){
             //TODO 전체조회
             serverTypes = serverTypeRepository.findAll(pagingReqVo.toPagingRequest());
@@ -70,6 +75,8 @@ public class ServerTypeService  {
                     serverTypes = serverTypeRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -100,7 +107,7 @@ public class ServerTypeService  {
             }
             resPage.setList(serverTypeDtos);
         }
-        //PagingResVo<ServerTypeDto> resPage = new PagingResVo<ServerTypeDto>(serverTypes, true);
+
         return resPage;
     }
 
@@ -109,27 +116,11 @@ public class ServerTypeService  {
         ServerType inServerType = new ServerType();
         inServerType.setName(serverType.getName());
         inServerType.setDescription(serverType.getDescription());
-        //inServerType.setMeasurements(serverType.getMeasurements());
 
         ServerType result = serverTypeRepository.save(inServerType);
-
-        /*List<MeasurementDto> measurements = serverType.getMeasurements();
-        for(MeasurementDto measurementDto : measurements){
-
-            ServerTypeMeasurementMap serverTypeMeasurementMap = new ServerTypeMeasurementMap();
-            serverTypeMeasurementMap.setServerTypeId(result.getId());
-            serverTypeMeasurementMap.setMeasurementId(measurementDto.getId());
-            serverTypeMeasurementMapRepository.save(serverTypeMeasurementMap);
-        }*/
-
     }
 
     public void deleteServerTypes(Integer[] serverTypeIds) {
-
-        // 서버 리소스, map, mg_server_group 삭제
-        /*serverResourceRepository.deleteByServerTypeIdIn(serverTypeIds);
-        mgServerGroupRepository.deleteByServerTypeIdIn(serverTypeIds);
-        serverTypeMeasurementMapRepository.deleteByServerTypeIdIn(serverTypeIds);*/
 
         serverTypeRepository.deleteByIdIn(serverTypeIds);
     }
@@ -137,6 +128,12 @@ public class ServerTypeService  {
     public ServerType getServerType(Integer serverTypeId) {
 
         ServerType serverType = serverTypeRepository.findOne(serverTypeId);
+        if(logger.isDebugEnabled()){
+            logger.debug("serverType : {}", serverType);
+        }
+        if(serverType == null) {
+            throw new BusinessException("noFindServerType");
+        }
 
         ServerType out = new ServerType();
         out.setId(serverType.getId());
@@ -149,10 +146,13 @@ public class ServerTypeService  {
     public ServerType updateServerType(Integer serverTypeId, ServerType serverType) {
 
         ServerType getData = serverTypeRepository.findOne(serverTypeId);
-
-        if(getData == null) {
-            return null;
+        if(logger.isDebugEnabled()){
+            logger.debug("ServerType : {}", getData);
         }
+        if(getData == null) {
+            throw new BusinessException("noFindServerType");
+        }
+
         getData.setName(serverType.getName());
         getData.setDescription(serverType.getDescription());
 
@@ -169,7 +169,16 @@ public class ServerTypeService  {
     public Collection<Measurement> getServerTypeMeasurement(Integer serverTypeId) {
 
         ServerType serverType = serverTypeRepository.findById(serverTypeId);
+        if(logger.isDebugEnabled()){
+            logger.debug("serverType : {}", serverType);
+        }
+        if(serverType == null) {
+            throw new BusinessException("noFindServerType");
+        }
         Collection<Measurement> measurements = serverType.getMeasurements();
+        if(logger.isDebugEnabled()){
+            logger.debug("measurements : {}", measurements);
+        }
 
         return measurements;
     }
@@ -195,101 +204,15 @@ public class ServerTypeService  {
         serverTypeMeasurementMapRepository.deleteByServerTypeIdAndMeasurementId(serverTypeId, measurementId);
     }
 
-    /*public PagingResVo<MeasurementDto> pagingServerTypeCritical(Integer serverTypeId, PagingReqVo pagingReqVo, SearchReqVo searchReqVo) {
-
-        Page<ServerType> serverTypes = serverTypeRepository.findAllById(pagingReqVo.toPagingRequest(), serverTypeId);
-
-        PagingResVo<MeasurementDto> resPage = new PagingResVo<MeasurementDto>(serverTypes, false);
-
-        ServerType serverType = serverTypeRepository.findById(serverTypeId);
-
-        Collection<Measurement> measurements = serverType.getMeasurements();
-        List<MeasurementDto> measurementDtos = new ArrayList<MeasurementDto>();
-        for(Measurement measurement : measurements){
-            MeasurementDto measurementDto = new MeasurementDto();
-            measurementDto.setId(measurement.getId());
-            measurementDto.setName(measurement.getName());
-            measurementDto.setDescription(measurement.getDescription());
-
-            Collection<Metric> metrics = measurement.getMetrics();
-            List<MetricDto> metricDtos = new ArrayList<MetricDto>();
-            for(Metric metric : metrics){
-                MetricDto metricDto = new MetricDto();
-                metricDto.setId(metric.getId());
-                metricDto.setName(metric.getName());
-
-                ServerTypeCriticalValue id = serverTypeCriticalValueRepository.findAllByServerTypeIdAndMeasurementIdAndMetricId(serverTypeId, measurement.getId(), metric.getId());
-                metricDto.setWarning(id.getWarning());
-                metricDto.setCritical(id.getCritical());
-
-                metricDtos.add(metricDto);
-            }
-            measurementDto.setMetrics(metricDtos);
-            measurementDtos.add(measurementDto);
-        }
-        resPage.setList(measurementDtos);
-
-        Map<String, String> keywords = searchReqVo.getKeywords();
-        String key = null;
-        String keyword = null;
-        if (keywords != null) {
-            Iterator<String> keys = keywords.keySet().iterator();
-            while (keys.hasNext()) {
-                key = keys.next();
-                keyword = keywords.get(key);
-                keyword = "%" + keyword + "%";
-            }
-        }
-        Page<ServerType> type = null;
-        if (key == null) {
-            //TODO 전체조회
-            type = serverTypeRepository.findAll(pagingReqVo.toPagingRequest());
-        } else {
-            switch (key) {
-                case "measurementName": {
-                    type = serverTypeRepository.findAllByIdAndMeasurements_NameLike(pagingReqVo.toPagingRequest(), serverTypeId, keyword);
-                }
-                break;
-            }
-        }
-
-        return resPage;
-    }*/
-
-    /*public Collection<MeasurementDto> getServerTypeCritical(Integer serverTypeId) {
-
-        ServerType serverType = serverTypeRepository.findById(serverTypeId);
-
-        Collection<Measurement> measurements = serverType.getMeasurements();
-        List<MeasurementDto> measurementDtos = new ArrayList<MeasurementDto>();
-        for(Measurement measurement : measurements){
-            MeasurementDto measurementDto = new MeasurementDto();
-            measurementDto.setId(measurement.getId());
-            measurementDto.setName(measurement.getName());
-            measurementDto.setDescription(measurement.getDescription());
-
-            Collection<Metric> metrics = measurement.getMetrics();
-            List<MetricDto> metricDtos = new ArrayList<MetricDto>();
-            for(Metric metric : metrics){
-                MetricDto metricDto = new MetricDto();
-                metricDto.setId(metric.getId());
-                metricDto.setName(metric.getName());
-
-                ServerTypeCriticalValue id = serverTypeCriticalValueRepository.findAllByServerTypeIdAndMeasurementIdAndMetricId(serverTypeId, measurement.getId(), metric.getId());
-                metricDto.setWarning(id.getWarning());
-                metricDto.setCritical(id.getCritical());
-
-                metricDtos.add(metricDto);
-            }
-            measurementDto.setMetrics(metricDtos);
-            measurementDtos.add(measurementDto);
-        }
-        return measurementDtos;
-    }*/
-
     public Collection<ServerTypeCriticalValue> getServerTypeMeasurementMetrics(Integer serverTypeId, Integer measurementId) {
 
         Collection<ServerTypeCriticalValue> serverTypeCriticalValues = serverTypeCriticalValueRepository.findAllByServerTypeIdAndMeasurementId(serverTypeId, measurementId);
+        if(logger.isDebugEnabled()){
+            logger.debug("serverTypeCriticalValues : {}", serverTypeCriticalValues);
+        }
+        if(serverTypeCriticalValues == null) {
+            throw new BusinessException("noFindServerTypeCriticalValue");
+        }
 
         return  serverTypeCriticalValues;
     }
@@ -297,6 +220,12 @@ public class ServerTypeService  {
     public ServerTypeCriticalValue updateServerTypeCritical(Integer serverTypeId, Integer measurementId, Integer metricId, ServerTypeCriticalValue serverTypeCriticalValue) {
 
         ServerTypeCriticalValue update = serverTypeCriticalValueRepository.findByServerTypeIdAndMeasurementIdAndMetricId(serverTypeId, measurementId, metricId);
+        if(logger.isDebugEnabled()){
+            logger.debug("serverTypeCriticalValues : {}", update);
+        }
+        if(update == null) {
+            throw new BusinessException("noFindServerTypeCriticalValue");
+        }
 
         update.setWarning(serverTypeCriticalValue.getWarning());
         update.setCritical(serverTypeCriticalValue.getCritical());

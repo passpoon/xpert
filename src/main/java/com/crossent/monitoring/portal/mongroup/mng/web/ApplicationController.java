@@ -41,13 +41,13 @@ public class ApplicationController extends BaseController {
     public PagingResVo pagingMonApp(@PathVariable Integer monitoringGroupId, @ModelAttribute("paging") PagingReqVo paging, @ModelAttribute("search") SearchReqVo search) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("paging", paging);
-            logger.debug("search", search);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("paging : {}", paging);
+            logger.debug("search : {}", search);
         }
         PagingResVo<MgAppDto> resPage = applicationService.pagingMonApp(monitoringGroupId, paging, search);
         if(logger.isDebugEnabled()) {
-            logger.debug("resPage", resPage);
+            logger.debug("resPage : {}", resPage);
         }
         return resPage;
     }
@@ -63,9 +63,9 @@ public class ApplicationController extends BaseController {
     public void updateMonApp(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody MgApp mgApp) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
-            logger.debug("mgApp", mgApp);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("mgApp : {}", mgApp);
         }
         applicationService.updateMonApp(monitoringGroupId, appResourceId, mgApp);
     }
@@ -79,12 +79,12 @@ public class ApplicationController extends BaseController {
     public Collection<Measurement> getMonAppMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
         }
         Collection<Measurement> measurements = applicationService.getMonAppMeasurements(monitoringGroupId, appResourceId);
         if(logger.isDebugEnabled()) {
-            logger.debug("measurements", measurements);
+            logger.debug("measurements : {}", measurements);
         }
         return measurements;
     }
@@ -100,9 +100,9 @@ public class ApplicationController extends BaseController {
     public void insertMonAppMeasurement(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody Integer[] measurementIds){
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
-            logger.debug("measurementIds", Arrays.toString(measurementIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
         }
         applicationService.insertMonAppMeasurement(monitoringGroupId, appResourceId, measurementIds);
     }
@@ -118,9 +118,9 @@ public class ApplicationController extends BaseController {
     public void deleteMonAppMeasurements(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestParam Integer[] measurementIds) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
-            logger.debug("measurementIds", Arrays.toString(measurementIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("measurementIds : {}", Arrays.toString(measurementIds));
         }
         applicationService.deleteMonAppMeasurements(monitoringGroupId, appResourceId, measurementIds);
     }
@@ -134,12 +134,12 @@ public class ApplicationController extends BaseController {
     public Collection<MgAppCriticalValue> getMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
         }
         Collection<MgAppCriticalValue> appMetrics = applicationService.getMonAppMetrics(monitoringGroupId, appResourceId);
         if(logger.isDebugEnabled()) {
-            logger.debug("appMetrics", appMetrics);
+            logger.debug("appMetrics : {}", appMetrics);
         }
         return appMetrics;
     }
@@ -155,9 +155,9 @@ public class ApplicationController extends BaseController {
     public void insertMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestBody Integer[] metricIds){
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
-            logger.debug("metricIds", Arrays.toString(metricIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
         }
         applicationService.insertMonAppMetrics(monitoringGroupId, appResourceId, metricIds);
     }
@@ -175,10 +175,10 @@ public class ApplicationController extends BaseController {
     public void updateMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @PathVariable Integer metricId, @RequestBody MgAppCriticalValue mgAppCriticalValue) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
-            logger.debug("metricId", metricId);
-            logger.debug("mgAppCriticalValue", mgAppCriticalValue);
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("metricId : {}", metricId);
+            logger.debug("mgAppCriticalValue : {}", mgAppCriticalValue);
         }
         applicationService.updateMonAppMetrics(monitoringGroupId, appResourceId, metricId, mgAppCriticalValue);
     }
@@ -194,9 +194,9 @@ public class ApplicationController extends BaseController {
     public void deleteAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @RequestParam Integer[] metricIds) {
 
         if(logger.isDebugEnabled()) {
-            logger.debug("monitoringGroupId", monitoringGroupId);
-            logger.debug("appResourceId", appResourceId);
-            logger.debug("metricIds", Arrays.toString(metricIds));
+            logger.debug("monitoringGroupId : {}", monitoringGroupId);
+            logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("metricIds : {}", Arrays.toString(metricIds));
         }
         applicationService.deleteMonAppMetrics(monitoringGroupId, appResourceId, metricIds);
     }

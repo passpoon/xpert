@@ -1,5 +1,6 @@
 package com.crossent.monitoring.portal.system.mng.service;
 
+import com.crossent.monitoring.portal.common.exception.BusinessException;
 import com.crossent.monitoring.portal.common.vo.PagingReqVo;
 import com.crossent.monitoring.portal.common.vo.PagingResVo;
 import com.crossent.monitoring.portal.common.vo.SearchReqVo;
@@ -19,7 +20,8 @@ import java.util.*;
 
 @Service
 public class UserGroupService {
-    private static Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    private static Logger logger = LoggerFactory.getLogger(UserGroupService.class);
 
     @Autowired
     UserGroupRepository userGroupRepository;
@@ -44,6 +46,9 @@ public class UserGroupService {
             }
         }
         Page<UserGroup> userGroups = null;
+        logger.debug("key : {}", key);
+        logger.debug("keyword : {}", keyword);
+
         if(key == null){
             //TODO 전체조회
             userGroups = userGroupRepository.findAll(pagingReqVo.toPagingRequest());
@@ -64,6 +69,8 @@ public class UserGroupService {
                     userGroups = userGroupRepository.findByDescriptionLike(pagingReqVo.toPagingRequest(), keyword);
                 }
                 break;
+                default:
+                    throw new BusinessException("unDefSearchKey", key);
             }
         }
 
@@ -90,12 +97,18 @@ public class UserGroupService {
 
     public UserGroup getUserGroup(String userGroupId) {
 
-        UserGroup user = userGroupRepository.findOne(userGroupId);
+        UserGroup userGroup = userGroupRepository.findOne(userGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("userGroup : {}", userGroup);
+        }
+        if(userGroup == null) {
+            throw new BusinessException("noFindUserGroup");
+        }
 
         UserGroup out = new UserGroup();
-        out.setId(user.getId());
-        out.setName(user.getName());
-        out.setDescription(user.getDescription());
+        out.setId(userGroup.getId());
+        out.setName(userGroup.getName());
+        out.setDescription(userGroup.getDescription());
 
         return out;
     }
@@ -103,10 +116,13 @@ public class UserGroupService {
     public UserGroup updateUserGroup(String userGroupId, UserGroup userGroup){
 
         UserGroup getData = userGroupRepository.findOne(userGroupId);
-
-        if(getData == null) {
-            return null;
+        if(logger.isDebugEnabled()){
+            logger.debug("userGroup : {}", getData);
         }
+        if(getData == null) {
+            throw new BusinessException("noFindUserGroup");
+        }
+
         getData.setName(userGroup.getName());
         getData.setDescription(userGroup.getDescription());
 
@@ -123,25 +139,26 @@ public class UserGroupService {
     public Collection<User> getUserGroupUsers(String userGroupId){
 
         UserGroup userGroup = userGroupRepository.findById(userGroupId);
+        if(logger.isDebugEnabled()){
+            logger.debug("userGroup : {}", userGroup);
+        }
+        if(userGroup == null) {
+            throw new BusinessException("noFindUserGroup");
+        }
         Collection<User> users = userGroup.getUsers();
+        if(logger.isDebugEnabled()){
+            logger.debug("users : {}", users);
+        }
 
         return users;
     }
 
     public void insertUserGroupUsers(String userGroupId, String[] userIds){
 
-//        UserGroup userGroup = userGroupRepository.findById(userGroupId);
-//
-//        User user = userRepository.findOne(reqUser.getId());
-
-//        UserGroupMap userGroupMap = new UserGroupMap();
-//        userGroupMap.setUser(user);
-//        userGroupMap.setUserGroup(userGroup);
-        //(두 관계 매핑할 때) map의 경우 PK만 불러와서 mapping
         for(String userId : userIds) {
             UserGroupMap userGroupMap = new UserGroupMap();
-            userGroupMap.setUserGroupId(userGroupId);  // userGroupId
-            userGroupMap.setUserId(userId);  // User userId
+            userGroupMap.setUserGroupId(userGroupId);
+            userGroupMap.setUserId(userId);
 
             UserGroupMap groupMap = userGroupMapRepository.save(userGroupMap);
         }
