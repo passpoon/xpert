@@ -148,13 +148,14 @@ public class ServerService {
         serverTypeMeasurementMapRepository.deleteByServerTypeIdAndMeasurementIdIn(serverTypeId, measurementIds);
     }
 
-    public Collection<MgServerCriticalValue> getMonServerMetrics(Integer monitoringGroupId, Integer serverResourceId) {
+    public Collection<MgServerCriticalValue> getMonServerMetrics(Integer monitoringGroupId, Integer serverResourceId, Integer measurementId) {
 
-        MgServer mgServer = mgServerRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
+        Collection<MgServerCriticalValue> mgServerCriticalValues = mgServerCriticalValueRepository.findAllByMonGroupIdAndServerResourceIdAndMetric_MeasurementId(monitoringGroupId, serverResourceId, measurementId);
         if(logger.isDebugEnabled()){
-            logger.debug("mgServer : {}", mgServer);
+            logger.debug("mgServerCriticalValues : {}", mgServerCriticalValues);
         }
-        Collection<MgServerCriticalValue> mgServerCriticalValues = mgServer.getMgServerCriticalValues();
+        /*MgServer mgServer = mgServerRepository.findByMonGroupIdAndServerResourceId(monitoringGroupId, serverResourceId);
+        Collection<MgServerCriticalValue> mgServerCriticalValues = mgServer.getMgServerCriticalValues();*/
 
         return mgServerCriticalValues;
     }

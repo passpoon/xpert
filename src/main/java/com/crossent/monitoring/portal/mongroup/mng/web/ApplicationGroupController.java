@@ -178,15 +178,17 @@ public class ApplicationGroupController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "appGroupId", value = "어플리케이션 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementId", value = "메저먼트 ID", required = true, dataType = "int", paramType = "path"),
     })
-    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/metrics", method = RequestMethod.GET)
-    public Collection<MgAppGroupCriticalValue> getServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId) {
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app-group/app-groups/{appGroupId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<MgAppGroupCriticalValue> getServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appGroupId, @PathVariable Integer measurementId) {
 
         if(logger.isDebugEnabled()) {
             logger.debug("monitoringGroupId : {}", monitoringGroupId);
             logger.debug("appGroupId : {}", appGroupId);
+            logger.debug("measurementId : {}", measurementId);
         }
-        Collection<MgAppGroupCriticalValue> appGroupMetrics = applicationGroupService.getAppGroupMetrics(monitoringGroupId, appGroupId);
+        Collection<MgAppGroupCriticalValue> appGroupMetrics = applicationGroupService.getAppGroupMetrics(monitoringGroupId, appGroupId, measurementId);
         if(logger.isDebugEnabled()) {
             logger.debug("appGroupMetrics : {}", appGroupMetrics);
         }

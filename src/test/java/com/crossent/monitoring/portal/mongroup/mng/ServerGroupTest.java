@@ -108,9 +108,10 @@ public class ServerGroupTest extends AbstractMockTest {
     @Test
     public void getServerGroupMetrics() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer serverGroupId = 19;
+        Integer serverGroupId = 18;
+        Integer measurementId = 2;
 
-        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/metrics");
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server-group/server-groups/"+serverGroupId+"/measurements/"+measurementId+"/metrics");
     }
 
     @Test

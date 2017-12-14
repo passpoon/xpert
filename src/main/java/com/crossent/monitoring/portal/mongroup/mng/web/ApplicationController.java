@@ -129,15 +129,17 @@ public class ApplicationController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "appResourceId", value = "어플리케이션 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementId", value = "메저먼트 ID", required = true, dataType = "int", paramType = "path"),
     })
-    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/metrics", method = RequestMethod.GET)
-    public Collection<MgAppCriticalValue> getMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId) {
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/app/apps/{appResourceId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<MgAppCriticalValue> getMonAppMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer appResourceId, @PathVariable Integer measurementId) {
 
         if(logger.isDebugEnabled()) {
             logger.debug("monitoringGroupId : {}", monitoringGroupId);
             logger.debug("appResourceId : {}", appResourceId);
+            logger.debug("measurementId : {}", measurementId);
         }
-        Collection<MgAppCriticalValue> appMetrics = applicationService.getMonAppMetrics(monitoringGroupId, appResourceId);
+        Collection<MgAppCriticalValue> appMetrics = applicationService.getMonAppMetrics(monitoringGroupId, appResourceId, measurementId);
         if(logger.isDebugEnabled()) {
             logger.debug("appMetrics : {}", appMetrics);
         }
@@ -161,7 +163,6 @@ public class ApplicationController extends BaseController {
         }
         applicationService.insertMonAppMetrics(monitoringGroupId, appResourceId, metricIds);
     }
-
 
     @ApiOperation(value = "관리 어플리케이션 메트릭별 임계치 수정")
     @ApiImplicitParams({

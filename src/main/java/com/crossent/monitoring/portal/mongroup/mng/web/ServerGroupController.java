@@ -173,19 +173,21 @@ public class ServerGroupController extends BaseController {
         serverGroupService.deleteServerGroupMeasurements(monitoringGroupId, serverGroupId, measurementIds);
     }
 
-    @ApiOperation(value = "관리 서버 그룹 메트릭 조회")
+    @ApiOperation(value = "관리 서버 그룹 메저먼트 메트릭 조회")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "serverGroupId", value = "서버 그룹 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementId", value = "메저먼트 ID", required = true, dataType = "int", paramType = "path"),
     })
-    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/metrics", method = RequestMethod.GET)
-    public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId) {
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server-group/server-groups/{serverGroupId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<MgServerGroupCriticalValue> getServerGroupMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverGroupId, @PathVariable Integer measurementId) {
 
         if(logger.isDebugEnabled()) {
             logger.debug("monitoringGroupId : {}", monitoringGroupId);
             logger.debug("serverGroupId : {}", serverGroupId);
+            logger.debug("measurementId : {}", measurementId);
         }
-        Collection<MgServerGroupCriticalValue> serverGroupMetrics = serverGroupService.getServerGroupMetrics(monitoringGroupId, serverGroupId);
+        Collection<MgServerGroupCriticalValue> serverGroupMetrics = serverGroupService.getServerGroupMetrics(monitoringGroupId, serverGroupId, measurementId);
         if(logger.isDebugEnabled()) {
             logger.debug("serverGroupMetrics : {}", serverGroupMetrics);
         }

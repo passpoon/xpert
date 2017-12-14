@@ -72,9 +72,18 @@ public class ServerTest extends AbstractMockTest {
     }
 
     @Test
+    public void getServerTypeMeasurementMetrics() throws Exception {
+        Integer monitoringGroupId = 1;
+        Integer serverResourceId = 19;
+        Integer measurementId = 2;
+
+        get("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/measurements/"+measurementId+"/metrics");
+    }
+
+    @Test
     public void getMonServerMetrics() throws Exception {
         Integer monitoringGroupId = 1;
-        Integer serverResourceId = 1;
+        Integer serverResourceId = 19;
 
         get("/monitoring-groups/"+monitoringGroupId+"/management/server/servers/"+serverResourceId+"/metrics");
     }
