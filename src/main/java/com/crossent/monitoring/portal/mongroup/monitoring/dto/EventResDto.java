@@ -8,11 +8,13 @@ public class EventResDto {
     String hostName;
     String ip;
     String resourceUuid;
+    String resourceName;
     String program;
     String contents;
     String regiDttm;
     String updateDttm;
     String state;
+
 
 
     public Long getId() {
@@ -103,6 +105,13 @@ public class EventResDto {
         this.state = state;
     }
 
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
+    }
 
     @Override
     public String toString() {
@@ -110,9 +119,10 @@ public class EventResDto {
         sb.append("id=").append(id);
         sb.append(", monGroupId=").append(monGroupId);
         sb.append(", resourceType='").append(resourceType).append('\'');
-        sb.append(", host='").append(hostName).append('\'');
+        sb.append(", hostName='").append(hostName).append('\'');
         sb.append(", ip='").append(ip).append('\'');
         sb.append(", resourceUuid='").append(resourceUuid).append('\'');
+        sb.append(", resourceName='").append(resourceName).append('\'');
         sb.append(", program='").append(program).append('\'');
         sb.append(", contents='").append(contents).append('\'');
         sb.append(", regiDttm='").append(regiDttm).append('\'');

@@ -65,6 +65,13 @@ public class MonCommonService {
     @Autowired
     AppResourceRepository appResourceRepository;
 
+    @Autowired
+    MgServerGroupRepository mgServerGroupRepository;
+
+
+    @Autowired
+    MgAppGroupRepository mgAppGroupRepository;
+
 
     public PagingResVo<LogResDto> pageServerLog(List<Integer> serverResourceIds, PagingReqVo page, SearchReqVo search) {
 
@@ -210,19 +217,18 @@ public class MonCommonService {
 //
 //        hostArray = hostNames.toArray(hostArray);
 
-        for(AppResource appResource : appResources ){
-            String hostName =appResource.getServerResource().getHostName();
+        for (AppResource appResource : appResources) {
+            String hostName = appResource.getServerResource().getHostName();
 
-            if(!hostNames.contains(hostName)){
+            if (!hostNames.contains(hostName)) {
                 hostNames.add(hostName);
             }
 
             String program = appResource.getAppInfo().getName();
-            if(!programs.contains(program)){
+            if (!programs.contains(program)) {
                 programs.add(program);
             }
         }
-
 
 
 //        for(ServerResource serverResource : serverResources){
@@ -483,10 +489,10 @@ public class MonCommonService {
                     case "RESOURCE-TYPE":
                         switch (keyword) {
                             case "SERVER":
-                                if(resourceType == null){
+                                if (resourceType == null) {
                                     serverResourceTypes.add(ResourceType.SERVER.getCode());
 
-                                }else{
+                                } else {
                                     serverResourceTypes.add(resourceType.getCode());
                                 }
                                 break;
@@ -494,9 +500,9 @@ public class MonCommonService {
                                 serverResourceTypes.add(ResourceType.LOG.getCode());
                                 break;
                             case "APPLICATION":
-                                if(resourceType == null){
+                                if (resourceType == null) {
                                     serverResourceTypes.add(ResourceType.APPLICATION.getCode());
-                                }else {
+                                } else {
                                     serverResourceTypes.add(resourceType.getCode());
                                 }
                                 break;
@@ -534,13 +540,13 @@ public class MonCommonService {
         }
 
         if (serverResourceTypes.size() == 0) {
-            if(resourceType == null) {
+            if (resourceType == null) {
                 serverResourceTypes.add(ResourceType.SERVER.getCode());
                 serverResourceTypes.add(ResourceType.SERVER_GROUP.getCode());
                 serverResourceTypes.add(ResourceType.LOG.getCode());
                 serverResourceTypes.add(ResourceType.APPLICATION.getCode());
                 serverResourceTypes.add(ResourceType.APPLICATION_GROUP.getCode());
-            }else{
+            } else {
                 switch (resourceType) {
                     case SERVER:
                     case SERVER_GROUP:
@@ -574,17 +580,17 @@ public class MonCommonService {
 
             //findAllByMonGroupIdAndResourceIdAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanAndUpdateDttmLessThanOrderByUpdateDttmDescIdDesc
 
-            if(resourceIds == null) {
+            if (resourceIds == null) {
                 eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanEqualAndUpdateDttmLessThanEqualOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceTypes, stateCodes, startDttm, endDttm);
 
-            }else{
+            } else {
                 eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInAndUpdateDttmGreaterThanEqualAndUpdateDttmLessThanEqualOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, resourceIds, serverResourceTypes, stateCodes, startDttm, endDttm);
             }
 
         } else {
-            if(resourceIds == null) {
+            if (resourceIds == null) {
                 eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, serverResourceTypes, stateCodes);
-            }else{
+            } else {
                 eventHistoryPage = eventHistoryRepository.findAllByMonGroupIdAndResourceIdInAndResourceTypeInAndStateCodeCodeInOrderByUpdateDttmDescIdDesc(pagingReqVo.toPagingRequest(), monGroupId, resourceIds, serverResourceTypes, stateCodes);
 
             }
@@ -613,6 +619,44 @@ public class MonCommonService {
 
             eventResDto.setResourceUuid(eventHistory.getResourceUuid());
             eventResDto.setState(eventHistory.getStateCode().getState());
+
+            ResourceType curRType = ResourceType.forCode(eventHistory.getResourceType());
+
+            switch (curRType) {
+                case SERVER:
+                case LOG: {
+                    ServerResource serverResource = serverResourceRepository.findById(eventHistory.getResourceId());
+                    if(serverResource != null) {
+                        eventResDto.setResourceName(serverResource.getName());
+                    }
+                }
+                break;
+                case SERVER_GROUP: {
+                    MgServerGroup mgServerGroup = mgServerGroupRepository.findOne(eventHistory.getResourceId());
+                    if(mgServerGroup != null){
+                        eventResDto.setResourceName(mgServerGroup.getName());
+                    }
+                }
+                break;
+                case APPLICATION: {
+                    AppResource appResource = appResourceRepository.findById(eventHistory.getResourceId());
+                    if(appResource != null){
+                        eventResDto.setResourceName(appResource.getName());
+                    }
+
+                }
+                break;
+                case APPLICATION_GROUP: {
+                    MgAppGroup appGroup = mgAppGroupRepository.findOne(eventHistory.getResourceId());
+                    if(appGroup != null){
+                        eventResDto.setResourceName(appGroup.getName());
+                    }
+                }
+                break;
+
+            }
+
+
             eventResPage.addListItem(eventResDto);
         }
 
