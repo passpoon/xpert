@@ -147,15 +147,14 @@ public class ApplicationService {
         appInfoMeasurementMapRepository.deleteByAppInfoIdAndMeasurementIdIn(appInfoId, measurementIds);
     }
 
-    public Collection<MgAppCriticalValue> getMonAppMetrics(Integer monitoringGroupId, Integer appResourceId) {
+    public Collection<MgAppCriticalValue> getMonAppMetrics(Integer monitoringGroupId, Integer appResourceId, Integer measurementId) {
 
-        MgApp mgApp = mgAppRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
+        Collection<MgAppCriticalValue> mgAppCriticalValues = mgAppCriticalValueRepository.findAllByMonGroupIdAndAppResourceIdAndMetric_MeasurementId(monitoringGroupId, appResourceId, measurementId);
         if(logger.isDebugEnabled()){
-            logger.debug("mgApp : {}", mgApp);
+            logger.debug("mgAppCriticalValues : {}", mgAppCriticalValues);
         }
-
-        Collection<MgAppCriticalValue> mgAppCriticalValues = mgApp.getMgAppCriticalValues();
-
+        /*MgApp mgApp = mgAppRepository.findByMonGroupIdAndAppResourceId(monitoringGroupId, appResourceId);
+        Collection<MgAppCriticalValue> mgAppCriticalValues = mgApp.getMgAppCriticalValues();*/
         return mgAppCriticalValues;
     }
 

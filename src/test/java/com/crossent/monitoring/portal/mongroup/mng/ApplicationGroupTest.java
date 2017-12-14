@@ -106,8 +106,9 @@ public class ApplicationGroupTest extends AbstractMockTest {
     public void getAppGroupMetrics() throws Exception {
         Integer monitoringGroupId = 3;
         Integer appGroupId = 1;
+        Integer measurementId = 1;
 
-        get("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/metrics");
+        get("/monitoring-groups/"+monitoringGroupId+"/management/app-group/app-groups/"+appGroupId+"/measurements/"+measurementId+"/metrics");
     }
 
     @Test

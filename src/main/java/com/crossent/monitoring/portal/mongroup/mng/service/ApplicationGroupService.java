@@ -222,13 +222,14 @@ public class ApplicationGroupService {
         appInfoMeasurementMapRepository.deleteByAppInfoIdAndMeasurementIdIn(appInfoId, measurementIds);
     }
 
-    public Collection<MgAppGroupCriticalValue> getAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId) {
+    public Collection<MgAppGroupCriticalValue> getAppGroupMetrics(Integer monitoringGroupId, Integer appGroupId, Integer measurementId) {
 
-        MgAppGroup mgAppGroup = mgAppGroupRepository.findById(appGroupId);
+        Collection<MgAppGroupCriticalValue> mgAppGroupCriticalValues = mgAppGroupCriticalValueRepository.findAllByMgAppGroupIdAndMetric_MeasurementId(appGroupId, measurementId);
         if(logger.isDebugEnabled()){
-            logger.debug("mgAppGroup : {}", mgAppGroup);
+            logger.debug("mgAppGroupCriticalValues : {}", mgAppGroupCriticalValues);
         }
-        Collection<MgAppGroupCriticalValue> mgAppGroupCriticalValues = mgAppGroup.getMgAppGroupCriticalValues();
+        /*MgAppGroup mgAppGroup = mgAppGroupRepository.findById(appGroupId);
+        Collection<MgAppGroupCriticalValue> mgAppGroupCriticalValues = mgAppGroup.getMgAppGroupCriticalValues();*/
 
         return mgAppGroupCriticalValues;
     }

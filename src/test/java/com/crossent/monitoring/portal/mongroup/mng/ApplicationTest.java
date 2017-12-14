@@ -74,8 +74,9 @@ public class ApplicationTest extends AbstractMockTest {
     public void getMonAppMetrics() throws Exception {
         Integer monitoringGroupId = 1;
         Integer appResourceId = 1;
+        Integer measurementId = 1;
 
-        get("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/metrics");
+        get("/monitoring-groups/"+monitoringGroupId+"/management/app/apps/"+appResourceId+"/measurements/"+measurementId+"/metrics");
     }
 
     @Test

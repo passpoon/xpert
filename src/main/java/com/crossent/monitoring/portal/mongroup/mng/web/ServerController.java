@@ -129,15 +129,17 @@ public class ServerController extends BaseController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "monitoringGroupId", value = "모니터링 그룹 ID", required = true, dataType = "int", paramType = "path"),
             @ApiImplicitParam(name = "serverResourceId", value = "서버 리소스 ID", required = true, dataType = "int", paramType = "path"),
+            @ApiImplicitParam(name = "measurementId", value = "메저먼트 ID", required = true, dataType = "int", paramType = "path"),
     })
-    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server/servers/{serverResourceId}/metrics", method = RequestMethod.GET)
-    public Collection<MgServerCriticalValue> getMonServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId) {
+    @RequestMapping(value = "/monitoring-groups/{monitoringGroupId}/management/server/servers/{serverResourceId}/measurements/{measurementId}/metrics", method = RequestMethod.GET)
+    public Collection<MgServerCriticalValue> getMonServerMetrics(@PathVariable Integer monitoringGroupId, @PathVariable Integer serverResourceId, @PathVariable Integer measurementId) {
 
         if(logger.isDebugEnabled()) {
             logger.debug("monitoringGroupId : {}", monitoringGroupId);
             logger.debug("serverResourceId : {}", serverResourceId);
+            logger.debug("measurementId : {}", measurementId);
         }
-        Collection<MgServerCriticalValue> serverMetrics = serverService.getMonServerMetrics(monitoringGroupId, serverResourceId);
+        Collection<MgServerCriticalValue> serverMetrics = serverService.getMonServerMetrics(monitoringGroupId, serverResourceId, measurementId);
         if(logger.isDebugEnabled()) {
             logger.debug("serverMetrics : {}", serverMetrics);
         }
