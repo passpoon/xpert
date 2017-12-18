@@ -36,7 +36,7 @@ public class MonEventTest extends AbstractMockTest {
 //        searchReqVo.addKeyword("STATE", "WARN");
 //        searchReqVo.addKeyword("STATE", "ERROR");
 
-        //searchReqVo.setRangeType("1h");
+        searchReqVo.setRangeType("5m");
         //searchReqVo.setRangeType("1M");
 //        searchReqVo.setRangeStart("20171202011000");
 //        searchReqVo.setRangeEnd("20171202022000");

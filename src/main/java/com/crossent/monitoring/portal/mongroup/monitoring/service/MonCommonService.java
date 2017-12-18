@@ -141,8 +141,11 @@ public class MonCommonService {
         if (searchVo.isHaveKeyworkd()) {
             List<String> keys = searchVo.getKeys();
             for (String key : keys) {
-                query.must(QueryBuilders.matchQuery(keys.get(0), searchVo.getKeyword(keys.get(0))));
-
+                if("program".equals(key)){
+                    query.must(QueryBuilders.wildcardQuery(keys.get(0), "*"+searchVo.getKeyword(keys.get(0))+"*"));
+                }else {
+                    query.must(QueryBuilders.matchQuery(keys.get(0), searchVo.getKeyword(keys.get(0))));
+                }
             }
 
         }
@@ -283,8 +286,11 @@ public class MonCommonService {
         if (searchVo.isHaveKeyworkd()) {
             List<String> keys = searchVo.getKeys();
             for (String key : keys) {
-                query.must(QueryBuilders.matchQuery(keys.get(0), searchVo.getKeyword(keys.get(0))));
-
+                if("program".equals(key)){
+                    query.must(QueryBuilders.wildcardQuery(keys.get(0), "*"+searchVo.getKeyword(keys.get(0))+"*"));
+                }else {
+                    query.must(QueryBuilders.matchQuery(keys.get(0), searchVo.getKeyword(keys.get(0))));
+                }
             }
 
         }
