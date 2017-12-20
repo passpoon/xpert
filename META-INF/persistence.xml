@@ -46,6 +46,8 @@
         <class>com.crossent.monitoring.portal.jpa.domain.User</class>
         <class>com.crossent.monitoring.portal.jpa.domain.UserGroup</class>
         <class>com.crossent.monitoring.portal.jpa.domain.UserGroupMap</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.AppAlive</class>
+        <class>com.crossent.monitoring.portal.jpa.domain.ServerAlive</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/mondb" />
