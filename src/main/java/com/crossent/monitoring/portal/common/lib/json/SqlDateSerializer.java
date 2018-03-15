@@ -45,6 +45,5 @@ public class SqlDateSerializer extends StdScalarSerializer<Date> {
     public static void main(String[] args) {
         SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
         System.out.println(f.format(new Date(System.currentTimeMillis())));
-
     }
 }

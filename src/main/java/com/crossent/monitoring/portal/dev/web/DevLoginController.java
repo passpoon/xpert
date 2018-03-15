@@ -7,8 +7,6 @@ import com.crossent.monitoring.portal.common.web.BaseController;
 import com.crossent.monitoring.portal.jpa.domain.AppInfo;
 import com.crossent.monitoring.portal.jpa.domain.AppInfoCriticalValue;
 import com.crossent.monitoring.portal.jpa.domain.Measurement;
-import com.crossent.monitoring.portal.system.mng.dto.AppInfoDto;
-import com.crossent.monitoring.portal.system.mng.service.AppInfoService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

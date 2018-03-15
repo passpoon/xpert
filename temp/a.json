@@ -1,22 +1,103 @@
-[
-  {
-    "id": 2,
-    "name": "cpu",
-    "description": "CPU에 대한 메트릭"
-  },
-  {
-    "id": 7,
-    "name": "net",
-    "description": "Network input output 메트릭"
-  },
-  {
-    "id": 67,
-    "name": "mem",
-    "description": "Memory 관련 메트릭"
-  },
-  {
-    "id": 69,
-    "name": "disk",
-    "description": "Disk 관련 메트릭"
-  }
-]
+{
+  "number": 0,
+  "size": 10,
+  "totalPages": 80,
+  "numberOfElements": 10,
+  "totalElements": 792,
+  "hasNextPage": true,
+  "titles": null,
+  "list": [
+    {
+      "id": "AWBoBQVOOsKjxyNB70xz",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "snapd",
+      "source": "/var/log/syslog",
+      "message": "2017/12/18 14:07:24.853220 stateengine.go:98: state ensure error: Post https://search.apps.ubuntu.com/api/v1/snaps/metadata: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)",
+      "time": "2017-12-18 14:07:27"
+    },
+    {
+      "id": "AWBoBQVMOsKjxyNB70xy",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "retry.go:59: DEBUG: The retry loop for https://search.apps.ubuntu.com/api/v1/snaps/metadata finished after 5 retries, elapsed time=40.626456217s, status: Post https://search.apps.ubuntu.com/api/v1/snaps/metadata: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)",
+      "time": "2017-12-18 14:07:27"
+    },
+    {
+      "id": "AWBoBQTEHUdp-kyNo4L1",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "stateengine.go:98: state ensure error: Post https://search.apps.ubuntu.com/api/v1/snaps/metadata: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)",
+      "time": "2017-12-18 14:07:27"
+    },
+    {
+      "id": "AWBoBPIoOsKjxyNB70xx",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "retry.go:47: DEBUG: Retrying https://search.apps.ubuntu.com/api/v1/snaps/metadata, attempt 5, elapsed time=30.626133317s",
+      "time": "2017-12-18 14:07:22"
+    },
+    {
+      "id": "AWBoBLeUW8Lt9qpzM-yF",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "retry.go:47: DEBUG: Retrying https://search.apps.ubuntu.com/api/v1/snaps/metadata, attempt 3, elapsed time=20.000576272s",
+      "time": "2017-12-18 14:07:07"
+    },
+    {
+      "id": "AWBoBLeVOsKjxyNB70xw",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "retry.go:47: DEBUG: Retrying https://search.apps.ubuntu.com/api/v1/snaps/metadata, attempt 4, elapsed time=20.625715959s",
+      "time": "2017-12-18 14:07:07"
+    },
+    {
+      "id": "AWBoBLeUW8Lt9qpzM-yE",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "retry.go:47: DEBUG: Retrying https://search.apps.ubuntu.com/api/v1/snaps/metadata, attempt 2, elapsed time=10.000200031s",
+      "time": "2017-12-18 14:07:07"
+    },
+    {
+      "id": "AWBn90mJW8Lt9qpzM-x4",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "stateengine.go:98: state ensure error: Post https://search.apps.ubuntu.com/api/v1/snaps/metadata: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)",
+      "time": "2017-12-18 13:52:27"
+    },
+    {
+      "id": "AWBn90mJW8Lt9qpzM-x3",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "/usr/lib/snapd/snapd",
+      "source": "/var/log/syslog",
+      "message": "retry.go:59: DEBUG: The retry loop for https://search.apps.ubuntu.com/api/v1/snaps/metadata finished after 5 retries, elapsed time=40.627232145s, status: Post https://search.apps.ubuntu.com/api/v1/snaps/metadata: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)",
+      "time": "2017-12-18 13:52:27"
+    },
+    {
+      "id": "AWBn90mOOsKjxyNB70xf",
+      "index": "log-2017.12.18",
+      "host": "monagtd02",
+      "program": "snapd",
+      "source": "/var/log/syslog",
+      "message": "2017/12/18 13:52:24.854314 stateengine.go:98: state ensure error: Post https://search.apps.ubuntu.com/api/v1/snaps/metadata: net/http: request canceled while waiting for connection (Client.Timeout exceeded while awaiting headers)",
+      "time": "2017-12-18 13:52:27"
+    }
+  ],
+  "lastPage": false,
+  "firstPage": true
+}
