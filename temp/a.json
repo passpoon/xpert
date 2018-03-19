@@ -18,7 +18,7 @@
     },
     {
       "id": "AWBoBQVMOsKjxyNB70xy",
-      "index": "log-2017.12.18",a
+      "index": "log-2017.12.18",
       "host": "monagtd02",
       "program": "/usr/lib/snapd/snapd",
       "source": "/var/log/syslog",
